@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const LINKS = [
-  { label: "Gallery", href: "#gallery" },
-  { label: "Process", href: "#process" },
-  { label: "Contact", href: "#contact" },
+  { label: "New", href: "https://mazrood.com/collections/new-2026" },
+  { label: "Men", href: "https://mazrood.com/collections/men" },
+  { label: "Women", href: "https://mazrood.com/collections/women" },
+  { label: "Sale", href: "https://mazrood.com/collections/fw25-26" },
 ];
 
 export default function Nav() {
@@ -26,17 +27,17 @@ export default function Nav() {
         }`}
       >
         <nav className="mx-auto flex h-[72px] max-w-[1600px] items-center justify-between px-6 md:px-10">
-          <a href="#top" className="group flex items-center gap-3" aria-label="Mazrood home">
-            <span className="h-2 w-2 rounded-full bg-[hsl(var(--primary))] shadow-[0_0_12px_hsl(186_100%_50%_/_0.8)]" />
+          <a href="#top" className="flex items-center gap-3" aria-label="Mazrood Studio home">
+            <span className="h-2 w-2 rounded-full bg-[hsl(var(--primary))]" />
             <span className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-white">
-              Mazrood
+              Mazrood <span className="hidden sm:inline">Studio</span>
             </span>
           </a>
 
           <div className="hidden items-center gap-10 md:flex">
             {LINKS.map((l) => (
               <a
-                key={l.href}
+                key={l.label}
                 href={l.href}
                 className="font-mono-tech text-xs uppercase tracking-[0.2em] text-[hsl(var(--foreground))] opacity-70 transition hover:opacity-100 hover:text-[hsl(var(--primary))]"
               >
@@ -44,10 +45,10 @@ export default function Nav() {
               </a>
             ))}
             <a
-              href="#contact"
-              className="font-mono-tech text-xs uppercase tracking-[0.2em] text-[hsl(var(--primary-foreground))] btn-photon rounded-sm px-5 py-2.5"
+              href="https://mazrood.com/collections/new-2026"
+              className="btn-solid rounded-sm px-5 py-2.5 font-mono-tech text-xs uppercase tracking-[0.2em]"
             >
-              Request Access
+              Shop SS26
             </a>
           </div>
 
@@ -66,7 +67,7 @@ export default function Nav() {
             <div className="flex flex-col gap-5">
               {LINKS.map((l) => (
                 <a
-                  key={l.href}
+                  key={l.label}
                   href={l.href}
                   onClick={() => setOpen(false)}
                   className="font-mono-tech text-xs uppercase tracking-[0.2em] text-[hsl(var(--foreground))]"
@@ -75,11 +76,11 @@ export default function Nav() {
                 </a>
               ))}
               <a
-                href="#contact"
+                href="https://mazrood.com/collections/new-2026"
                 onClick={() => setOpen(false)}
-                className="font-mono-tech text-xs uppercase tracking-[0.2em] text-[hsl(var(--primary-foreground))] btn-photon rounded-sm px-5 py-2.5 text-center"
+                className="btn-solid rounded-sm px-5 py-2.5 text-center font-mono-tech text-xs uppercase tracking-[0.2em]"
               >
-                Request Access
+                Shop SS26
               </a>
             </div>
           </div>

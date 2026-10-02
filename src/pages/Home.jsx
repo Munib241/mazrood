@@ -1,8 +1,9 @@
 import Nav from "@/components/mazrood/Nav";
 import PrecisionRules from "@/components/mazrood/PrecisionRules";
 import Hero from "@/components/mazrood/Hero";
-import LumenGallery from "@/components/mazrood/LumenGallery";
-import TechnicalBlueprint from "@/components/mazrood/TechnicalBlueprint";
+import NewArrivals from "@/components/mazrood/NewArrivals";
+import TheLook from "@/components/mazrood/TheLook";
+import Sale from "@/components/mazrood/Sale";
 import FinalEmittance from "@/components/mazrood/FinalEmittance";
 
 export default function Home() {
@@ -13,8 +14,9 @@ export default function Home() {
       <Nav />
       <main className="relative z-10">
         <Hero />
-        <LumenGallery />
-        <TechnicalBlueprint />
+        <NewArrivals />
+        <TheLook />
+        <Sale />
         <FinalEmittance />
       </main>
     </div>
