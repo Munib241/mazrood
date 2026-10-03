@@ -80,7 +80,7 @@ export default function Sale() {
             <p className="font-mono-tech mb-4 text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
               04 — Sale
             </p>
-            <h2 id="sale-heading" className="font-heading text-4xl font-light leading-tight tracking-[-0.01em] text-white md:text-6xl">
+            <h2 id="sale-heading" className="font-heading text-4xl font-light leading-tight tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-6xl">
               End of season <span className="font-bold">markdowns.</span>
             </h2>
           </div>
@@ -124,7 +124,7 @@ export default function Sale() {
                   </span>
                 )}
               </div>
-              <p className="mt-4 font-body text-sm font-medium text-white">{p.name}</p>
+              <p className="mt-4 font-body text-sm font-medium text-[hsl(var(--foreground))]">{p.name}</p>
               <p className="mt-1 flex items-baseline gap-2">
                 <span className="font-mono-tech text-sm text-[hsl(var(--primary))]">
                   {formatPrice(p.price, p.currency)}

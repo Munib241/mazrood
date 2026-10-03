@@ -53,13 +53,13 @@ export default function Hero() {
 
       {/* headline block, bottom */}
       <div className="absolute inset-x-0 bottom-0 px-6 pb-10 md:px-10 md:pb-14">
-        <p className="font-mono-tech mb-4 text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--foreground))] opacity-70">
+        <p className="font-mono-tech mb-4 text-[0.7rem] uppercase tracking-[0.4em] text-white/70">
           Spring / Summer 2026
         </p>
         <h1 className="font-heading text-[15vw] font-light leading-[0.9] tracking-[-0.02em] text-white md:text-[9.5vw]">
           End of <span className="font-bold italic">Season.</span>
         </h1>
-        <p className="mt-6 max-w-lg font-body text-base leading-relaxed text-[hsl(var(--foreground))] opacity-80 md:text-lg">
+        <p className="mt-6 max-w-lg font-body text-base leading-relaxed text-white/80 md:text-lg">
           New-season streetwear, knits and headwear — cut in the studio, made
           to outlast the season.
         </p>

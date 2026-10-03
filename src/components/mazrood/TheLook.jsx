@@ -28,7 +28,7 @@ export default function TheLook() {
           <p className="font-mono-tech mb-4 text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
             03 — The Look
           </p>
-          <h2 id="look-heading" className="font-heading text-4xl font-light leading-tight tracking-[-0.01em] text-white md:text-6xl">
+          <h2 id="look-heading" className="font-heading text-4xl font-light leading-tight tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-6xl">
             Worn well. <span className="font-bold">Shot on location.</span>
           </h2>
         </div>
@@ -48,7 +48,7 @@ export default function TheLook() {
                 <p className="font-mono-tech text-[0.7rem] uppercase tracking-[0.35em] text-[hsl(var(--primary))]">
                   {l.tag}
                 </p>
-                <h3 className="mt-4 font-heading text-3xl font-medium tracking-[-0.01em] text-white md:text-5xl">
+                <h3 className="mt-4 font-heading text-3xl font-medium tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-5xl">
                   {l.title}
                 </h3>
                 <p className={`mt-5 max-w-md font-body text-base leading-relaxed text-[hsl(var(--foreground))] opacity-75 ${i % 2 ? "md:ml-auto" : ""}`}>

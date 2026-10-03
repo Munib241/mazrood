@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import ThemeToggle from "@/components/mazrood/ThemeToggle";
 
 const LINKS = [
   { label: "New", href: "https://mazrood.com/collections/new-2026" },
@@ -11,6 +12,7 @@ const LINKS = [
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const tone = scrolled ? "text-[hsl(var(--foreground))]" : "text-white";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -29,7 +31,7 @@ export default function Nav() {
         <nav className="mx-auto flex h-[72px] max-w-[1600px] items-center justify-between px-6 md:px-10">
           <a href="#top" className="flex items-center gap-3" aria-label="Mazrood Studio home">
             <span className="h-2 w-2 rounded-full bg-[hsl(var(--primary))]" />
-            <span className="font-heading text-sm font-bold uppercase tracking-[0.3em] text-white">
+            <span className={`font-heading text-sm font-bold uppercase tracking-[0.3em] ${tone}`}>
               Mazrood <span className="hidden sm:inline">Studio</span>
             </span>
           </a>
@@ -39,11 +41,12 @@ export default function Nav() {
               <a
                 key={l.label}
                 href={l.href}
-                className="font-mono-tech text-xs uppercase tracking-[0.2em] text-[hsl(var(--foreground))] opacity-70 transition hover:opacity-100 hover:text-[hsl(var(--primary))]"
+                className={`font-mono-tech text-xs uppercase tracking-[0.2em] ${tone} opacity-70 transition hover:opacity-100 hover:text-[hsl(var(--primary))]`}
               >
                 {l.label}
               </a>
             ))}
+            <ThemeToggle className="text-[hsl(var(--foreground))] opacity-70" />
             <a
               href="https://mazrood.com/collections/new-2026"
               className="btn-solid rounded-sm px-5 py-2.5 font-mono-tech text-xs uppercase tracking-[0.2em]"
@@ -52,14 +55,17 @@ export default function Nav() {
             </a>
           </div>
 
-          <button
-            className="text-white md:hidden"
-            onClick={() => setOpen((v) => !v)}
-            aria-label="Toggle menu"
-            aria-expanded={open}
-          >
-            {open ? <X size={22} /> : <Menu size={22} />}
-          </button>
+          <div className="flex items-center gap-3 md:hidden">
+            <ThemeToggle className={`${tone} opacity-70`} />
+            <button
+              className={tone}
+              onClick={() => setOpen((v) => !v)}
+              aria-label="Toggle menu"
+              aria-expanded={open}
+            >
+              {open ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          </div>
         </nav>
 
         {open && (

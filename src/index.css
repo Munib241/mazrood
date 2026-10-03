@@ -29,6 +29,29 @@
     --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
     --font-mono: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }
+
+  /* Light mode — warm bone-white editorial palette with the sailor-rope brass accent */
+  .light-mode {
+    --background: 40 27% 95%;
+    --foreground: 240 12% 10%;
+    --card: 40 30% 99%;
+    --card-foreground: 240 12% 10%;
+    --popover: 40 30% 99%;
+    --popover-foreground: 240 12% 10%;
+    --primary: 43 55% 38%;
+    --primary-foreground: 40 27% 96%;
+    --secondary: 40 20% 92%;
+    --secondary-foreground: 240 12% 10%;
+    --muted: 40 20% 92%;
+    --muted-foreground: 240 6% 38%;
+    --accent: 43 55% 38%;
+    --accent-foreground: 40 27% 96%;
+    --destructive: 0 65% 42%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 40 14% 84%;
+    --input: 40 14% 84%;
+    --ring: 43 55% 38%;
+  }
 }
 
 @layer base {
@@ -92,6 +115,17 @@
   .btn-ghost:hover {
     border-color: hsl(var(--primary));
     color: hsl(var(--primary));
+  }
+
+  .light-mode .glass-panel {
+    background: rgba(250, 248, 244, 0.78);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid hsl(var(--border));
+  }
+
+  .light-mode .btn-solid:hover {
+    background: hsl(43 55% 44%);
   }
 
   .light-leak {

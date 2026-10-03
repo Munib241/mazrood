@@ -58,7 +58,7 @@ export default function NewArrivals() {
             </p>
             <h2
               id="new-heading"
-              className="font-heading text-4xl font-light leading-tight tracking-[-0.01em] text-white md:text-6xl"
+              className="font-heading text-4xl font-light leading-tight tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-6xl"
             >
               SS26, fresh <span className="font-bold">from the studio.</span>
             </h2>
@@ -92,7 +92,7 @@ export default function NewArrivals() {
                   <ArrowUpRight size={14} />
                 </span>
               </div>
-              <p className="mt-4 font-body text-sm font-medium text-white">{c.name}</p>
+              <p className="mt-4 font-body text-sm font-medium text-[hsl(var(--foreground))]">{c.name}</p>
               <p className="font-mono-tech mt-1 text-xs text-[hsl(var(--muted-foreground))]">
                 {formatPrice(c.price ?? 34.78, c.currency)}
               </p>

@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="https://base44.com/logo_v2.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      try {
+        if (localStorage.getItem("mazrood-theme") === "light") {
+          document.documentElement.classList.add("light-mode");
+        }
+      } catch (e) {}
+    </script>
     <link rel="manifest" href="/manifest.json" />
     <meta name="description" content="Mazrood Studio — new-season streetwear, knits and headwear. Shop SS26 caps, hoodies and end-of-season markdowns." />
     <meta name="theme-color" content="#0A0A0B" />
