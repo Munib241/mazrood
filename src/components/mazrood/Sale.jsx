@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { Image } from "@/components/ui/image";
+import useShopifyProducts from "@/hooks/useShopifyProducts";
 
 const SALE = [
   {
@@ -69,6 +70,8 @@ const SALE = [
 ];
 
 export default function Sale() {
+  const sale = useShopifyProducts(SALE);
+
   return (
     <section id="sale" aria-labelledby="sale-heading" className="relative border-t border-[hsl(var(--border))] py-24 md:py-36">
       <div className="mx-auto max-w-[1600px] px-6 md:px-10">
@@ -91,7 +94,7 @@ export default function Sale() {
         </div>
 
         <div className="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
-          {SALE.map((p) => (
+          {sale.map((p) => (
             <a key={p.name} href={p.url} className="group">
               <div className="relative aspect-[4/5] overflow-hidden rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--card))]">
                 <div className={`absolute inset-0 ${p.alt ? "transition-opacity duration-500 group-hover:opacity-0" : ""}`}>
@@ -115,6 +118,11 @@ export default function Sale() {
                 <span className="absolute left-3 top-3 rounded-sm bg-[hsl(var(--background))] px-2 py-1 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--primary))]">
                   Sale
                 </span>
+                {p.soldOut && (
+                  <span className="absolute right-3 top-3 rounded-sm bg-[hsl(var(--destructive))] px-2 py-1 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--destructive-foreground))]">
+                    Sold out
+                  </span>
+                )}
               </div>
               <p className="mt-4 font-body text-sm font-medium text-white">{p.name}</p>
               <p className="mt-1 flex items-baseline gap-2">

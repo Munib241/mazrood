@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
+import { base44 } from "@/api/base44Client";
 
 const FOOTER_LINKS = [
   { label: "New", href: "https://mazrood.com/collections/new-2026" },
@@ -13,14 +14,23 @@ const FOOTER_LINKS = [
 
 export default function FinalEmittance() {
   const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState("idle"); // idle | sending | done
+  const [error, setError] = useState(null);
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    if (!email.trim()) return;
-    setSent(true);
-    setEmail("");
-    setTimeout(() => setSent(false), 4000);
+    const value = email.trim();
+    if (!value || status === "sending") return;
+    setStatus("sending");
+    setError(null);
+    try {
+      await base44.functions.invoke("subscribe_newsletter", { email: value });
+      setStatus("done");
+      setEmail("");
+    } catch (err) {
+      setStatus("idle");
+      setError(err?.response?.data?.error ?? "Could not sign you up — please try again.");
+    }
   };
 
   return (
@@ -70,12 +80,15 @@ export default function FinalEmittance() {
             />
             <button
               type="submit"
-              className="btn-solid flex shrink-0 items-center gap-2 rounded-sm px-6 py-3 font-mono-tech text-[0.7rem] uppercase tracking-[0.25em]"
+              disabled={status === "sending"}
+              className="btn-solid flex shrink-0 items-center gap-2 rounded-sm px-6 py-3 font-mono-tech text-[0.7rem] uppercase tracking-[0.25em] disabled:opacity-60"
             >
-              {sent ? (
+              {status === "done" ? (
                 <>
                   <Check size={14} /> You're in
                 </>
+              ) : status === "sending" ? (
+                <>Signing up…</>
               ) : (
                 <>
                   Sign Up <ArrowRight size={14} />
@@ -83,9 +96,15 @@ export default function FinalEmittance() {
               )}
             </button>
           </div>
-          <p className="mt-3 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">
-            News and offers only. Unsubscribe anytime.
-          </p>
+          {error ? (
+            <p role="alert" className="mt-3 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--destructive))]">
+              {error}
+            </p>
+          ) : (
+            <p className="mt-3 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">
+              News and offers only. Unsubscribe anytime.
+            </p>
+          )}
         </form>
 
         <div className="mt-24 flex flex-col gap-10 border-t border-[hsl(var(--border))] pt-10 md:flex-row md:items-end md:justify-between">

@@ -79,17 +79,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* corner surveyor marks */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <span className="precision-rule absolute left-6 top-6 h-4 w-px opacity-60 md:left-10 md:top-10" />
-        <span className="precision-rule absolute left-6 top-6 h-px w-4 opacity-60 md:left-10 md:top-10" />
-        <span className="precision-rule absolute right-6 top-6 h-4 w-px opacity-60 md:right-10 md:top-10" />
-        <span className="precision-rule absolute right-6 top-6 h-px w-4 opacity-60 md:right-10 md:top-10" />
-        <span className="precision-rule absolute bottom-6 left-6 h-4 w-px opacity-60 md:bottom-10 md:left-10" />
-        <span className="precision-rule absolute bottom-6 left-6 h-px w-4 opacity-60 md:bottom-10 md:left-10" />
-        <span className="precision-rule absolute bottom-6 right-6 h-4 w-px opacity-60 md:bottom-10 md:right-10" />
-        <span className="precision-rule absolute bottom-6 right-6 h-px w-4 opacity-60 md:bottom-10 md:right-10" />
-      </div>
     </section>
   );
 }

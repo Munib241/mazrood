@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { Image } from "@/components/ui/image";
+import useShopifyProducts from "@/hooks/useShopifyProducts";
 
 const CAPS = [
   {
@@ -45,6 +46,8 @@ const CAPS = [
 ];
 
 export default function NewArrivals() {
+  const caps = useShopifyProducts(CAPS);
+
   return (
     <section id="new" aria-labelledby="new-heading" className="relative py-24 md:py-36">
       <div className="mx-auto max-w-[1600px] px-6 md:px-10">
@@ -70,7 +73,7 @@ export default function NewArrivals() {
         </div>
 
         <div className="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
-          {CAPS.map((c) => (
+          {caps.map((c) => (
             <a key={c.name} href={c.url} className="group">
               <div className="relative aspect-[4/5] overflow-hidden rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--card))]">
                 <Image
@@ -80,12 +83,19 @@ export default function NewArrivals() {
                   className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                 />
                 <div className="absolute inset-0 bg-black/0 transition duration-500 group-hover:bg-black/15" />
+                {c.soldOut && (
+                  <span className="absolute right-3 top-3 rounded-sm bg-[hsl(var(--destructive))] px-2 py-1 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--destructive-foreground))]">
+                    Sold out
+                  </span>
+                )}
                 <span className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] opacity-0 transition duration-500 group-hover:opacity-100">
                   <ArrowUpRight size={14} />
                 </span>
               </div>
               <p className="mt-4 font-body text-sm font-medium text-white">{c.name}</p>
-              <p className="font-mono-tech mt-1 text-xs text-[hsl(var(--muted-foreground))]">$34.78</p>
+              <p className="font-mono-tech mt-1 text-xs text-[hsl(var(--muted-foreground))]">
+                ${(c.price ?? 34.78).toFixed(2)}
+              </p>
             </a>
           ))}
         </div>
