@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, Settings as SettingsIcon, X } from "lucide-react";
+import { Link } from "react-router-dom";
 import ThemeToggle from "@/components/mazrood/ThemeToggle";
 
 const LINKS = [
@@ -24,7 +25,7 @@ export default function Nav() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
       <div
-        className={`transition-all duration-500 ${
+        className={`safe-area-top transition-all duration-500 ${
           scrolled ? "glass-panel border-b" : "bg-transparent border-b border-transparent"
         }`}
       >
@@ -47,6 +48,13 @@ export default function Nav() {
               </a>
             ))}
             <ThemeToggle className="text-[hsl(var(--foreground))] opacity-70" />
+            <Link
+              to="/settings"
+              aria-label="Settings"
+              className={`inline-flex h-9 w-9 items-center justify-center rounded-sm ${tone} opacity-70 transition hover:opacity-100 hover:text-[hsl(var(--primary))]`}
+            >
+              <SettingsIcon size={17} />
+            </Link>
             <a
               href="https://mazrood.com/collections/new-2026"
               className="btn-solid rounded-sm px-5 py-2.5 font-mono-tech text-xs uppercase tracking-[0.2em]"
@@ -88,6 +96,13 @@ export default function Nav() {
               >
                 Shop SS26
               </a>
+              <Link
+                to="/settings"
+                onClick={() => setOpen(false)}
+                className="font-mono-tech text-xs uppercase tracking-[0.2em] text-[hsl(var(--foreground))]"
+              >
+                Settings
+              </Link>
             </div>
           </div>
         )}

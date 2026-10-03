@@ -37,7 +37,7 @@ export default function FinalEmittance() {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="relative w-full overflow-hidden border-t border-[hsl(var(--border))]"
+      className="safe-area-bottom relative w-full overflow-hidden border-t border-[hsl(var(--border))]"
     >
       {/* soft seasonal sheen */}
       <div

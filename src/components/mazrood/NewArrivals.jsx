@@ -45,8 +45,8 @@ const CAPS = [
   },
 ];
 
-export default function NewArrivals() {
-  const caps = useShopifyProducts(CAPS);
+export default function NewArrivals({ refreshKey = 0 }) {
+  const caps = useShopifyProducts(CAPS, refreshKey);
 
   return (
     <section id="new" aria-labelledby="new-heading" className="relative py-24 md:py-36">

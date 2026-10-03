@@ -19,7 +19,7 @@ export const formatPrice = (amount, currency) => {
 // Hydrates the static product list with live Shopify data (name, price,
 // availability, images) once the storefront connection is configured.
 // Until then the static catalog keeps showing as-is.
-export default function useShopifyProducts(staticProducts) {
+export default function useShopifyProducts(staticProducts, refetchKey = 0) {
   const [products, setProducts] = useState(staticProducts);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export default function useShopifyProducts(staticProducts) {
     return () => {
       cancelled = true;
     };
-  }, [staticProducts]);
+  }, [staticProducts, refetchKey]);
 
   return products;
 }

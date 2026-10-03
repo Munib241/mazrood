@@ -63,6 +63,49 @@
     scroll-behavior: smooth;
   }
 
+  /* native-app feel: no browser rubber-band bounce */
+  html,
+  body {
+    overscroll-behavior: none;
+  }
+
+  /* buttons, links, icons and imagery are for tapping, not selecting —
+     body copy, descriptions and form inputs stay selectable */
+  button,
+  a,
+  svg,
+  img {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* comfortable 44px minimum touch targets — touch devices only */
+  @media (pointer: coarse) {
+    button,
+    a,
+    [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    nav a {
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+
+  /* native color-scheme hints: dark unless the light-mode override is on */
+  @media (prefers-color-scheme: dark) {
+    html:not(.light-mode) {
+      color-scheme: dark;
+    }
+  }
+
+  @media (prefers-color-scheme: light) {
+    html.light-mode {
+      color-scheme: light;
+    }
+  }
+
   body {
     @apply bg-background text-foreground font-body antialiased;
     font-feature-settings: "ss01", "cv01";
@@ -137,6 +180,14 @@
       radial-gradient(120% 80% at 0% 0%, hsl(45 29% 94% / 0.05), transparent 50%),
       radial-gradient(120% 80% at 100% 100%, hsl(40 30% 50% / 0.05), transparent 50%);
     mix-blend-mode: screen;
+  }
+
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   .hide-scrollbar {

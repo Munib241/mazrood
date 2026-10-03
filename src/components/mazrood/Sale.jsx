@@ -69,8 +69,8 @@ const SALE = [
   },
 ];
 
-export default function Sale() {
-  const sale = useShopifyProducts(SALE);
+export default function Sale({ refreshKey = 0 }) {
+  const sale = useShopifyProducts(SALE, refreshKey);
 
   return (
     <section id="sale" aria-labelledby="sale-heading" className="relative border-t border-[hsl(var(--border))] py-24 md:py-36">

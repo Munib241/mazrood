@@ -2,10 +2,16 @@ export const THEME_KEY = "mazrood-theme";
 
 export const getSavedTheme = () => {
   try {
-    return localStorage.getItem(THEME_KEY) === "light" ? "light" : "dark";
+    const saved = localStorage.getItem(THEME_KEY);
+    if (saved === "light" || saved === "dark") return saved;
+    // no explicit choice yet — follow the system preference on first load
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
+      return "light";
+    }
   } catch {
-    return "dark";
+    /* storage unavailable */
   }
+  return "dark";
 };
 
 export const applyTheme = (mode) => {
