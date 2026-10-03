@@ -1,6 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { Image } from "@/components/ui/image";
-import useShopifyProducts from "@/hooks/useShopifyProducts";
+import useShopifyProducts, { formatPrice } from "@/hooks/useShopifyProducts";
 
 const SALE = [
   {
@@ -127,11 +127,13 @@ export default function Sale() {
               <p className="mt-4 font-body text-sm font-medium text-white">{p.name}</p>
               <p className="mt-1 flex items-baseline gap-2">
                 <span className="font-mono-tech text-sm text-[hsl(var(--primary))]">
-                  ${p.price.toFixed(2)}
+                  {formatPrice(p.price, p.currency)}
                 </span>
-                <s className="font-mono-tech text-xs text-[hsl(var(--muted-foreground))]">
-                  ${p.was.toFixed(2)}
-                </s>
+                {p.was != null && (
+                  <s className="font-mono-tech text-xs text-[hsl(var(--muted-foreground))]">
+                    {formatPrice(p.was, p.currency)}
+                  </s>
+                )}
               </p>
             </a>
           ))}

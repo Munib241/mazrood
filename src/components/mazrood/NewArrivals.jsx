@@ -1,6 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { Image } from "@/components/ui/image";
-import useShopifyProducts from "@/hooks/useShopifyProducts";
+import useShopifyProducts, { formatPrice } from "@/hooks/useShopifyProducts";
 
 const CAPS = [
   {
@@ -94,7 +94,7 @@ export default function NewArrivals() {
               </div>
               <p className="mt-4 font-body text-sm font-medium text-white">{c.name}</p>
               <p className="font-mono-tech mt-1 text-xs text-[hsl(var(--muted-foreground))]">
-                ${(c.price ?? 34.78).toFixed(2)}
+                {formatPrice(c.price ?? 34.78, c.currency)}
               </p>
             </a>
           ))}
