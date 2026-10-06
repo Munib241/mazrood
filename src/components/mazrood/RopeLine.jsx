@@ -1,4 +1,5 @@
 import { Image } from "@/components/ui/image";
+import useShopifyProducts from "@/hooks/useShopifyProducts";
 
 // Sailor-yellow rope drawn as one sagging curve (viewBox 0 0 100 100,
 // stretched to the section width). Products hang from it on clothespins —
@@ -45,8 +46,10 @@ const HANGING = [
   },
 ];
 
-export default function RopeLine() {
-  const items = HANGING.map((item) => {
+export default function RopeLine({ refreshKey = 0 }) {
+  const live = useShopifyProducts(HANGING, refreshKey);
+
+  const items = live.map((item) => {
     const p = pointAt(item.t);
     return {
       ...item,
@@ -114,6 +117,11 @@ export default function RopeLine() {
                 <div className="aspect-square overflow-hidden rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--card))]">
                   <Image src={item.img} alt="" fittingType="fill" className="h-full w-full object-cover" />
                 </div>
+                {item.soldOut && (
+                  <span className="absolute right-2 top-2 rounded-sm bg-[hsl(var(--destructive))] px-2 py-1 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--destructive-foreground))]">
+                    Sold out
+                  </span>
+                )}
               </div>
             </a>
           </div>

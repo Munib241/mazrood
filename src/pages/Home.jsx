@@ -25,7 +25,7 @@ export default function Home() {
       <PullToRefresh onRefresh={handleRefresh}>
         <main className="relative z-10">
           <Hero />
-          <RopeLine />
+          <RopeLine refreshKey={refreshTick} />
           <NewArrivals refreshKey={refreshTick} />
           <TheLook />
           <Sale refreshKey={refreshTick} />
