@@ -75,6 +75,15 @@ export default async function(req: Request): Promise<Response> {
           edges { node { handle title } }
         }
       }`;
+    } else if (body?.menu === true) {
+      query = `{
+        m0: menu(handle: "main-menu") {
+          items {
+            title url
+            items { title url items { title url } }
+          }
+        }
+      }`;
     } else if (clean.length > 0) {
       const selections = clean
         .map(
@@ -128,6 +137,17 @@ export default async function(req: Request): Promise<Response> {
 
     let products = [];
     let title = null;
+    if (data?.data?.m0) {
+      const mapItem = (n) => {
+        if (!n || !n.title) return null;
+        const out = { title: String(n.title), url: typeof n.url === "string" ? n.url : null };
+        const kids = Array.isArray(n.items) ? n.items.map(mapItem).filter(Boolean) : [];
+        if (kids.length > 0) out.items = kids;
+        return out;
+      };
+      const items = (data.data.m0.items || []).map(mapItem).filter(Boolean);
+      return Response.json({ configured: true, menu: items });
+    }
     if (data?.data?.cols) {
       const collections = (data.data.cols.edges || [])
         .map((e) => e.node)

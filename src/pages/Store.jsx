@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Home } from "lucide-react";
 import { Image } from "@/components/ui/image";
 import Nav from "@/components/mazrood/Nav";
 import BottomTabs from "@/components/mazrood/BottomTabs";
@@ -9,25 +8,7 @@ import { formatPrice } from "@/hooks/useShopifyProducts";
 
 export default function Store() {
   const { collection = "all" } = useParams();
-  const [collections, setCollections] = useState([]);
   const [state, setState] = useState({ loading: true, products: [], error: false });
-
-  // Tabs follow the store's real collection list, like the website.
-  useEffect(() => {
-    let cancelled = false;
-    base44.functions
-      .invoke("shopify_products", { collections: true })
-      .then((res) => {
-        if (!cancelled) {
-          const cols = Array.isArray(res?.data?.collections) ? res.data.collections : [];
-          setCollections(cols);
-        }
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -47,13 +28,7 @@ export default function Store() {
     };
   }, [collection]);
 
-  const TABS = [
-    { key: "all", label: "All" },
-    ...collections.map((c) => ({ key: c.handle, label: c.title })),
-  ];
-  const active = collection;
-  const label =
-    state.title || TABS.find((t) => t.key === active)?.label || "Store";
+  const label = state.title || "Store";
 
   return (
     <div className="relative min-h-screen bg-[hsl(var(--background))]">
@@ -66,29 +41,6 @@ export default function Store() {
         <h1 className="font-heading text-4xl font-light leading-tight tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-6xl">
           {label} <span className="font-bold">collection.</span>
         </h1>
-
-        <div className="mt-8 flex flex-wrap gap-2">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 rounded-sm bg-[hsl(var(--foreground))] px-4 py-2.5 font-mono-tech text-xs uppercase tracking-[0.2em] text-[hsl(var(--background))] transition hover:opacity-80"
-          >
-            <Home size={14} />
-            Home
-          </Link>
-          {TABS.map((t) => (
-            <Link
-              key={t.key}
-              to={`/store${t.key === "all" ? "" : `/${t.key}`}`}
-              className={`rounded-sm border px-4 py-2.5 font-mono-tech text-xs uppercase tracking-[0.2em] transition ${
-                t.key === active
-                  ? "border-[hsl(var(--primary))] bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]"
-                  : "border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:border-[hsl(var(--primary))] hover:text-[hsl(var(--primary))]"
-              }`}
-            >
-              {t.label}
-            </Link>
-          ))}
-        </div>
 
         {state.loading ? (
           <div className="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
