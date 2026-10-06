@@ -6,7 +6,7 @@ import { Image } from "@/components/ui/image";
 import ThemeToggle from "@/components/mazrood/ThemeToggle";
 import NavDropdown from "@/components/mazrood/NavDropdown";
 import MobileMenu from "@/components/mazrood/MobileMenu";
-import { FALLBACK_MENU, buildMenu } from "@/lib/shopMenu";
+import { FALLBACK_MENU, buildMenu, menuFromCache, setMenuCache } from "@/lib/shopMenu";
 
 export default function Nav() {
   const { pathname } = useLocation();
@@ -26,12 +26,20 @@ export default function Nav() {
 
   // Live Shopify main menu — same structure as the store's own navigation.
   useEffect(() => {
+    const cached = menuFromCache();
+    if (cached) {
+      setLinks(cached);
+      return;
+    }
     let cancelled = false;
     base44.functions
       .invoke("shopify_products", { menu: true })
       .then((res) => {
         const live = buildMenu(res?.data?.menu);
-        if (!cancelled && live.length > 0) setLinks(live);
+        if (!cancelled && live.length > 0) {
+          setMenuCache(live);
+          setLinks(live);
+        }
       })
       .catch(() => {});
     return () => {

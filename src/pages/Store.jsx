@@ -16,16 +16,30 @@ export default function Store() {
   useEffect(() => {
     let cancelled = false;
     setState({ loading: true, products: [], error: false });
-    base44.functions
-      .invoke("shopify_products", collection === "all" ? {} : { collection, type })
-      .then((res) => {
-        if (cancelled) return;
-        const live = Array.isArray(res?.data?.products) ? res.data.products : [];
-        setState({ loading: false, products: live, error: live.length === 0, title: res?.data?.title ?? null });
-      })
-      .catch(() => {
-        if (!cancelled) setState({ loading: false, products: [], error: true });
-      });
+    // One retry: a transient storefront failure used to leave the grid
+    // permanently empty until another navigation.
+    const load = (attempt = 0) => {
+      base44.functions
+        .invoke("shopify_products", collection === "all" ? {} : { collection, type })
+        .then((res) => {
+          if (cancelled) return;
+          if (res?.data?.error && attempt < 1) {
+            window.setTimeout(() => !cancelled && load(attempt + 1), 1500);
+            return;
+          }
+          const live = Array.isArray(res?.data?.products) ? res.data.products : [];
+          setState({ loading: false, products: live, error: live.length === 0, title: res?.data?.title ?? null });
+        })
+        .catch(() => {
+          if (cancelled) return;
+          if (attempt < 1) {
+            window.setTimeout(() => !cancelled && load(attempt + 1), 1500);
+            return;
+          }
+          setState({ loading: false, products: [], error: true });
+        });
+    };
+    load();
     return () => {
       cancelled = true;
     };

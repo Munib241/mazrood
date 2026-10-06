@@ -67,6 +67,14 @@ export const buildMenu = (items) =>
     })
     .filter(Boolean);
 
+// Menu is fetched once per session and reused across page navigations —
+// re-invoking it on every page doubled the storefront traffic.
+let menuCache = null;
+export const setMenuCache = (menu) => {
+  if (Array.isArray(menu) && menu.length > 0) menuCache = menu;
+};
+export const menuFromCache = () => menuCache;
+
 // Mirrors the Shopify main menu so the header never shows empty while loading.
 export const FALLBACK_MENU = buildMenu([
   { title: "New", handle: "new-2026" },
