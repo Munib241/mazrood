@@ -52,9 +52,9 @@ export default function BottomTabs() {
         </button>
         <button
           type="button"
-          onClick={() => navigate("/store/fw25-26")}
+          onClick={() => navigate("/store/sale")}
           aria-label="Sale"
-          className={tabClass(pathname === "/store/fw25-26")}
+          className={tabClass(pathname === "/store/sale")}
         >
           <Tag size={20} />
           <span className="font-mono-tech text-[0.55rem] uppercase tracking-[0.2em]">Sale</span>

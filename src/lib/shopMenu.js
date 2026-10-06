@@ -54,22 +54,27 @@ export const buildMenu = (items) =>
     .map((item) => {
       const route = routeOf(item);
       if (!route) return null;
+      // Live menu sub-items win; the Kids group fills in where the menu has
+      // none (its ?type= pages). "All" duplicates the "Shop all" link above.
       const children =
-        CATEGORIES[item.handle] ||
-        (item.items || [])
-          .map((c) => ({ title: c.title, route: routeOf(c) }))
-          .filter((c) => c.route);
+        (item.items || []).length > 0
+          ? (item.items || [])
+              .filter((c) => String(c.title).toLowerCase() !== "all")
+              .map((c) => ({ title: c.title, route: routeOf(c) }))
+              .filter((c) => c.route)
+          : CATEGORIES[item.handle] || [];
       return { title: item.title, route, children };
     })
     .filter(Boolean);
 
 // Mirrors the Shopify main menu so the header never shows empty while loading.
 export const FALLBACK_MENU = buildMenu([
-  { title: "Home", url: "/" },
-  { title: "SS23", handle: "summer23" },
+  { title: "New", handle: "new-2026" },
   { title: "Men", handle: "men" },
   { title: "Women", handle: "women" },
   { title: "Kids", handle: "kids" },
-  { title: "Accessories", handle: "accessories", items: [{ title: "Headwear", handle: "caps" }] },
-  { title: "Gift Cards", handle: "mazrood-gift-card" },
+  { title: "Activewear", handle: "activewear" },
+  { title: "Headwear", handle: "caps" },
+  { title: "Accessories", handle: "accessories" },
+  { title: "Sale", handle: "sale" },
 ]);

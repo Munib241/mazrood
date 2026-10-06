@@ -10,7 +10,7 @@ const FOOTER_LINKS = [
   { label: "Kids", href: "/store/kids" },
   { label: "Headwear", href: "/store/caps" },
   { label: "Accessories", href: "/store/accessories" },
-  { label: "Sale", href: "/store/fw25-26" },
+  { label: "Sale", href: "/store/sale" },
 ];
 
 export default function FinalEmittance() {

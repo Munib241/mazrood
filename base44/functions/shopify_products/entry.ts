@@ -86,8 +86,15 @@ export default async function(req: Request): Promise<Response> {
         }
       }`;
     } else if (body?.menu === true) {
+      // "Main Menu 2026" is the live menu; "main-menu" stays as a fallback.
       query = `{
-        m0: menu(handle: "main-menu") {
+        m0: menu(handle: "main-menu-2026") {
+          items {
+            title url type resource { ... on Collection { handle } }
+            items { title url type resource { ... on Collection { handle } } }
+          }
+        }
+        m1: menu(handle: "main-menu") {
           items {
             title url type resource { ... on Collection { handle } }
             items { title url type resource { ... on Collection { handle } } }
@@ -161,7 +168,9 @@ export default async function(req: Request): Promise<Response> {
         if (kids.length > 0) out.items = kids;
         return out;
       };
-      const items = (data.data.m0.items || []).map(mapItem).filter(Boolean);
+      const items = (data.data.m0.items || data.data.m1.items || [])
+        .map(mapItem)
+        .filter(Boolean);
       return Response.json({ configured: true, menu: items });
     }
     if (data?.data?.cols) {
