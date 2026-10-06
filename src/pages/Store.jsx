@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
+import { categoryLabel } from "@/lib/shopMenu";
 import { base44 } from "@/api/base44Client";
 import { Image } from "@/components/ui/image";
 import Nav from "@/components/mazrood/Nav";
@@ -8,13 +9,15 @@ import { formatPrice } from "@/hooks/useShopifyProducts";
 
 export default function Store() {
   const { collection = "all" } = useParams();
+  const [searchParams] = useSearchParams();
+  const type = searchParams.get("type") || "";
   const [state, setState] = useState({ loading: true, products: [], error: false });
 
   useEffect(() => {
     let cancelled = false;
     setState({ loading: true, products: [], error: false });
     base44.functions
-      .invoke("shopify_products", collection === "all" ? {} : { collection })
+      .invoke("shopify_products", collection === "all" ? {} : { collection, type })
       .then((res) => {
         if (cancelled) return;
         const live = Array.isArray(res?.data?.products) ? res.data.products : [];
@@ -26,9 +29,11 @@ export default function Store() {
     return () => {
       cancelled = true;
     };
-  }, [collection]);
+  }, [collection, type]);
 
-  const label = state.title || "Store";
+  const label = [state.title || "Store", categoryLabel(collection, type)]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div className="relative min-h-screen bg-[hsl(var(--background))]">
@@ -58,8 +63,8 @@ export default function Store() {
               Nothing here yet.
             </p>
             <p className="mt-2 text-sm text-[hsl(var(--muted-foreground))]">
-              This collection is empty or the store couldn't be reached. Try
-              another tab.
+              This collection is empty or the store couldn't be reached. Browse
+              another collection from the menu.
             </p>
             <Link
               to="/store"

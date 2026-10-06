@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
+import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 
 const FOOTER_LINKS = [
-  { label: "New", href: "https://mazrood.com/collections/new-2026" },
-  { label: "Men", href: "https://mazrood.com/collections/men" },
-  { label: "Women", href: "https://mazrood.com/collections/women" },
-  { label: "Kids", href: "https://mazrood.com/collections/kids" },
-  { label: "Headwear", href: "https://mazrood.com/collections/caps" },
-  { label: "Accessories", href: "https://mazrood.com/collections/accessories" },
-  { label: "Sale", href: "https://mazrood.com/collections/fw25-26" },
+  { label: "New", href: "/store/new-2026" },
+  { label: "Men", href: "/store/men" },
+  { label: "Women", href: "/store/women" },
+  { label: "Kids", href: "/store/kids" },
+  { label: "Headwear", href: "/store/caps" },
+  { label: "Accessories", href: "/store/accessories" },
+  { label: "Sale", href: "/store/fw25-26" },
 ];
 
 export default function FinalEmittance() {
@@ -116,13 +117,13 @@ export default function FinalEmittance() {
           </div>
           <nav aria-label="Collections" className="flex flex-wrap gap-x-8 gap-y-3">
             {FOOTER_LINKS.map((l) => (
-              <a
+              <Link
                 key={l.label}
-                href={l.href}
+                to={l.href}
                 className="font-mono-tech text-[0.65rem] uppercase tracking-[0.25em] text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--primary))]"
               >
                 {l.label}
-              </a>
+              </Link>
             ))}
           </nav>
         </div>

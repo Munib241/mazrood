@@ -41,17 +41,23 @@ export default function Product() {
   const startCheckout = async () => {
     setBusy(true);
     setCheckoutError(null);
+    // Shopify checkout refuses to load inside a frame (like the editor
+    // preview), so there it opens in a new tab — opened now, while the tap
+    // still counts, so popup blockers allow it.
+    const tab = window.self !== window.top ? window.open("", "_blank") : null;
     try {
       const res = await base44.functions.invoke("shopify_checkout", { variantId });
       const url = res?.data?.checkoutUrl;
       if (url) {
-        window.location.href = url;
+        (tab || window.top).location.href = url;
+        if (tab) setBusy(false);
         return;
       }
       setCheckoutError("Could not start checkout. Please try again.");
     } catch {
       setCheckoutError("Could not start checkout. Please try again.");
     }
+    tab?.close();
     setBusy(false);
   };
 

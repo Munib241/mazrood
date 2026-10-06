@@ -60,14 +60,6 @@ const SALE = [
     img: "https://mazrood.com/cdn/shop/files/p-6pz9Yj-DSC07499Large_900x.jpg?v=1780378339",
     alt: "https://mazrood.com/cdn/shop/files/p-JOeLds-DSC07502Large_900x.jpg?v=1780378339",
   },
-  {
-    name: "Comfy Wool Pants",
-    price: 74.2,
-    was: 92.75,
-    url: "https://mazrood.com/products/comfy-wool-pants",
-    img: "https://mazrood.com/cdn/shop/files/MZ-8_7_Large_02336844-deec-450e-ae8e-cd8391db4133_900x.jpg?v=1786910887",
-    alt: null,
-  },
 ];
 
 export default function Sale({ refreshKey = 0 }) {

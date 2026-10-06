@@ -35,8 +35,9 @@ export default function useShopifyProducts(staticProducts, refetchKey = 0) {
         const live = res?.data?.products;
         if (cancelled || !Array.isArray(live) || live.length === 0) return;
         const byHandle = new Map(live.map((p) => [p.handle, p]));
+        // Items the store no longer carries are dropped so no card leads to a dead page.
         setProducts(
-          staticProducts.map((p) => {
+          staticProducts.filter((p) => byHandle.has(handleOf(p.url))).map((p) => {
             const l = byHandle.get(handleOf(p.url));
             return l
               ? {

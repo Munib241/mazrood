@@ -11,6 +11,7 @@ const MAX_ITEMS = 24;
 
 const PRODUCT_FIELDS = `
   handle
+  productType
   title
   availableForSale
   onlineStoreUrl
@@ -68,6 +69,15 @@ export default async function(req: Request): Promise<Response> {
       .filter((h) => /^[a-z0-9-]{1,100}$/.test(h))
       .slice(0, MAX_ITEMS);
 
+    // Optional category keywords (e.g. "hoodie,sweater") matched against
+    // each product's type and title inside a collection.
+    const typeKeys = (typeof body?.type === "string" ? body.type : "")
+      .toLowerCase()
+      .split(",")
+      .map((k) => k.trim())
+      .filter((k) => /^[a-z &-]{2,30}$/.test(k))
+      .slice(0, 5);
+
     let query;
     if (body?.collections === true) {
       query = `{
@@ -79,8 +89,8 @@ export default async function(req: Request): Promise<Response> {
       query = `{
         m0: menu(handle: "main-menu") {
           items {
-            title url
-            items { title url items { title url } }
+            title url type resource { ... on Collection { handle } }
+            items { title url type resource { ... on Collection { handle } } }
           }
         }
       }`;
@@ -102,12 +112,12 @@ export default async function(req: Request): Promise<Response> {
         query = `{
           c0: collectionByHandle(handle: "${rawCollection}") {
             title
-            products(first: ${MAX_ITEMS}, filters: { available: true }) { edges { node { ${PRODUCT_FIELDS} } } }
+            products(first: ${typeKeys.length ? 100 : MAX_ITEMS * 2}, filters: { available: true }) { edges { node { ${PRODUCT_FIELDS} } } }
           }
         }`;
       } else {
         query = `{
-          s0: products(first: ${MAX_ITEMS}, sortKey: CREATED_AT, filters: { available: true }) {
+          s0: products(first: ${MAX_ITEMS * 2}, sortKey: CREATED_AT, reverse: true) {
             edges { node { ${PRODUCT_FIELDS} } }
           }
         }`;
@@ -138,9 +148,15 @@ export default async function(req: Request): Promise<Response> {
     let products = [];
     let title = null;
     if (data?.data?.m0) {
+      // Drops links to unpublished collections — they would open empty.
       const mapItem = (n) => {
         if (!n || !n.title) return null;
-        const out = { title: String(n.title), url: typeof n.url === "string" ? n.url : null };
+        if (n.type === "COLLECTION" && !n.resource?.handle) return null;
+        const out = {
+          title: String(n.title),
+          url: typeof n.url === "string" ? n.url : null,
+          handle: n.resource?.handle || null,
+        };
         const kids = Array.isArray(n.items) ? n.items.map(mapItem).filter(Boolean) : [];
         if (kids.length > 0) out.items = kids;
         return out;
@@ -161,12 +177,27 @@ export default async function(req: Request): Promise<Response> {
         .filter(Boolean);
     } else if (data?.data?.c0) {
       title = data.data.c0.title || null;
+      // Shopify's stock filter isn't always applied, so sold-out items are
+      // also dropped here — grids only ever show what can be bought.
       products = (data.data.c0.products?.edges || [])
-        .map((e) => mapProduct(e.node))
+        .map((e) => e.node)
+        .filter((n) => n?.availableForSale !== false)
+        .filter(
+          (n) =>
+            typeKeys.length === 0 ||
+            typeKeys.some((k) =>
+              `${n?.productType || ""} ${n?.title || ""}`.toLowerCase().includes(k)
+            )
+        )
+        .slice(0, MAX_ITEMS)
+        .map((n) => mapProduct(n))
         .filter(Boolean);
     } else {
       products = (data?.data?.s0?.edges || [])
-        .map((e) => mapProduct(e.node))
+        .map((e) => e.node)
+        .filter((n) => n?.availableForSale !== false)
+        .slice(0, MAX_ITEMS)
+        .map((n) => mapProduct(n))
         .filter(Boolean);
     }
 

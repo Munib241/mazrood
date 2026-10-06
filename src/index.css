@@ -167,6 +167,11 @@
     border: 1px solid hsl(var(--border));
   }
 
+  /* white logo turns dark on light surfaces */
+  .light-mode .logo-adaptive {
+    filter: invert(1);
+  }
+
   .light-mode .btn-solid:hover {
     background: hsl(43 55% 44%);
   }
