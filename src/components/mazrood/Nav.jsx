@@ -13,7 +13,8 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [links, setLinks] = useState(FALLBACK_MENU);
-  // White text only while floating over the home hero photo.
+  // White text only while floating over the home hero photo. The logo
+  // itself always stays Mazrood blue regardless of this.
   const tone =
     pathname === "/" && !scrolled ? "text-white" : "text-[hsl(var(--foreground))]";
 
@@ -56,11 +57,16 @@ export default function Nav() {
       >
         <nav className="mx-auto flex h-[72px] max-w-[1600px] items-center justify-between px-6 md:px-10">
           <Link to="/" className="flex items-center" aria-label="Mazrood Studio home">
-            <Image
-              src="https://media.base44.com/images/public/6abfc987ea748e49e7475c82/41b0c628d_logo.png"
-              alt="Mazrood Studio logo"
-              fittingType="fit"
-              className={`h-9 w-auto ${tone === "text-white" ? "" : "logo-adaptive"}`}
+            <span
+              role="img"
+              aria-label="Mazrood Studio logo"
+              className="logo-brand h-9 w-40"
+              style={{
+                maskImage:
+                  "url(https://media.base44.com/images/public/6abfc987ea748e49e7475c82/41b0c628d_logo.png)",
+                WebkitMaskImage:
+                  "url(https://media.base44.com/images/public/6abfc987ea748e49e7475c82/41b0c628d_logo.png)",
+              }}
             />
           </Link>
 
