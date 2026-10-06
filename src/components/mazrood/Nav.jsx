@@ -5,10 +5,10 @@ import { Image } from "@/components/ui/image";
 import ThemeToggle from "@/components/mazrood/ThemeToggle";
 
 const LINKS = [
-  { label: "New", href: "https://mazrood.com/collections/new-2026" },
-  { label: "Men", href: "https://mazrood.com/collections/men" },
-  { label: "Women", href: "https://mazrood.com/collections/women" },
-  { label: "Sale", href: "https://mazrood.com/collections/fw25-26" },
+  { label: "New", href: "/store/new-2026" },
+  { label: "Men", href: "/store/men" },
+  { label: "Women", href: "/store/women" },
+  { label: "Sale", href: "/store/fw25-26" },
 ];
 
 export default function Nav() {
@@ -42,13 +42,13 @@ export default function Nav() {
 
           <div className="hidden items-center gap-10 md:flex">
             {LINKS.map((l) => (
-              <a
+              <Link
                 key={l.label}
-                href={l.href}
+                to={l.href}
                 className={`font-mono-tech text-sm font-medium uppercase tracking-[0.2em] ${tone} transition hover:text-[hsl(var(--primary))] underline-offset-8 hover:underline decoration-1`}
               >
                 {l.label}
-              </a>
+              </Link>
             ))}
             <ThemeToggle className="text-[hsl(var(--foreground))]" />
             <Link
@@ -58,12 +58,12 @@ export default function Nav() {
             >
               <SettingsIcon size={17} />
             </Link>
-            <a
-              href="https://mazrood.com/collections/new-2026"
+            <Link
+              to="/store/new-2026"
               className="btn-solid rounded-sm px-5 py-2.5 font-mono-tech text-xs uppercase tracking-[0.2em]"
             >
               Shop SS26
-            </a>
+            </Link>
           </div>
 
           <div className="flex items-center gap-3 md:hidden">
@@ -83,22 +83,22 @@ export default function Nav() {
           <div className="glass-panel border-t border-[hsl(var(--border))] px-6 py-6 md:hidden">
             <div className="flex flex-col gap-5">
               {LINKS.map((l) => (
-                <a
+                <Link
                   key={l.label}
-                  href={l.href}
+                  to={l.href}
                   onClick={() => setOpen(false)}
                   className="font-mono-tech text-xs uppercase tracking-[0.2em] text-[hsl(var(--foreground))]"
                 >
                   {l.label}
-                </a>
+                </Link>
               ))}
-              <a
-                href="https://mazrood.com/collections/new-2026"
+              <Link
+                to="/store/new-2026"
                 onClick={() => setOpen(false)}
                 className="btn-solid rounded-sm px-5 py-2.5 text-center font-mono-tech text-xs uppercase tracking-[0.2em]"
               >
                 Shop SS26
-              </a>
+              </Link>
               <Link
                 to="/settings"
                 onClick={() => setOpen(false)}

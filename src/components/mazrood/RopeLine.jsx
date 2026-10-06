@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom";
 import { Image } from "@/components/ui/image";
-import useShopifyProducts from "@/hooks/useShopifyProducts";
+import useShopifyProducts, { productPath } from "@/hooks/useShopifyProducts";
 
 // Sailor-yellow rope drawn as one sagging curve (viewBox 0 0 100 100,
 // stretched to the section width). Products hang from it on clothespins —
@@ -107,9 +108,9 @@ export default function RopeLine({ refreshKey = 0 }) {
               className="absolute left-0 h-4 w-2.5 -translate-x-1/2 rounded-[2px] border border-[#8A641B] bg-[#B08748]"
               style={{ top: `${item.ropeY - 6}px` }}
             />
-            <a
-              href={item.url}
-              aria-label={`${item.name} — shop on mazrood.com`}
+            <Link
+              to={productPath(item.url)}
+              aria-label={`${item.name} — view product`}
               className="group absolute left-0 block w-[24vw] max-w-[200px] -translate-x-1/2"
               style={{ top: `${item.top}px` }}
             >
@@ -123,7 +124,7 @@ export default function RopeLine({ refreshKey = 0 }) {
                   </span>
                 )}
               </div>
-            </a>
+            </Link>
           </div>
         ))}
       </div>

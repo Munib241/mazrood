@@ -1,5 +1,7 @@
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Image } from "@/components/ui/image";
+import { productPath } from "@/hooks/useShopifyProducts";
 
 const LOOKS = [
   {
@@ -54,13 +56,13 @@ export default function TheLook() {
                 <p className={`mt-5 max-w-md font-body text-base leading-relaxed text-[hsl(var(--foreground))] opacity-75 ${i % 2 ? "md:ml-auto" : ""}`}>
                   {l.copy}
                 </p>
-                <a
-                  href={l.url}
+                <Link
+                  to={productPath(l.url)}
                   className={`btn-ghost mt-8 inline-flex items-center gap-3 rounded-sm px-6 py-3.5 font-mono-tech text-xs uppercase tracking-[0.25em]`}
                 >
                   {l.cta}
                   <ArrowRight size={14} />
-                </a>
+                </Link>
               </div>
             </div>
           ))}

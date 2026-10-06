@@ -2,11 +2,56 @@ import { secrets } from "base44:runtime";
 
 const STORE_DOMAIN = "mazrood-sa.myshopify.com";
 const API_VERSION = "2025-01";
-const MAX_HANDLES = 24;
+const MAX_ITEMS = 24;
 
-// Fetches live product data (title, price, compare-at price, availability,
-// images) from the Mazrood Shopify store via the public Storefront API.
+// Fetches live catalog data (title, price, availability, images, variants)
+// from the Mazrood Shopify store via the public Storefront API.
+// Modes: by handles, by collection handle, or the shop's latest products.
 // Public catalog data only — no auth guard needed; input is bounded and sanitized.
+
+const PRODUCT_FIELDS = `
+  handle
+  title
+  availableForSale
+  onlineStoreUrl
+  description
+  featuredImage { url }
+  images(first: 2) { edges { node { url } } }
+  priceRange { minVariantPrice { amount currencyCode } }
+  compareAtPriceRange { minVariantPrice { amount } }
+  variants(first: 12) {
+    edges { node { id title availableForSale price { amount currencyCode } } }
+  }
+`;
+
+const width = (url) =>
+  url ? `${url}${url.includes("?") ? "&" : "?"}width=900` : null;
+
+const mapProduct = (p) => {
+  if (!p) return null;
+  const price = parseFloat(p.priceRange?.minVariantPrice?.amount);
+  const compareAt = parseFloat(p.compareAtPriceRange?.minVariantPrice?.amount);
+  return {
+    handle: p.handle,
+    name: p.title,
+    currency: p.priceRange?.minVariantPrice?.currencyCode || null,
+    url: p.onlineStoreUrl || `https://${STORE_DOMAIN}/products/${p.handle}`,
+    price: Number.isFinite(price) ? price : null,
+    was: Number.isFinite(compareAt) && compareAt > price ? compareAt : null,
+    img: width(p.featuredImage?.url),
+    alt: width(p.images?.edges?.[1]?.node?.url),
+    soldOut: p.availableForSale === false,
+    description: p.description || null,
+    variants: (p.variants?.edges || []).map((e) => ({
+      id: e.node.id,
+      title: e.node.title,
+      price: parseFloat(e.node.price?.amount),
+      currency: e.node.price?.currencyCode || null,
+      soldOut: e.node.availableForSale === false,
+    })),
+  };
+};
+
 export default async function(req: Request): Promise<Response> {
   try {
     const token = secrets.get("SHOPIFY_STOREFRONT_TOKEN");
@@ -15,32 +60,44 @@ export default async function(req: Request): Promise<Response> {
     }
 
     const body = await req.json();
+
+    // Mode 1: specific handles (product pages / hydrated sections).
     const handles = Array.isArray(body?.handles) ? body.handles : [];
     const clean = handles
       .map((h) => String(h).trim().toLowerCase())
       .filter((h) => /^[a-z0-9-]{1,100}$/.test(h))
-      .slice(0, MAX_HANDLES);
+      .slice(0, MAX_ITEMS);
 
-    if (clean.length === 0) {
-      return Response.json({ configured: true, products: [] });
+    let query;
+    if (clean.length > 0) {
+      const selections = clean
+        .map(
+          (h, i) => `
+        p${i}: product(handle: "${h}") { ${PRODUCT_FIELDS} }`
+        )
+        .join("\n");
+      query = `{${selections}}`;
+    } else {
+      // Mode 2: one collection; Mode 3: the shop's latest products.
+      const rawCollection =
+        typeof body?.collection === "string"
+          ? body.collection.trim().toLowerCase()
+          : "";
+      if (rawCollection && /^[a-z0-9-]{1,100}$/.test(rawCollection)) {
+        query = `{
+          c0: collectionByHandle(handle: "${rawCollection}") {
+            title
+            products(first: ${MAX_ITEMS}) { edges { node { ${PRODUCT_FIELDS} } } }
+          }
+        }`;
+      } else {
+        query = `{
+          s0: products(first: ${MAX_ITEMS}, sortKey: CREATED_AT) {
+            edges { node { ${PRODUCT_FIELDS} } }
+          }
+        }`;
+      }
     }
-
-    // One aliased query per handle (aliases must be alphanumeric).
-    const selections = clean
-      .map(
-        (h, i) => `
-        p${i}: product(handle: "${h}") {
-          handle
-          title
-          availableForSale
-          onlineStoreUrl
-          featuredImage { url }
-          images(first: 2) { edges { node { url } } }
-          priceRange { minVariantPrice { amount currencyCode } }
-          compareAtPriceRange { minVariantPrice { amount } }
-        }`
-      )
-      .join("\n");
 
     const res = await fetch(
       `https://${STORE_DOMAIN}/api/${API_VERSION}/graphql.json`,
@@ -50,7 +107,8 @@ export default async function(req: Request): Promise<Response> {
           "Content-Type": "application/json",
           "X-Shopify-Storefront-Access-Token": token,
         },
-        body: JSON.stringify({ query: `{${selections}}` }),
+        body: JSON.stringify({ query }),
+        signal: AbortSignal.timeout(10000),
       }
     );
 
@@ -62,32 +120,24 @@ export default async function(req: Request): Promise<Response> {
       );
     }
 
-    const products = clean
-      .map((h, i) => {
-        const p = data?.data?.[`p${i}`];
-        if (!p) return null;
-        const price = parseFloat(p.priceRange?.minVariantPrice?.amount);
-        const compareAt = parseFloat(
-          p.compareAtPriceRange?.minVariantPrice?.amount
-        );
-        const width = (url) =>
-          url ? `${url}${url.includes("?") ? "&" : "?"}width=900` : null;
-        return {
-          handle: p.handle,
-          name: p.title,
-          currency: p.priceRange?.minVariantPrice?.currencyCode || null,
-          url: p.onlineStoreUrl || `https://${STORE_DOMAIN}/products/${p.handle}`,
-          price: Number.isFinite(price) ? price : null,
-          was:
-            Number.isFinite(compareAt) && compareAt > price ? compareAt : null,
-          img: width(p.featuredImage?.url),
-          alt: width(p.images?.edges?.[1]?.node?.url),
-          soldOut: p.availableForSale === false,
-        };
-      })
-      .filter(Boolean);
+    let products = [];
+    let title = null;
+    if (clean.length > 0) {
+      products = clean
+        .map((_, i) => mapProduct(data?.data?.[`p${i}`]))
+        .filter(Boolean);
+    } else if (data?.data?.c0) {
+      title = data.data.c0.title || null;
+      products = (data.data.c0.products?.edges || [])
+        .map((e) => mapProduct(e.node))
+        .filter(Boolean);
+    } else {
+      products = (data?.data?.s0?.edges || [])
+        .map((e) => mapProduct(e.node))
+        .filter(Boolean);
+    }
 
-    return Response.json({ configured: true, products });
+    return Response.json({ configured: true, title, products });
   } catch (error) {
     return Response.json(
       { error: "Could not reach the store right now.", products: [] },

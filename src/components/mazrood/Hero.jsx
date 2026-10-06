@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import { Image } from "@/components/ui/image";
 
 const HERO_IMG =
@@ -64,18 +65,18 @@ export default function Hero() {
           to outlast the season.
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-4">
-          <a
-            href="https://mazrood.com/collections/new-2026"
+          <Link
+            to="/store/new-2026"
             className="btn-solid rounded-sm px-8 py-4 font-mono-tech text-xs uppercase tracking-[0.25em]"
           >
             Shop SS26
-          </a>
-          <a
-            href="https://mazrood.com/collections/fw25-26"
+          </Link>
+          <Link
+            to="/store/fw25-26"
             className="btn-ghost rounded-sm px-8 py-4 font-mono-tech text-xs uppercase tracking-[0.25em]"
           >
             Shop Sale
-          </a>
+          </Link>
         </div>
       </div>
 

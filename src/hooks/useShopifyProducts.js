@@ -3,6 +3,9 @@ import { base44 } from "@/api/base44Client";
 
 const handleOf = (url) => url.split("/").filter(Boolean).pop();
 
+// Internal product-page path for a product URL.
+export const productPath = (url) => `/product/${handleOf(url)}`;
+
 // Formats a price in the store's own currency (e.g. "SAR 150.00", "$78.84").
 export const formatPrice = (amount, currency) => {
   if (amount == null) return null;

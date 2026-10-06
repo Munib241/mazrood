@@ -43,18 +43,18 @@ export default function BottomTabs() {
         </button>
         <button
           type="button"
-          onClick={() => scrollToSection(navigate, "new")}
+          onClick={() => navigate("/store/new-2026")}
           aria-label="New arrivals"
-          className={tabClass(false)}
+          className={tabClass(pathname === "/store/new-2026")}
         >
           <Sparkles size={20} />
           <span className="font-mono-tech text-[0.55rem] uppercase tracking-[0.2em]">New</span>
         </button>
         <button
           type="button"
-          onClick={() => scrollToSection(navigate, "sale")}
+          onClick={() => navigate("/store/fw25-26")}
           aria-label="Sale"
-          className={tabClass(false)}
+          className={tabClass(pathname === "/store/fw25-26")}
         >
           <Tag size={20} />
           <span className="font-mono-tech text-[0.55rem] uppercase tracking-[0.2em]">Sale</span>

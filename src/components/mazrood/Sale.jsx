@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { Image } from "@/components/ui/image";
-import useShopifyProducts, { formatPrice } from "@/hooks/useShopifyProducts";
+import useShopifyProducts, { formatPrice, productPath } from "@/hooks/useShopifyProducts";
 
 const SALE = [
   {
@@ -84,18 +85,18 @@ export default function Sale({ refreshKey = 0 }) {
               End of season <span className="font-bold">markdowns.</span>
             </h2>
           </div>
-          <a
-            href="https://mazrood.com/collections/fw25-26"
+          <Link
+            to="/store/fw25-26"
             className="group inline-flex items-center gap-2 font-mono-tech text-xs uppercase tracking-[0.25em] text-[hsl(var(--foreground))] opacity-70 transition hover:opacity-100 hover:text-[hsl(var(--primary))]"
           >
             View All
             <ArrowUpRight size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </a>
+          </Link>
         </div>
 
         <div className="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
           {sale.map((p) => (
-            <a key={p.name} href={p.url} className="group">
+            <Link key={p.name} to={productPath(p.url)} className="group">
               <div className="relative aspect-[4/5] overflow-hidden rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--card))]">
                 <div className={`absolute inset-0 ${p.alt ? "transition-opacity duration-500 group-hover:opacity-0" : ""}`}>
                   <Image
@@ -135,7 +136,7 @@ export default function Sale({ refreshKey = 0 }) {
                   </s>
                 )}
               </p>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

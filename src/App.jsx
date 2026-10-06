@@ -16,6 +16,8 @@ const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const OAuthConsent = lazy(() => import('./pages/OAuthConsent'));
 const Settings = lazy(() => import('./pages/Settings'));
+const Store = lazy(() => import('./pages/Store'));
+const Product = lazy(() => import('./pages/Product'));
 
 const PageLoader = () => (
   <div className="fixed inset-0 flex items-center justify-center">
@@ -62,6 +64,9 @@ const AuthenticatedApp = () => {
             {/* Add your page Route elements here */}
             <Route path="/" element={<Home />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/store" element={<Store />} />
+            <Route path="/store/:collection" element={<Store />} />
+            <Route path="/product/:handle" element={<Product />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
