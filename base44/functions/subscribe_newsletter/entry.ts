@@ -25,7 +25,41 @@ export default async function(req: Request): Promise<Response> {
     }
 
     await base44.asServiceRole.entities.Subscriber.create({ email });
-    return Response.json({ ok: true });
+
+    // Best-effort sync: add the signup to the HubSpot customer contacts.
+    // A HubSpot outage must not block the local signup, so failures are logged
+    // and surfaced as a sync warning instead of failing the request.
+    let hubspotSynced = false;
+    let hubspotError: string | null = null;
+    try {
+      const { accessToken } = await base44.asServiceRole.connectors.getConnection("hubspot");
+      const res = await fetch("https://api.hubapi.com/crm/v3/objects/contacts", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          properties: {
+            email,
+            lifecyclestage: "subscriber",
+          },
+        }),
+      });
+      // 409 = contact already exists in HubSpot — that counts as synced.
+      if (res.ok || res.status === 409) {
+        hubspotSynced = true;
+      } else {
+        const detail = await res.text();
+        hubspotError = `HubSpot responded ${res.status}`;
+        console.error("HubSpot contact sync failed:", res.status, detail);
+      }
+    } catch (e) {
+      hubspotError = e instanceof Error ? e.message : String(e);
+      console.error("HubSpot contact sync failed:", e);
+    }
+
+    return Response.json({ ok: true, hubspotSynced, hubspotError });
   } catch (error) {
     return Response.json(
       { error: "Could not sign you up right now — please try again." },
