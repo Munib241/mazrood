@@ -105,16 +105,6 @@ export default function Product() {
   }
 
   const p = state.product;
-  // The selected variant's own photo leads the gallery; the product's full
-  // image set follows, deduped.
-  const images = Array.from(
-    new Set(
-      [variant?.image, ...(p.images?.length ? p.images : [p.img, p.alt].filter(Boolean))].filter(
-        Boolean
-      )
-    )
-  );
-  const shown = images[Math.min(imgIndex, images.length - 1)] || null;
   const variants = p.variants || [];
   const optionNames = [];
   variants.forEach((v) =>
@@ -146,6 +136,18 @@ export default function Product() {
       : p.soldOut;
   const price = variant ? variant.price : p.price;
   const currency = variant ? variant.currency : p.currency;
+
+  // The selected variant's own photo leads the gallery; the product's full
+  // image set follows, deduped. Declared after `variant` so a size/color
+  // switch instantly shows that variant's photo first.
+  const images = Array.from(
+    new Set(
+      [variant?.image, ...(p.images?.length ? p.images : [p.img, p.alt].filter(Boolean))].filter(
+        Boolean
+      )
+    )
+  );
+  const shown = images[Math.min(imgIndex, images.length - 1)] || null;
 
   return (
     <div className="relative min-h-screen bg-[hsl(var(--background))]">
