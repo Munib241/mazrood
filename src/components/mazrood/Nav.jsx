@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Menu, Settings as SettingsIcon, X } from "lucide-react";
+import { Menu, Settings as SettingsIcon, ShoppingCart, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Image } from "@/components/ui/image";
@@ -7,12 +7,16 @@ import ThemeToggle from "@/components/mazrood/ThemeToggle";
 import NavDropdown from "@/components/mazrood/NavDropdown";
 import MobileMenu from "@/components/mazrood/MobileMenu";
 import { FALLBACK_MENU, buildMenu, menuFromCache, setMenuCache } from "@/lib/shopMenu";
+import CartDrawer from "@/components/mazrood/CartDrawer";
+import { cartCount, onCartChange } from "@/lib/cart";
 
 export default function Nav() {
   const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [links, setLinks] = useState(FALLBACK_MENU);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [cartItemsCount, setCartItemsCount] = useState(0);
   // White text only while floating over the home hero photo. The logo
   // itself always stays Mazrood blue regardless of this.
   const tone =
@@ -23,6 +27,12 @@ export default function Nav() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Cart badge count, live from the session cart.
+  useEffect(() => {
+    setCartItemsCount(cartCount());
+    return onCartChange((cart) => setCartItemsCount(cartCount(cart)));
   }, []);
 
   // Live Shopify main menu — same structure as the store's own navigation.
@@ -85,6 +95,18 @@ export default function Nav() {
               )
             )}
             <ThemeToggle className={tone} />
+            <button
+              onClick={() => setCartOpen(true)}
+              aria-label={`Cart, ${cartItemsCount} items`}
+              className={`relative inline-flex h-9 w-9 items-center justify-center rounded-sm ${tone} transition hover:text-[hsl(var(--primary))]`}
+            >
+              <ShoppingCart size={17} />
+              {cartItemsCount > 0 && (
+                <span className="absolute -right-1.5 -top-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-[hsl(var(--primary))] px-1 font-mono-tech text-[0.55rem] leading-none text-[hsl(var(--primary-foreground))]">
+                  {cartItemsCount}
+                </span>
+              )}
+            </button>
             <Link
               to="/settings"
               aria-label="Settings"
@@ -95,6 +117,18 @@ export default function Nav() {
           </div>
 
           <div className="flex items-center gap-3 lg:hidden">
+            <button
+              onClick={() => setCartOpen(true)}
+              aria-label={`Cart, ${cartItemsCount} items`}
+              className={`relative inline-flex h-9 w-9 items-center justify-center rounded-sm ${tone} transition hover:text-[hsl(var(--primary))]`}
+            >
+              <ShoppingCart size={20} />
+              {cartItemsCount > 0 && (
+                <span className="absolute -right-1.5 -top-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-[hsl(var(--primary))] px-1 font-mono-tech text-[0.55rem] leading-none text-[hsl(var(--primary-foreground))]">
+                  {cartItemsCount}
+                </span>
+              )}
+            </button>
             <ThemeToggle className={tone} />
             <button
               className={tone}
@@ -109,6 +143,7 @@ export default function Nav() {
 
         {open && <MobileMenu links={links} onClose={() => setOpen(false)} />}
       </div>
+      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
     </header>
   );
 }

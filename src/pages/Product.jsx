@@ -5,6 +5,7 @@ import { Image } from "@/components/ui/image";
 import Nav from "@/components/mazrood/Nav";
 import BottomTabs from "@/components/mazrood/BottomTabs";
 import { formatPrice } from "@/hooks/useShopifyProducts";
+import { addToCart as addItemToCart } from "@/lib/cart";
 
 export default function Product() {
   const { handle } = useParams();
@@ -13,6 +14,7 @@ export default function Product() {
   const [qty, setQty] = useState(1);
   const [imgIndex, setImgIndex] = useState(0);
   const [busy, setBusy] = useState(false);
+  const [added, setAdded] = useState(false);
   const [checkoutError, setCheckoutError] = useState(null);
 
   useEffect(() => {
@@ -68,6 +70,22 @@ export default function Product() {
     }
     tab?.close();
     setBusy(false);
+  };
+
+  const handleAddToCart = () => {
+    if (!variant?.id || allSoldOut || variant?.soldOut) return;
+    addItemToCart({
+      variantId: variant.id,
+      handle: p.handle,
+      name: p.name,
+      price: variant.price,
+      currency,
+      image: variant.image || p.img,
+      options: (variant.options || []).map((o) => o.value).join(" / "),
+      qty,
+    });
+    setAdded(true);
+    window.setTimeout(() => setAdded(false), 2000);
   };
 
   if (state.loading) {
@@ -358,14 +376,24 @@ export default function Product() {
                   Sold out
                 </span>
               ) : (
-                <button
-                  type="button"
-                  onClick={startCheckout}
-                  disabled={busy || !variant?.id}
-                  className="btn-solid rounded-sm px-8 py-4 font-mono-tech text-xs uppercase tracking-[0.25em] disabled:opacity-50"
-                >
-                  {busy ? "Starting checkout…" : "Checkout"}
-                </button>
+                <div className="flex flex-wrap items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={handleAddToCart}
+                    disabled={!variant?.id}
+                    className="btn-ghost rounded-sm px-8 py-4 font-mono-tech text-xs uppercase tracking-[0.25em] disabled:opacity-50"
+                  >
+                    {added ? "Added ✓" : "Add to cart"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={startCheckout}
+                    disabled={busy || !variant?.id}
+                    className="btn-solid rounded-sm px-8 py-4 font-mono-tech text-xs uppercase tracking-[0.25em] disabled:opacity-50"
+                  >
+                    {busy ? "Starting checkout…" : "Checkout"}
+                  </button>
+                </div>
               )}
               {checkoutError && (
                 <p className="mt-4 text-sm text-[hsl(var(--destructive))]">
