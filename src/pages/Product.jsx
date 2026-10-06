@@ -203,7 +203,7 @@ export default function Product() {
                 photos never crops the image. Photos crossfade in place while
                 the previous one holds the frame until the next settles. */}
             <div
-              className="relative overflow-hidden rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--card))]"
+              className="relative overflow-hidden rounded-sm bg-[hsl(var(--background))]"
               style={{ aspectRatio: imgDims ? `${imgDims.w} / ${imgDims.h}` : "4 / 5" }}
             >
               <AnimatePresence initial={false}>
@@ -231,6 +231,15 @@ export default function Product() {
                   </motion.div>
                 )}
               </AnimatePresence>
+              {/* Soft vignette: photos fade into the page at every edge */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "radial-gradient(115% 115% at 50% 50%, transparent 52%, hsl(var(--background)) 98%)",
+                }}
+              />
             </div>
             {images.length > 1 && (
               <div className="mt-4 flex gap-3">
