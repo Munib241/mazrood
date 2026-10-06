@@ -78,7 +78,7 @@ export default function Sale({ refreshKey = 0 }) {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="font-mono-tech mb-4 text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
-              04 — Sale
+              05 — Sale
             </p>
             <h2 id="sale-heading" className="font-heading text-4xl font-light leading-tight tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-6xl">
               End of season <span className="font-bold">markdowns.</span>

@@ -51,7 +51,7 @@ export default function FinalEmittance() {
 
       <div className="relative mx-auto max-w-[1600px] px-6 py-24 md:px-10 md:py-36">
         <p className="font-mono-tech mb-5 text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
-          05 — Stay in the loop
+          06 — Stay in the loop
         </p>
         <h2
           id="contact-heading"

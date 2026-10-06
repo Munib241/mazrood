@@ -54,7 +54,7 @@ export default function NewArrivals({ refreshKey = 0 }) {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="font-mono-tech mb-4 text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
-              02 — New Arrivals
+              03 — New Arrivals
             </p>
             <h2
               id="new-heading"

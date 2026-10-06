@@ -26,7 +26,7 @@ export default function TheLook() {
       <div className="mx-auto max-w-[1600px] px-6 md:px-10">
         <div className="mb-16">
           <p className="font-mono-tech mb-4 text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
-            03 — The Look
+            04 — The Look
           </p>
           <h2 id="look-heading" className="font-heading text-4xl font-light leading-tight tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-6xl">
             Worn well. <span className="font-bold">Shot on location.</span>
