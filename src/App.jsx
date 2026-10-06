@@ -18,6 +18,7 @@ const OAuthConsent = lazy(() => import('./pages/OAuthConsent'));
 const Settings = lazy(() => import('./pages/Settings'));
 const Store = lazy(() => import('./pages/Store'));
 const Product = lazy(() => import('./pages/Product'));
+const Policies = lazy(() => import('./pages/Policies'));
 
 const PageLoader = () => (
   <div className="fixed inset-0 flex items-center justify-center">
@@ -72,6 +73,7 @@ const AuthenticatedApp = () => {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/oauth/consent" element={<OAuthConsent />} />
+            <Route path="/policies" element={<Policies />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </motion.div>

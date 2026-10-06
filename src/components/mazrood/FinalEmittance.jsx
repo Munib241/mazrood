@@ -16,6 +16,7 @@ const FOOTER_LINKS = [
 // Support and policy links — the same destinations as the official store's
 // footer, so refunds and returns route exactly as they used to.
 const SUPPORT_LINKS = [
+  { label: "Shipping & Returns", href: "/policies" },
   { label: "Request a return / exchange", href: "https://mazrood.com/a/return" },
   { label: "Return/Exchange Policy", href: "https://mazrood.com/pages/store-policies" },
   { label: "Refund Policy", href: "https://www.mazrood.com/policies/refund-policy" },
@@ -148,17 +149,27 @@ export default function FinalEmittance() {
           <span className="font-mono-tech text-[0.65rem] uppercase tracking-[0.25em] text-[hsl(var(--primary))]">
             Support
           </span>
-          {SUPPORT_LINKS.map((l) => (
-            <a
-              key={l.label}
-              href={l.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-mono-tech text-xs uppercase tracking-[0.25em] text-[hsl(var(--foreground))]/90 transition hover:text-[hsl(var(--primary))]"
-            >
-              {l.label}
-            </a>
-          ))}
+          {SUPPORT_LINKS.map((l) =>
+            l.href.startsWith("/") ? (
+              <Link
+                key={l.label}
+                to={l.href}
+                className="font-mono-tech text-xs uppercase tracking-[0.25em] text-[hsl(var(--primary))]"
+              >
+                {l.label}
+              </Link>
+            ) : (
+              <a
+                key={l.label}
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono-tech text-xs uppercase tracking-[0.25em] text-[hsl(var(--foreground))]/90 transition hover:text-[hsl(var(--primary))]"
+              >
+                {l.label}
+              </a>
+            )
+          )}
         </nav>
         <p className="mt-8 font-mono-tech text-xs uppercase tracking-[0.25em] text-[hsl(var(--foreground))]/80">
           © {new Date().getFullYear()} Mazrood Studio — All rights reserved
