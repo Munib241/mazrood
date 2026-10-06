@@ -13,6 +13,7 @@ export default function Product() {
   const [selections, setSelections] = useState({});
   const [qty, setQty] = useState(1);
   const [imgIndex, setImgIndex] = useState(0);
+  const [imgDims, setImgDims] = useState(null);
   const [busy, setBusy] = useState(false);
   const [added, setAdded] = useState(false);
   const [checkoutError, setCheckoutError] = useState(null);
@@ -23,6 +24,7 @@ export default function Product() {
     setSelections({});
     setQty(1);
     setImgIndex(0);
+    setImgDims(null);
     setCheckoutError(null);
     base44.functions
       .invoke("shopify_products", { handles: [handle] })
@@ -181,13 +183,24 @@ export default function Product() {
 
         <div className="mt-8 grid gap-10 md:grid-cols-2 md:gap-16">
           <div>
-            <div className="aspect-[4/5] overflow-hidden rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--card))]">
+            {/* The frame follows each photo's own aspect ratio, so switching
+                photos never crops the image. */}
+            <div
+              className="overflow-hidden rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--card))]"
+              style={{ aspectRatio: imgDims ? `${imgDims.w} / ${imgDims.h}` : "4 / 5" }}
+            >
               {shown && (
                 <Image
                   src={shown}
                   alt={`${p.name} — Mazrood.`}
-                  fittingType="fill"
-                  className="h-full w-full object-cover"
+                  fittingType="fit"
+                  className="h-full w-full"
+                  onLoad={(e) =>
+                    setImgDims({
+                      w: e.target.naturalWidth || 1,
+                      h: e.target.naturalHeight || 1,
+                    })
+                  }
                 />
               )}
             </div>
