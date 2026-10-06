@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { Image } from "@/components/ui/image";
 import Nav from "@/components/mazrood/Nav";
@@ -47,6 +48,21 @@ export default function Product() {
       cancelled = true;
     };
   }, [handle]);
+
+  // Warm the browser cache for every photo of this product, so thumbnail
+  // and variant switches render instantly instead of loading mid-fade.
+  useEffect(() => {
+    if (!state.product) return;
+    const pool = state.product.images?.length
+      ? state.product.images
+      : [state.product.img, state.product.alt].filter(Boolean);
+    pool.forEach((url) => {
+      if (url) {
+        const im = new window.Image();
+        im.src = url;
+      }
+    });
+  }, [state.product]);
 
   const startCheckout = async () => {
     setBusy(true);
@@ -184,25 +200,37 @@ export default function Product() {
         <div className="mt-8 grid gap-10 md:grid-cols-2 md:gap-16">
           <div>
             {/* The frame follows each photo's own aspect ratio, so switching
-                photos never crops the image. */}
+                photos never crops the image. Photos crossfade in place while
+                the previous one holds the frame until the next settles. */}
             <div
-              className="overflow-hidden rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--card))]"
+              className="relative overflow-hidden rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--card))]"
               style={{ aspectRatio: imgDims ? `${imgDims.w} / ${imgDims.h}` : "4 / 5" }}
             >
-              {shown && (
-                <Image
-                  src={shown}
-                  alt={`${p.name} — Mazrood.`}
-                  fittingType="fit"
-                  className="h-full w-full"
-                  onLoad={(e) =>
-                    setImgDims({
-                      w: e.target.naturalWidth || 1,
-                      h: e.target.naturalHeight || 1,
-                    })
-                  }
-                />
-              )}
+              <AnimatePresence initial={false}>
+                {shown && (
+                  <motion.div
+                    key={shown}
+                    className="absolute inset-0"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <Image
+                      src={shown}
+                      alt={`${p.name} — Mazrood.`}
+                      fittingType="fit"
+                      className="h-full w-full"
+                      onLoad={(e) =>
+                        setImgDims({
+                          w: e.target.naturalWidth || 1,
+                          h: e.target.naturalHeight || 1,
+                        })
+                      }
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
             {images.length > 1 && (
               <div className="mt-4 flex gap-3">
