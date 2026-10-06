@@ -169,17 +169,7 @@
     border: 1px solid hsl(var(--border));
   }
 
-  /* Recolors the logo asset to the exact Mazrood blue, regardless of its
-     own source color or the header's background. */
-  .logo-brand {
-    background-color: hsl(var(--brand-blue));
-    mask-size: contain;
-    mask-repeat: no-repeat;
-    mask-position: left center;
-    -webkit-mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-position: left center;
-  }
+
 
   .light-mode .btn-solid:hover {
     background: hsl(43 55% 44%);

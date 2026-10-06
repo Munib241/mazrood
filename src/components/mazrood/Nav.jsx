@@ -66,18 +66,17 @@ export default function Nav() {
         }`}
       >
         <nav className="mx-auto flex h-[72px] max-w-[1600px] items-center justify-between px-6 md:px-10">
-          <Link to="/" className="flex items-center" aria-label="Mazrood Studio home">
-            <span
-              role="img"
-              aria-label="Mazrood Studio logo"
-              className="logo-brand h-9 w-40"
-              style={{
-                maskImage:
-                  "url(https://media.base44.com/images/public/6abfc987ea748e49e7475c82/41b0c628d_logo.png)",
-                WebkitMaskImage:
-                  "url(https://media.base44.com/images/public/6abfc987ea748e49e7475c82/41b0c628d_logo.png)",
-              }}
-            />
+          <Link
+            to="/"
+            className="flex items-center"
+            aria-label="Mazrood Studio home"
+          >
+            <span className="font-heading text-2xl font-bold uppercase leading-none tracking-[0.06em] text-[hsl(var(--brand-blue))]">
+              Mazrood
+              <span className="ml-0.5 align-super text-[0.45em] font-semibold">
+                ™
+              </span>
+            </span>
           </Link>
 
           <div className="hidden items-center gap-6 lg:flex xl:gap-9">
