@@ -1,6 +1,6 @@
 import { secrets } from "base44:runtime";
 
-const STORE_DOMAIN = "mazrood.com";
+const STORE_DOMAIN = "mazrood-sa.myshopify.com";
 const API_VERSION = "2025-01";
 const MAX_HANDLES = 24;
 
