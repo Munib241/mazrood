@@ -45,16 +45,16 @@ export default function Nav() {
               <a
                 key={l.label}
                 href={l.href}
-                className={`font-mono-tech text-xs uppercase tracking-[0.2em] ${tone} opacity-70 transition hover:opacity-100 hover:text-[hsl(var(--primary))]`}
+                className={`font-mono-tech text-sm font-medium uppercase tracking-[0.2em] ${tone} transition hover:text-[hsl(var(--primary))] underline-offset-8 hover:underline decoration-1`}
               >
                 {l.label}
               </a>
             ))}
-            <ThemeToggle className="text-[hsl(var(--foreground))] opacity-70" />
+            <ThemeToggle className="text-[hsl(var(--foreground))]" />
             <Link
               to="/settings"
               aria-label="Settings"
-              className={`inline-flex h-9 w-9 items-center justify-center rounded-sm ${tone} opacity-70 transition hover:opacity-100 hover:text-[hsl(var(--primary))]`}
+              className={`inline-flex h-9 w-9 items-center justify-center rounded-sm ${tone} transition hover:text-[hsl(var(--primary))]`}
             >
               <SettingsIcon size={17} />
             </Link>
@@ -67,7 +67,7 @@ export default function Nav() {
           </div>
 
           <div className="flex items-center gap-3 md:hidden">
-            <ThemeToggle className={`${tone} opacity-70`} />
+            <ThemeToggle className={tone} />
             <button
               className={tone}
               onClick={() => setOpen((v) => !v)}
