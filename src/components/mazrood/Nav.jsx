@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Menu, Settings as SettingsIcon, ShoppingCart, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Image } from "@/components/ui/image";
+import WordmarkLogo from "@/components/mazrood/WordmarkLogo";
 import ThemeToggle from "@/components/mazrood/ThemeToggle";
 import NavDropdown from "@/components/mazrood/NavDropdown";
 import MobileMenu from "@/components/mazrood/MobileMenu";
@@ -71,15 +71,9 @@ export default function Nav() {
             className="flex items-center"
             aria-label="Mazrood Studio home"
           >
-            {/* Official MAZROOD™ wordmark artwork, recolored to brand blue #000f9f */}
-            <Image
-              src="https://media.base44.com/images/public/6abfc987ea748e49e7475c82/da775dca9_generated_image.png"
-              alt="MAZROOD™"
-              fittingType="fill"
-              focalPointY={0.5}
-              className="h-[22px] md:h-7"
-              style={{ aspectRatio: "1024 / 200" }}
-            />
+            {/* Official MAZROOD™ wordmark, rebuilt from the reference with a
+                fully transparent background in brand blue #000f9f */}
+            <WordmarkLogo className="h-[22px] md:h-7" />
           </Link>
 
           <div className="hidden items-center gap-6 lg:flex xl:gap-9">
