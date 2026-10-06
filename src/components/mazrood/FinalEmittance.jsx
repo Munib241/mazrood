@@ -134,7 +134,7 @@ export default function FinalEmittance() {
               <Link
                 key={l.label}
                 to={l.href}
-                className="font-mono-tech text-[0.65rem] uppercase tracking-[0.25em] text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--primary))]"
+                className="font-mono-tech text-xs uppercase tracking-[0.25em] text-[hsl(var(--foreground))]/90 transition hover:text-[hsl(var(--primary))]"
               >
                 {l.label}
               </Link>
@@ -154,13 +154,13 @@ export default function FinalEmittance() {
               href={l.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-mono-tech text-[0.65rem] uppercase tracking-[0.25em] text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--primary))]"
+              className="font-mono-tech text-xs uppercase tracking-[0.25em] text-[hsl(var(--foreground))]/90 transition hover:text-[hsl(var(--primary))]"
             >
               {l.label}
             </a>
           ))}
         </nav>
-        <p className="mt-8 font-mono-tech text-[0.6rem] uppercase tracking-[0.25em] text-[hsl(var(--muted-foreground))]">
+        <p className="mt-8 font-mono-tech text-xs uppercase tracking-[0.25em] text-[hsl(var(--foreground))]/80">
           © {new Date().getFullYear()} Mazrood Studio — All rights reserved
         </p>
       </div>
