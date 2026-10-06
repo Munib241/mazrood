@@ -15,12 +15,14 @@ const FOOTER_LINKS = [
 
 // Support and policy links — the same destinations as the official store's
 // footer, so refunds and returns route exactly as they used to.
+// Shipping, returns and refund questions all live on the app's own Policies
+// page, so they stay inside the site's design. Legal pages (privacy, terms,
+// complaints, account deletion) remain on the official store.
 const SUPPORT_LINKS = [
   { label: "Shipping & Returns", href: "/policies" },
-  { label: "Request a return / exchange", href: "https://mazrood.com/a/return" },
-  { label: "Return/Exchange Policy", href: "https://mazrood.com/pages/store-policies" },
-  { label: "Refund Policy", href: "https://www.mazrood.com/policies/refund-policy" },
-  { label: "Shipping Policy", href: "https://mazrood.com/pages/shipping-policy" },
+  { label: "Request a return / exchange", href: "/policies" },
+  { label: "Refund Policy", href: "/policies" },
+  { label: "Shipping Policy", href: "/policies" },
   { label: "About Us", href: "https://www.mazrood.com/pages/about-us" },
   { label: "Privacy Policy", href: "https://www.mazrood.com/pages/privacy-policy" },
   { label: "Terms of Service", href: "https://www.mazrood.com/pages/terms-of-service" },
