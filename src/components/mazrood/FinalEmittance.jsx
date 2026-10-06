@@ -13,6 +13,20 @@ const FOOTER_LINKS = [
   { label: "Sale", href: "/store/sale" },
 ];
 
+// Support and policy links — the same destinations as the official store's
+// footer, so refunds and returns route exactly as they used to.
+const SUPPORT_LINKS = [
+  { label: "Request a return / exchange", href: "https://mazrood.com/a/return" },
+  { label: "Return/Exchange Policy", href: "https://mazrood.com/pages/store-policies" },
+  { label: "Refund Policy", href: "https://www.mazrood.com/policies/refund-policy" },
+  { label: "Shipping Policy", href: "https://mazrood.com/pages/shipping-policy" },
+  { label: "About Us", href: "https://www.mazrood.com/pages/about-us" },
+  { label: "Privacy Policy", href: "https://www.mazrood.com/pages/privacy-policy" },
+  { label: "Terms of Service", href: "https://www.mazrood.com/pages/terms-of-service" },
+  { label: "Consumer Complaints", href: "https://www.mazrood.com/pages/consumer-complaints" },
+  { label: "Delete Account", href: "https://www.mazrood.com/pages/delete-account" },
+];
+
 export default function FinalEmittance() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle"); // idle | sending | done
@@ -127,6 +141,25 @@ export default function FinalEmittance() {
             ))}
           </nav>
         </div>
+        <nav
+          aria-label="Support and policies"
+          className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-[hsl(var(--border))] pt-8"
+        >
+          <span className="font-mono-tech text-[0.65rem] uppercase tracking-[0.25em] text-[hsl(var(--primary))]">
+            Support
+          </span>
+          {SUPPORT_LINKS.map((l) => (
+            <a
+              key={l.label}
+              href={l.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono-tech text-[0.65rem] uppercase tracking-[0.25em] text-[hsl(var(--muted-foreground))] transition hover:text-[hsl(var(--primary))]"
+            >
+              {l.label}
+            </a>
+          ))}
+        </nav>
         <p className="mt-8 font-mono-tech text-[0.6rem] uppercase tracking-[0.25em] text-[hsl(var(--muted-foreground))]">
           © {new Date().getFullYear()} Mazrood Studio — All rights reserved
         </p>
