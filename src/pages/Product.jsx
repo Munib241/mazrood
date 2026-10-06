@@ -236,37 +236,85 @@ export default function Product() {
 
             {optionNames.length > 0 && variants.length > 1 && (
               <div className="mt-8 space-y-6">
-                {optionNames.map((name) => (
-                  <div key={name}>
-                    <p className="font-mono-tech mb-3 text-[0.65rem] uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">
-                      {name}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {valuesFor(name).map((value) => {
-                        const available = valueAvailable(name, value);
-                        const selected = selections[name] === value;
-                        return (
-                          <button
-                            key={value}
-                            type="button"
-                            disabled={!available}
-                            onClick={() => {
-                              setImgIndex(0);
-                              setSelections((s) => ({ ...s, [name]: value }));
-                            }}
-                            className={`rounded-sm border px-4 py-2.5 font-mono-tech text-xs uppercase tracking-[0.2em] transition ${
-                              selected
-                                ? "border-[hsl(var(--primary))] bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]"
-                                : "border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:border-[hsl(var(--primary))] hover:text-[hsl(var(--primary))]"
-                            } ${!available ? "cursor-not-allowed line-through opacity-40" : ""}`}
-                          >
-                            {value}
-                          </button>
-                        );
-                      })}
+                {optionNames.map((name) => {
+                  const isColor = name.toLowerCase() === "color";
+                  // A color swatch shows the fabric photo of that color's first variant.
+                  const swatchFor = (value) =>
+                    (
+                      variants.find(
+                        (v) =>
+                          !v.soldOut &&
+                          v.image &&
+                          (v.options || []).some(
+                            (o) => o.name === name && o.value === value
+                          )
+                      ) ||
+                      variants.find(
+                        (v) =>
+                          v.image &&
+                          (v.options || []).some(
+                            (o) => o.name === name && o.value === value
+                          )
+                      )
+                    )?.image || null;
+                  return (
+                    <div key={name}>
+                      <p className="font-mono-tech mb-3 text-[0.65rem] uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">
+                        {name}
+                        {isColor && selections[name] && (
+                          <span className="ml-2 normal-case tracking-[0.1em] text-[hsl(var(--foreground))]">
+                            {selections[name]}
+                          </span>
+                        )}
+                      </p>
+                      <div className={isColor ? "flex flex-wrap items-center gap-3" : "flex flex-wrap gap-2"}>
+                        {valuesFor(name).map((value) => {
+                          const available = valueAvailable(name, value);
+                          const selected = selections[name] === value;
+                          const swatch = isColor ? swatchFor(value) : null;
+                          return (
+                            <button
+                              key={value}
+                              type="button"
+                              disabled={!available}
+                              title={value}
+                              aria-label={`${name}: ${value}`}
+                              onClick={() => {
+                                setImgIndex(0);
+                                setSelections((s) => ({ ...s, [name]: value }));
+                              }}
+                              className={
+                                isColor
+                                  ? `h-10 w-10 overflow-hidden rounded-full border transition ${
+                                      selected
+                                        ? "border-[hsl(var(--foreground))] shadow-[0_0_0_2px_hsl(var(--background)),0_0_0_3.5px_hsl(var(--primary))]"
+                                        : "border-[hsl(var(--border))]"
+                                    } ${!available ? "cursor-not-allowed opacity-30" : "hover:opacity-80"}`
+                                  : `rounded-sm border px-4 py-2.5 font-mono-tech text-xs uppercase tracking-[0.2em] transition ${
+                                      selected
+                                        ? "border-[hsl(var(--primary))] bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]"
+                                        : "border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:border-[hsl(var(--primary))] hover:text-[hsl(var(--primary))]"
+                                    } ${!available ? "cursor-not-allowed line-through opacity-40" : ""}`
+                              }
+                            >
+                              {swatch ? (
+                                <img
+                                  src={swatch}
+                                  alt=""
+                                  className="h-full w-full object-cover"
+                                />
+                              ) : isColor ? (
+                                <span className="font-mono-tech text-[0.6rem]">{value.slice(0, 2)}</span>
+                              ) : (
+                                value
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
 
