@@ -13,6 +13,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import ProfileCard from "@/components/mazrood/ProfileCard";
+import PasswordCard from "@/components/mazrood/PasswordCard";
 
 export default function Settings() {
   const [deleting, setDeleting] = useState(false);
@@ -40,6 +42,12 @@ export default function Settings() {
         <h1 className="font-heading mt-10 text-4xl font-light tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-5xl">
           Settings
         </h1>
+
+        <ProfileCard />
+
+        <div className="mt-6">
+          <PasswordCard />
+        </div>
 
         <section
           aria-labelledby="delete-heading"
