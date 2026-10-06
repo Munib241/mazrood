@@ -1,22 +1,33 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
+import { Home } from "lucide-react";
 import { Image } from "@/components/ui/image";
 import Nav from "@/components/mazrood/Nav";
 import BottomTabs from "@/components/mazrood/BottomTabs";
 import { formatPrice } from "@/hooks/useShopifyProducts";
 
-const TABS = [
-  { key: "all", label: "All" },
-  { key: "new-2026", label: "New" },
-  { key: "men", label: "Men" },
-  { key: "women", label: "Women" },
-  { key: "fw25-26", label: "Sale" },
-];
-
 export default function Store() {
   const { collection = "all" } = useParams();
+  const [collections, setCollections] = useState([]);
   const [state, setState] = useState({ loading: true, products: [], error: false });
+
+  // Tabs follow the store's real collection list, like the website.
+  useEffect(() => {
+    let cancelled = false;
+    base44.functions
+      .invoke("shopify_products", { collections: true })
+      .then((res) => {
+        if (!cancelled) {
+          const cols = Array.isArray(res?.data?.collections) ? res.data.collections : [];
+          setCollections(cols);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -26,7 +37,7 @@ export default function Store() {
       .then((res) => {
         if (cancelled) return;
         const live = Array.isArray(res?.data?.products) ? res.data.products : [];
-        setState({ loading: false, products: live, error: live.length === 0 });
+        setState({ loading: false, products: live, error: live.length === 0, title: res?.data?.title ?? null });
       })
       .catch(() => {
         if (!cancelled) setState({ loading: false, products: [], error: true });
@@ -36,8 +47,13 @@ export default function Store() {
     };
   }, [collection]);
 
-  const active = TABS.some((t) => t.key === collection) ? collection : "all";
-  const label = TABS.find((t) => t.key === active)?.label ?? "All";
+  const TABS = [
+    { key: "all", label: "All" },
+    ...collections.map((c) => ({ key: c.handle, label: c.title })),
+  ];
+  const active = collection;
+  const label =
+    state.title || TABS.find((t) => t.key === active)?.label || "Store";
 
   return (
     <div className="relative min-h-screen bg-[hsl(var(--background))]">
@@ -52,6 +68,13 @@ export default function Store() {
         </h1>
 
         <div className="mt-8 flex flex-wrap gap-2">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 rounded-sm bg-[hsl(var(--foreground))] px-4 py-2.5 font-mono-tech text-xs uppercase tracking-[0.2em] text-[hsl(var(--background))] transition hover:opacity-80"
+          >
+            <Home size={14} />
+            Home
+          </Link>
           {TABS.map((t) => (
             <Link
               key={t.key}

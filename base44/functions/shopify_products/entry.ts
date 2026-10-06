@@ -69,7 +69,13 @@ export default async function(req: Request): Promise<Response> {
       .slice(0, MAX_ITEMS);
 
     let query;
-    if (clean.length > 0) {
+    if (body?.collections === true) {
+      query = `{
+        cols: collections(first: 60) {
+          edges { node { handle title } }
+        }
+      }`;
+    } else if (clean.length > 0) {
       const selections = clean
         .map(
           (h, i) => `
@@ -87,12 +93,12 @@ export default async function(req: Request): Promise<Response> {
         query = `{
           c0: collectionByHandle(handle: "${rawCollection}") {
             title
-            products(first: ${MAX_ITEMS}) { edges { node { ${PRODUCT_FIELDS} } } }
+            products(first: ${MAX_ITEMS}, filters: { available: true }) { edges { node { ${PRODUCT_FIELDS} } } }
           }
         }`;
       } else {
         query = `{
-          s0: products(first: ${MAX_ITEMS}, sortKey: CREATED_AT) {
+          s0: products(first: ${MAX_ITEMS}, sortKey: CREATED_AT, filters: { available: true }) {
             edges { node { ${PRODUCT_FIELDS} } }
           }
         }`;
@@ -122,6 +128,13 @@ export default async function(req: Request): Promise<Response> {
 
     let products = [];
     let title = null;
+    if (data?.data?.cols) {
+      const collections = (data.data.cols.edges || [])
+        .map((e) => e.node)
+        .filter((c) => c && c.handle && c.title)
+        .map((c) => ({ handle: c.handle, title: c.title }));
+      return Response.json({ configured: true, collections });
+    }
     if (clean.length > 0) {
       products = clean
         .map((_, i) => mapProduct(data?.data?.[`p${i}`]))

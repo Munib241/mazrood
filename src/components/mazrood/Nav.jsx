@@ -31,14 +31,14 @@ export default function Nav() {
         }`}
       >
         <nav className="mx-auto flex h-[72px] max-w-[1600px] items-center justify-between px-6 md:px-10">
-          <a href="#top" className="flex items-center" aria-label="Mazrood Studio home">
+          <Link to="/" className="flex items-center" aria-label="Mazrood Studio home">
             <Image
               src="https://media.base44.com/images/public/6abfc987ea748e49e7475c82/41b0c628d_logo.png"
               alt="Mazrood Studio logo"
               fittingType="fit"
               className="h-9 w-auto"
             />
-          </a>
+          </Link>
 
           <div className="hidden items-center gap-10 md:flex">
             {LINKS.map((l) => (
