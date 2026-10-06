@@ -71,11 +71,9 @@ export default function Nav() {
             className="flex items-center"
             aria-label="Mazrood Studio home"
           >
-            <span className="font-heading text-2xl font-bold uppercase leading-none tracking-[0.06em] text-[hsl(var(--brand-blue))]">
+            <span className="font-heading text-2xl font-black uppercase leading-none tracking-tight text-[hsl(var(--brand-blue))]">
               Mazrood
-              <span className="ml-0.5 align-super text-[0.45em] font-semibold">
-                ™
-              </span>
+              <sup className="ml-0.5 text-[0.4em] font-black">TM</sup>
             </span>
           </Link>
 
