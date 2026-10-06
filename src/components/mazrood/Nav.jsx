@@ -73,7 +73,7 @@ export default function Nav() {
           >
             {/* Official MAZROOD™ wordmark artwork, recolored to brand blue #000f9f */}
             <Image
-              src="https://base44.app/api/apps/6abfc987ea748e49e7475c82/files/mp/public/6abfc987ea748e49e7475c82/ac4b7f75a_mazrood-wordmark-blue.png"
+              src="https://media.base44.com/images/public/6abfc987ea748e49e7475c82/da775dca9_generated_image.png"
               alt="MAZROOD™"
               fittingType="fit"
               className="h-[22px] w-auto md:h-7"
