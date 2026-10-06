@@ -10,6 +10,7 @@ export default function Product() {
   const { handle } = useParams();
   const [state, setState] = useState({ loading: true, product: null, error: false });
   const [variantId, setVariantId] = useState(null);
+  const [qty, setQty] = useState(1);
   const [imgIndex, setImgIndex] = useState(0);
   const [busy, setBusy] = useState(false);
   const [checkoutError, setCheckoutError] = useState(null);
@@ -18,6 +19,7 @@ export default function Product() {
     let cancelled = false;
     setState({ loading: true, product: null, error: false });
     setVariantId(null);
+    setQty(1);
     setImgIndex(0);
     setCheckoutError(null);
     base44.functions
@@ -46,7 +48,10 @@ export default function Product() {
     // still counts, so popup blockers allow it.
     const tab = window.self !== window.top ? window.open("", "_blank") : null;
     try {
-      const res = await base44.functions.invoke("shopify_checkout", { variantId });
+      const res = await base44.functions.invoke("shopify_checkout", {
+        variantId,
+        quantity: qty,
+      });
       const url = res?.data?.checkoutUrl;
       if (url) {
         (tab || window.top).location.href = url;
@@ -170,6 +175,17 @@ export default function Product() {
               )}
             </p>
 
+            {allSoldOut ? (
+              <p className="font-mono-tech mt-4 text-[0.65rem] uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">
+                Currently sold out
+              </p>
+            ) : (
+              <p className="font-mono-tech mt-4 flex items-center gap-2 text-[0.65rem] uppercase tracking-[0.3em] text-[hsl(var(--primary))]">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-[hsl(var(--primary))]" />
+                In stock
+              </p>
+            )}
+
             {p.description && (
               <p className="mt-6 max-w-md font-body text-sm leading-relaxed text-[hsl(var(--foreground))] opacity-75">
                 {p.description}
@@ -197,6 +213,40 @@ export default function Product() {
                       {v.title}
                     </button>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {!allSoldOut && (
+              <div className="mt-8">
+                <p className="font-mono-tech mb-3 text-[0.65rem] uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">
+                  Quantity
+                </p>
+                <div className="inline-flex items-center border border-[hsl(var(--border))]">
+                  <button
+                    type="button"
+                    onClick={() => setQty((q) => Math.max(1, q - 1))}
+                    disabled={qty <= 1}
+                    aria-label="Decrease quantity"
+                    className="px-4 py-2.5 font-mono-tech text-base text-[hsl(var(--foreground))] transition hover:text-[hsl(var(--primary))] disabled:opacity-30"
+                  >
+                    &minus;
+                  </button>
+                  <span
+                    aria-live="polite"
+                    className="font-mono-tech w-12 text-center text-sm text-[hsl(var(--foreground))]"
+                  >
+                    {qty}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setQty((q) => Math.min(10, q + 1))}
+                    disabled={qty >= 10}
+                    aria-label="Increase quantity"
+                    className="px-4 py-2.5 font-mono-tech text-base text-[hsl(var(--foreground))] transition hover:text-[hsl(var(--primary))] disabled:opacity-30"
+                  >
+                    +
+                  </button>
                 </div>
               </div>
             )}
