@@ -71,10 +71,13 @@ export default function Nav() {
             className="flex items-center"
             aria-label="Mazrood Studio home"
           >
-            <span className="logo-wordmark text-xl uppercase leading-none text-[#000f9f] md:text-2xl">
-              Mazrood
-              <sup className="ml-0.5 align-super text-[0.35em]">™</sup>
-            </span>
+            {/* Official MAZROOD™ wordmark artwork, recolored to brand blue #000f9f */}
+            <Image
+              src="https://base44.app/api/apps/6abfc987ea748e49e7475c82/files/mp/public/6abfc987ea748e49e7475c82/ac4b7f75a_mazrood-wordmark-blue.png"
+              alt="MAZROOD™"
+              fittingType="fit"
+              className="h-[22px] w-auto md:h-7"
+            />
           </Link>
 
           <div className="hidden items-center gap-6 lg:flex xl:gap-9">
