@@ -17,11 +17,11 @@ const PRODUCT_FIELDS = `
   onlineStoreUrl
   description
   featuredImage { url }
-  images(first: 2) { edges { node { url } } }
+  images(first: 12) { edges { node { url } } }
   priceRange { minVariantPrice { amount currencyCode } }
   compareAtPriceRange { minVariantPrice { amount } }
   variants(first: 12) {
-    edges { node { id title availableForSale price { amount currencyCode } selectedOptions { name value } } }
+    edges { node { id title availableForSale price { amount currencyCode } image { url } selectedOptions { name value } } }
   }
 `;
 
@@ -32,6 +32,9 @@ const mapProduct = (p) => {
   if (!p) return null;
   const price = parseFloat(p.priceRange?.minVariantPrice?.amount);
   const compareAt = parseFloat(p.compareAtPriceRange?.minVariantPrice?.amount);
+  const gallery = (p.images?.edges || [])
+    .map((e) => width(e.node?.url))
+    .filter(Boolean);
   return {
     handle: p.handle,
     name: p.title,
@@ -39,8 +42,8 @@ const mapProduct = (p) => {
     url: p.onlineStoreUrl || `https://${STORE_DOMAIN}/products/${p.handle}`,
     price: Number.isFinite(price) ? price : null,
     was: Number.isFinite(compareAt) && compareAt > price ? compareAt : null,
-    img: width(p.featuredImage?.url),
-    alt: width(p.images?.edges?.[1]?.node?.url),
+    img: width(p.featuredImage?.url) || gallery[0] || null,
+    images: gallery,
     soldOut: p.availableForSale === false,
     description: p.description || null,
     variants: (p.variants?.edges || []).map((e) => ({
@@ -49,6 +52,7 @@ const mapProduct = (p) => {
       price: parseFloat(e.node.price?.amount),
       currency: e.node.price?.currencyCode || null,
       soldOut: e.node.availableForSale === false,
+      image: width(e.node.image?.url),
       options: (e.node.selectedOptions || []).map((o) => ({
         name: o.name,
         value: o.value,

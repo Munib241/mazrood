@@ -105,7 +105,15 @@ export default function Product() {
   }
 
   const p = state.product;
-  const images = [p.img, p.alt].filter(Boolean);
+  // The selected variant's own photo leads the gallery; the product's full
+  // image set follows, deduped.
+  const images = Array.from(
+    new Set(
+      [variant?.image, ...(p.images?.length ? p.images : [p.img, p.alt].filter(Boolean))].filter(
+        Boolean
+      )
+    )
+  );
   const shown = images[Math.min(imgIndex, images.length - 1)] || null;
   const variants = p.variants || [];
   const optionNames = [];
@@ -240,9 +248,10 @@ export default function Product() {
                             key={value}
                             type="button"
                             disabled={!available}
-                            onClick={() =>
-                              setSelections((s) => ({ ...s, [name]: value }))
-                            }
+                            onClick={() => {
+                              setImgIndex(0);
+                              setSelections((s) => ({ ...s, [name]: value }));
+                            }}
                             className={`rounded-sm border px-4 py-2.5 font-mono-tech text-xs uppercase tracking-[0.2em] transition ${
                               selected
                                 ? "border-[hsl(var(--primary))] bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]"
