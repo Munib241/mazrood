@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu, Settings as SettingsIcon, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Image } from "@/components/ui/image";
 import ThemeToggle from "@/components/mazrood/ThemeToggle";
 
 const LINKS = [
@@ -30,11 +31,13 @@ export default function Nav() {
         }`}
       >
         <nav className="mx-auto flex h-[72px] max-w-[1600px] items-center justify-between px-6 md:px-10">
-          <a href="#top" className="flex items-center gap-3" aria-label="Mazrood Studio home">
-            <span className="h-2 w-2 rounded-full bg-[hsl(var(--primary))]" />
-            <span className={`font-heading text-sm font-bold uppercase tracking-[0.3em] ${tone}`}>
-              Mazrood <span className="hidden sm:inline">Studio</span>
-            </span>
+          <a href="#top" className="flex items-center" aria-label="Mazrood Studio home">
+            <Image
+              src="https://media.base44.com/images/public/6abfc987ea748e49e7475c82/41b0c628d_logo.png"
+              alt="Mazrood Studio logo"
+              fittingType="fit"
+              className="h-9 w-auto"
+            />
           </a>
 
           <div className="hidden items-center gap-10 md:flex">
