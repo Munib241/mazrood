@@ -73,7 +73,7 @@ export default function Nav() {
           >
             {/* Official MAZROOD™ wordmark, rebuilt from the reference with a
                 fully transparent background in brand blue #000f9f */}
-            <WordmarkLogo className="h-[22px] md:h-7" />
+            <WordmarkLogo />
           </Link>
 
           <div className="hidden items-center gap-6 lg:flex xl:gap-9">
