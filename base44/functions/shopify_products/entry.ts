@@ -21,7 +21,7 @@ const PRODUCT_FIELDS = `
   priceRange { minVariantPrice { amount currencyCode } }
   compareAtPriceRange { minVariantPrice { amount } }
   variants(first: 12) {
-    edges { node { id title availableForSale price { amount currencyCode } } }
+    edges { node { id title availableForSale price { amount currencyCode } selectedOptions { name value } } }
   }
 `;
 
@@ -49,6 +49,10 @@ const mapProduct = (p) => {
       price: parseFloat(e.node.price?.amount),
       currency: e.node.price?.currencyCode || null,
       soldOut: e.node.availableForSale === false,
+      options: (e.node.selectedOptions || []).map((o) => ({
+        name: o.name,
+        value: o.value,
+      })),
     })),
   };
 };

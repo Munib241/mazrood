@@ -9,7 +9,7 @@ import { formatPrice } from "@/hooks/useShopifyProducts";
 export default function Product() {
   const { handle } = useParams();
   const [state, setState] = useState({ loading: true, product: null, error: false });
-  const [variantId, setVariantId] = useState(null);
+  const [selections, setSelections] = useState({});
   const [qty, setQty] = useState(1);
   const [imgIndex, setImgIndex] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -18,7 +18,7 @@ export default function Product() {
   useEffect(() => {
     let cancelled = false;
     setState({ loading: true, product: null, error: false });
-    setVariantId(null);
+    setSelections({});
     setQty(1);
     setImgIndex(0);
     setCheckoutError(null);
@@ -30,7 +30,11 @@ export default function Product() {
         setState({ loading: false, product: p, error: !p });
         const first =
           p?.variants?.find((v) => !v.soldOut) || p?.variants?.[0] || null;
-        if (first) setVariantId(first.id);
+        if (first?.options?.length) {
+          setSelections(
+            Object.fromEntries(first.options.map((o) => [o.name, o.value]))
+          );
+        }
       })
       .catch(() => {
         if (!cancelled) setState({ loading: false, product: null, error: true });
@@ -49,7 +53,7 @@ export default function Product() {
     const tab = window.self !== window.top ? window.open("", "_blank") : null;
     try {
       const res = await base44.functions.invoke("shopify_checkout", {
-        variantId,
+        variantId: variant?.id,
         quantity: qty,
       });
       const url = res?.data?.checkoutUrl;
@@ -103,7 +107,31 @@ export default function Product() {
   const p = state.product;
   const images = [p.img, p.alt].filter(Boolean);
   const shown = images[Math.min(imgIndex, images.length - 1)] || null;
-  const variant = p.variants?.find((v) => v.id === variantId) || null;
+  const variants = p.variants || [];
+  const optionNames = [];
+  variants.forEach((v) =>
+    (v.options || []).forEach((o) => {
+      if (!optionNames.includes(o.name)) optionNames.push(o.name);
+    })
+  );
+  const valuesFor = (name) => {
+    const seen = new Set();
+    return variants
+      .flatMap((v) => v.options || [])
+      .filter((o) => o.name === name && !seen.has(o.value) && seen.add(o.value))
+      .map((o) => o.value);
+  };
+  const valueAvailable = (name, value) =>
+    variants.some(
+      (v) =>
+        !v.soldOut &&
+        (v.options || []).some((o) => o.name === name && o.value === value)
+    );
+  const findVariant = (sel) =>
+    variants.find((v) => (v.options || []).every((o) => sel[o.name] === o.value)) ||
+    null;
+  const variant =
+    findVariant(selections) || variants.find((v) => !v.soldOut) || variants[0] || null;
   const allSoldOut =
     p.variants && p.variants.length > 0
       ? p.variants.every((v) => v.soldOut)
@@ -179,6 +207,10 @@ export default function Product() {
               <p className="font-mono-tech mt-4 text-[0.65rem] uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">
                 Currently sold out
               </p>
+            ) : variant?.soldOut ? (
+              <p className="font-mono-tech mt-4 text-[0.65rem] uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">
+                Sold out in this combination
+              </p>
             ) : (
               <p className="font-mono-tech mt-4 flex items-center gap-2 text-[0.65rem] uppercase tracking-[0.3em] text-[hsl(var(--primary))]">
                 <span className="inline-block h-1.5 w-1.5 rounded-full bg-[hsl(var(--primary))]" />
@@ -192,32 +224,42 @@ export default function Product() {
               </p>
             )}
 
-            {p.variants && p.variants.length > 1 && (
-              <div className="mt-8">
-                <p className="font-mono-tech mb-3 text-[0.65rem] uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">
-                  Option
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {p.variants.map((v) => (
-                    <button
-                      key={v.id}
-                      type="button"
-                      disabled={v.soldOut}
-                      onClick={() => setVariantId(v.id)}
-                      className={`rounded-sm border px-4 py-2.5 font-mono-tech text-xs uppercase tracking-[0.2em] transition ${
-                        v.id === variantId
-                          ? "border-[hsl(var(--primary))] bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]"
-                          : "border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:border-[hsl(var(--primary))] hover:text-[hsl(var(--primary))]"
-                      } ${v.soldOut ? "cursor-not-allowed line-through opacity-40" : ""}`}
-                    >
-                      {v.title}
-                    </button>
-                  ))}
-                </div>
+            {optionNames.length > 0 && variants.length > 1 && (
+              <div className="mt-8 space-y-6">
+                {optionNames.map((name) => (
+                  <div key={name}>
+                    <p className="font-mono-tech mb-3 text-[0.65rem] uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">
+                      {name}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {valuesFor(name).map((value) => {
+                        const available = valueAvailable(name, value);
+                        const selected = selections[name] === value;
+                        return (
+                          <button
+                            key={value}
+                            type="button"
+                            disabled={!available}
+                            onClick={() =>
+                              setSelections((s) => ({ ...s, [name]: value }))
+                            }
+                            className={`rounded-sm border px-4 py-2.5 font-mono-tech text-xs uppercase tracking-[0.2em] transition ${
+                              selected
+                                ? "border-[hsl(var(--primary))] bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]"
+                                : "border-[hsl(var(--border))] text-[hsl(var(--foreground))] hover:border-[hsl(var(--primary))] hover:text-[hsl(var(--primary))]"
+                            } ${!available ? "cursor-not-allowed line-through opacity-40" : ""}`}
+                          >
+                            {value}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
 
-            {!allSoldOut && (
+            {!allSoldOut && !variant?.soldOut && (
               <div className="mt-8">
                 <p className="font-mono-tech mb-3 text-[0.65rem] uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">
                   Quantity
@@ -252,7 +294,7 @@ export default function Product() {
             )}
 
             <div className="mt-10">
-              {allSoldOut ? (
+              {allSoldOut || variant?.soldOut ? (
                 <span className="inline-flex rounded-sm border border-[hsl(var(--border))] px-6 py-3.5 font-mono-tech text-xs uppercase tracking-[0.25em] text-[hsl(var(--muted-foreground))]">
                   Sold out
                 </span>
@@ -260,7 +302,7 @@ export default function Product() {
                 <button
                   type="button"
                   onClick={startCheckout}
-                  disabled={busy || !variantId}
+                  disabled={busy || !variant?.id}
                   className="btn-solid rounded-sm px-8 py-4 font-mono-tech text-xs uppercase tracking-[0.25em] disabled:opacity-50"
                 >
                   {busy ? "Starting checkout…" : "Checkout"}
