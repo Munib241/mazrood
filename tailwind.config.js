@@ -68,7 +68,7 @@ module.exports = {
   			body: ['var(--font-body)'],
   			display: ['var(--font-display)'],
   			mono: ['var(--font-mono)'],
-  			logo: ['"Archivo Black"', 'var(--font-heading)']
+  			logo: ['Archivo', 'var(--font-heading)']
   		},
   		keyframes: {
   			'accordion-down': {

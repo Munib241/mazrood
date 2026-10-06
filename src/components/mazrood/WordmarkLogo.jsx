@@ -1,15 +1,19 @@
-// Official MAZROOD™ wordmark — rendered as clean, sharp text in Archivo Black,
-// always in brand blue #000f9f, so it stays pixel-perfect at every size.
+// Official MAZROOD™ wordmark: sharp live text in Archivo Black Expanded
+// (weight 900, width 125%), always brand blue #000f9f. The ™ sits raised
+// above the D's top-right corner, matching the reference artwork.
 export default function WordmarkLogo({ alt = "MAZROOD™" }) {
   return (
     <span
-      className="font-logo text-brand-blue inline-flex items-baseline text-[22px] leading-none tracking-[-0.02em] select-none md:text-[28px]"
-      aria-label={alt}
       role="img"
+      aria-label={alt}
+      className="relative inline-block select-none font-logo text-[20px] font-black leading-none tracking-[0.01em] text-brand-blue [font-stretch:125%] md:text-[24px] lg:text-[20px] xl:text-[26px]"
     >
       MAZROOD
-      <span className="ml-[0.15em] align-super text-[0.34em] tracking-normal">
-        ™
+      <span
+        aria-hidden="true"
+        className="absolute bottom-full right-0 translate-x-[40%] text-[0.28em] leading-none tracking-normal [font-stretch:100%]"
+      >
+        TM
       </span>
     </span>
   );

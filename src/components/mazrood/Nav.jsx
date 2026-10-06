@@ -68,7 +68,7 @@ export default function Nav() {
         <nav className="mx-auto flex h-[72px] max-w-[1600px] items-center justify-between px-6 md:px-10">
           <Link
             to="/"
-            className="flex items-center"
+            className="mr-8 flex shrink-0 items-center pt-[0.35rem]"
             aria-label="Mazrood Studio home"
           >
             {/* Official MAZROOD™ wordmark, rebuilt from the reference with a
