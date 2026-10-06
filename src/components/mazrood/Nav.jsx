@@ -75,8 +75,10 @@ export default function Nav() {
             <Image
               src="https://media.base44.com/images/public/6abfc987ea748e49e7475c82/da775dca9_generated_image.png"
               alt="MAZROOD™"
-              fittingType="fit"
-              className="h-[22px] w-auto md:h-7"
+              fittingType="fill"
+              focalPointY={0.5}
+              className="h-[22px] md:h-7"
+              style={{ aspectRatio: "1024 / 200" }}
             />
           </Link>
 
