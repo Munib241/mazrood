@@ -49,6 +49,8 @@ export const cartLines = (items) =>
   (items || []).map((i) => ({ variantId: i.variantId, quantity: i.qty }));
 
 export const onCartChange = (cb) => {
-  window.addEventListener(EVENT, cb);
-  return () => window.removeEventListener(EVENT, cb);
+  // Callers subscribe for the cart itself, not the raw event object.
+  const handler = (e) => cb(e.detail);
+  window.addEventListener(EVENT, handler);
+  return () => window.removeEventListener(EVENT, handler);
 };
