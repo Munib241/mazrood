@@ -1,26 +1,26 @@
-# Mazrood Studio — Shopify Theme (v2.0.0)
+# Mazrood Studio — Shopify Theme (v3.0.0)
 
-A complete, self-contained Shopify theme rebuilt on the architecture of the live working store: scoped section CSS, settings-driven colors, Jost typography throughout, and the proven SS26 home section with its swatch-driven product cards.
+A self-contained Online Store 2.0 theme that mirrors the Mazrood app home page 1:1: light editorial palette (bone `#f6f3ef`, ink `#16161d`, brass `#96782c`), Space Grotesk headings, Inter body, and the MAZROOD™ wordmark in Archivo Expanded, brand blue `#000f9f`.
 
 ## Install
 
 1. Shopify admin → **Online Store → Themes → Add theme → Upload zip file**.
-2. Upload `mazrood-shopify-theme-v2.zip`.
-3. Click **Customize** to adjust colors, logo, menus and homepage sections, then **Publish**.
+2. Upload the zip, then **Publish**.
 
-## What's included
+## Home page (in order, all editable in Customize)
 
-- **Home** — the SS26 launch section (hero with parallax and 3D floating cards, stats strip, product grid with interactive swatch cards, lookbook, banner, newsletter) plus a featured "Sale" collection row and a "Shop by Category" grid.
-- **Collection pages** — sorting, 24-per-page pagination, swatch product cards.
-- **Product pages** — gallery with thumbnails, per-option variant pickers with live price/availability updates, quantity, add-to-cart.
-- **Cart** — slide-in cart drawer with AJAX quantity updates, plus a full cart page.
-- **Search, blog, article, pages, 404, collections list**.
-- **Customer accounts** — login (with password recovery), register, account dashboard, order history, addresses, reset/activate password.
-- **Password page and gift card page**.
+1. **Hero** — full-screen SS26 campaign photo, cursor light, "End of Season." headline, Shop SS26 / Shop Sale buttons.
+2. **Studio manifesto** — "We don't chase trends. We build standards." with three principles.
+3. **Rope line** — sailor-yellow rope with four products hanging on clothespins (position and drop per item).
+4. **Product row: New Arrivals** — the eight SS26 caps.
+5. **The look** — two alternating editorial rows (Tencel Shirt, Riviera Bouclé Holdall).
+6. **Product row: Sale** — end-of-season markdowns with hover image swap and compare-at prices.
+
+Header: transparent over the hero, glass panel once scrolled, live `main-menu` with dropdowns, cart drawer, mobile menu and mobile bottom tabs.
+Footer: "Join the list." newsletter sign-up, collection links, support/policy links, copyright.
 
 ## Notes
 
-- Colors and wordmark are theme settings (Theme settings → Colors / Logo) — default Mazrood palette: bone white `#f6f3ee`, brand blue `#000f9f`.
-- The homepage "New Arrivals" grid and collection blocks reference collection handles (`caps`, `new-2026`, `fw25-26`, etc.). After installing, open Customize → each section and re-pick the right collection if any handle was renamed.
-- Homepage hero/lookbook images are picked in Customize → SS26 Launch Section.
-- Color swatches use Shopify's native swatch feature; change behavior under Theme settings → Product cards.
+- Products are picked by handle in Customize; if a handle was renamed, re-pick it in that section.
+- Hero and look images use the campaign image URLs by default — pick an image in Customize to override.
+- Other templates: collection, product, cart (plus slide-in drawer), search, blog, article, pages, 404, customer accounts, password and gift card.

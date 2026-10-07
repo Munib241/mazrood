@@ -127,6 +127,13 @@
     });
   }
 
+  /* ── Header: glass panel once scrolled off the home hero ── */
+  if (hdr) {
+    var onScroll = function () { hdr.classList.toggle('is-scrolled', window.scrollY > 40); };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
   /* ── Product page: gallery ── */
   var mainImg = document.querySelector('[data-pp-main]');
   if (mainImg) {

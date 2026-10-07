@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Mazrood Studio",
-    "theme_version": "2.0.0",
+    "theme_version": "3.0.0",
     "theme_author": "Mazrood",
     "theme_documentation_url": "https://mazrood.com",
     "theme_support_url": "https://mazrood.com"
@@ -10,26 +10,26 @@
   {
     "name": "Colors",
     "settings": [
-      { "type": "color", "id": "col_page_bg", "label": "Page background", "default": "#f6f3ee" },
-      { "type": "color", "id": "col_text", "label": "Body text", "default": "#000f9f" },
-      { "type": "color", "id": "col_headings", "label": "Headings", "default": "#000f9f" },
-      { "type": "color", "id": "col_links", "label": "Links", "default": "#000f9f" },
-      { "type": "color", "id": "col_border", "label": "Borders and rules", "default": "#e7e0d4" },
-      { "type": "color", "id": "col_btn_bg", "label": "Button background", "default": "#000f9f" },
-      { "type": "color", "id": "col_btn", "label": "Button text", "default": "#ffffff" },
-      { "type": "color", "id": "col_announcement_bg", "label": "Announcement bar background", "default": "#423f3f" },
-      { "type": "color", "id": "col_announcement_text", "label": "Announcement bar text", "default": "#ffffff" },
-      { "type": "color", "id": "col_footer_bg", "label": "Footer background", "default": "#f6f3ee" },
-      { "type": "color", "id": "col_footer_text", "label": "Footer text", "default": "#000f9f" },
-      { "type": "color", "id": "col_sale", "label": "Sale label", "default": "#b03a2e" },
-      { "type": "color", "id": "col_sold", "label": "Sold out label", "default": "#000f9f" },
-      { "type": "color", "id": "col_new", "label": "New label", "default": "#60a567" }
+      { "type": "color", "id": "col_page_bg", "label": "Page background", "default": "#f6f3ef" },
+      { "type": "color", "id": "col_text", "label": "Body text", "default": "#16161d" },
+      { "type": "color", "id": "col_headings", "label": "Headings", "default": "#16161d" },
+      { "type": "color", "id": "col_links", "label": "Links", "default": "#16161d" },
+      { "type": "color", "id": "col_border", "label": "Borders and rules", "default": "#dcd8d0" },
+      { "type": "color", "id": "col_btn_bg", "label": "Brass accent / button background", "default": "#96782c" },
+      { "type": "color", "id": "col_btn", "label": "Button text", "default": "#f7f5f1" },
+      { "type": "color", "id": "col_announcement_bg", "label": "Announcement bar background", "default": "#96782c" },
+      { "type": "color", "id": "col_announcement_text", "label": "Announcement bar text", "default": "#f7f5f1" },
+      { "type": "color", "id": "col_footer_bg", "label": "Footer background", "default": "#f6f3ef" },
+      { "type": "color", "id": "col_footer_text", "label": "Footer text", "default": "#16161d" },
+      { "type": "color", "id": "col_sale", "label": "Sale label", "default": "#96782c" },
+      { "type": "color", "id": "col_sold", "label": "Sold out label", "default": "#b02626" },
+      { "type": "color", "id": "col_new", "label": "New label", "default": "#3e7a45" }
     ]
   },
   {
     "name": "Typography",
     "settings": [
-      { "type": "paragraph", "content": "Headings and body text use Jost, matching the Mazrood editorial identity." }
+      { "type": "paragraph", "content": "Headings and labels use Space Grotesk, body text uses Inter, and the MAZROOD wordmark uses Archivo Expanded in brand blue #000f9f — matching the Mazrood app." }
     ]
   },
   {
@@ -38,7 +38,7 @@
       { "type": "image_picker", "id": "logo", "label": "Logo image (optional, overrides wordmark)" },
       { "type": "range", "id": "logo_width", "label": "Logo image width (desktop)", "min": 60, "max": 300, "step": 10, "unit": "px", "default": 150 },
       { "type": "text", "id": "logo_text", "label": "Wordmark text", "default": "MAZROOD" },
-      { "type": "text", "id": "logo_tm", "label": "Trademark mark", "default": "™" }
+      { "type": "text", "id": "logo_tm", "label": "Trademark mark", "default": "TM" }
     ]
   },
   {

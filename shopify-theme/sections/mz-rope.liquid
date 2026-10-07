@@ -1,0 +1,97 @@
+{%- comment -%}
+  Sailor-yellow rope with products hanging on clothespins — mirrors the app's
+  RopeLine. Each item sits on the same bezier curve (M0 18 C25 62 75 62 100 18),
+  stretched across the full width with a 132px sag band.
+{%- endcomment -%}
+<section class="mz mzr" aria-label="Mazrood products hung on the studio line">
+  {%- if section.settings.eyebrow != blank -%}<p class="mz-eye">{{ section.settings.eyebrow }}</p>{%- endif -%}
+
+  <div class="mzr-stage">
+    <svg class="mzr-svg" aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <path d="M 0 18 C 25 62 75 62 100 18" fill="none" stroke="#D9A83C" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+      <path d="M 0 18 C 25 62 75 62 100 18" fill="none" stroke="#8A641B" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 9" opacity="0.5" vector-effect="non-scaling-stroke"></path>
+    </svg>
+
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign p = block.settings.product
+        assign href = block.settings.url
+        assign src = block.settings.image_src
+        assign sold = false
+        if p != blank
+          assign href = p.url
+          if p.featured_image
+            assign src = p.featured_image | image_url: width: 500
+          endif
+          unless p.available
+            assign sold = true
+          endunless
+        endif
+
+        assign t = block.settings.position | times: 0.01
+        assign u = 1 | minus: t
+        assign a = u | times: u | times: u
+        assign b = u | times: u | times: t | times: 3
+        assign c = u | times: t | times: t | times: 3
+        assign d = t | times: t | times: t
+        assign x1 = b | times: 25
+        assign x2 = c | times: 75
+        assign x3 = d | times: 100
+        assign x = x1 | plus: x2 | plus: x3 | round: 2
+        assign ya = a | plus: d | times: 18
+        assign yb = b | plus: c | times: 62
+        assign rope_y = ya | plus: yb | times: 1.32 | round: 1
+        assign card_top = 132 | plus: block.settings.drop
+        assign line_h = card_top | minus: rope_y | round: 1
+        assign pin_top = rope_y | minus: 6
+      -%}
+      <div class="mzr-item" style="left:{{ x }}%" {{ block.shopify_attributes }}>
+        <span class="mzr-line" aria-hidden="true" style="top:{{ rope_y }}px;height:{{ line_h }}px"></span>
+        <span class="mzr-pin" aria-hidden="true" style="top:{{ pin_top }}px"></span>
+        <a href="{{ href }}" class="mzr-card" style="top:{{ card_top }}px" aria-label="{{ block.settings.label | default: p.title | escape }} — view product">
+          <div class="mzr-swing">
+            <div class="mzr-frame">
+              {%- if src != blank -%}<img src="{{ src }}" alt="" loading="lazy">{%- endif -%}
+            </div>
+            {%- if sold -%}<span class="mz-badge mz-badge--sold">Sold out</span>{%- endif -%}
+          </div>
+        </a>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rope line",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "02 — Fresh off the line" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Hanging product",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "text", "id": "label", "label": "Name (for screen readers)" },
+        { "type": "text", "id": "image_src", "label": "Image URL (used when no product is picked)" },
+        { "type": "text", "id": "url", "label": "Link (used when no product is picked)" },
+        { "type": "range", "id": "position", "label": "Position along the rope", "min": 5, "max": 95, "step": 1, "unit": "%", "default": 50 },
+        { "type": "range", "id": "drop", "label": "Extra drop below the rope", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 0 }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Rope line",
+      "blocks": [
+        { "type": "item", "settings": { "position": 17, "drop": 0 } },
+        { "type": "item", "settings": { "position": 40, "drop": 40 } },
+        { "type": "item", "settings": { "position": 62, "drop": 18 } },
+        { "type": "item", "settings": { "position": 85, "drop": 0 } }
+      ]
+    }
+  ]
+}
+{% endschema %}

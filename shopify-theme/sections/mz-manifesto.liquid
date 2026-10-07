@@ -1,0 +1,57 @@
+<section class="mz mz-sec mz-sec--rule" id="manifesto" aria-labelledby="h-{{ section.id }}">
+  <div class="mz-wrap">
+    <div class="mzm-grid">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<p class="mz-eye">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        <h2 id="h-{{ section.id }}" class="mz-h2">
+          {{ section.settings.line_1 }}<br>
+          <em>{{ section.settings.line_bold }}</em> {{ section.settings.line_2 }}<br>
+          {{ section.settings.line_3 }}
+        </h2>
+        {%- if section.settings.body != blank -%}<p class="mzm-lead">{{ section.settings.body }}</p>{%- endif -%}
+      </div>
+
+      <div class="mzm-list">
+        {%- for block in section.blocks -%}
+          <div class="mzm-row" {{ block.shopify_attributes }}>
+            <span class="mzm-n">{{ block.settings.n }}</span>
+            <h3 class="mzm-h">{{ block.settings.title }}</h3>
+            <p class="mzm-copy">{{ block.settings.copy }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Studio manifesto",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "01 — Studio Manifesto" },
+    { "type": "text", "id": "line_1", "label": "Heading line 1", "default": "We don't chase" },
+    { "type": "text", "id": "line_bold", "label": "Heading (bold italic word)", "default": "trends." },
+    { "type": "text", "id": "line_2", "label": "Heading line 2 (after bold word)", "default": "We build" },
+    { "type": "text", "id": "line_3", "label": "Heading line 3", "default": "standards." },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "Mazrood is a studio before it is a label. We design quietly, produce slowly, and release only what we believe belongs in the wardrobe for years — not weeks." }
+  ],
+  "blocks": [
+    {
+      "type": "principle",
+      "name": "Principle",
+      "settings": [
+        { "type": "text", "id": "n", "label": "Number", "default": "01" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Cut with intent" },
+        { "type": "textarea", "id": "copy", "label": "Copy", "default": "Every pattern starts as a question: what does this garment need to do — and nothing more. We strip until only the essential remains." }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Studio manifesto",
+      "blocks": [{ "type": "principle" }, { "type": "principle" }, { "type": "principle" }]
+    }
+  ]
+}
+{% endschema %}

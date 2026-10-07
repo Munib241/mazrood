@@ -1,0 +1,42 @@
+{%- comment -%}
+  Home product card — mirrors the app's New Arrivals and Sale cards.
+  style: 'new' (hover zoom + arrow) | 'sale' (Sale badge, hover crossfade, compare price)
+{%- endcomment -%}
+{%- liquid
+  assign img = product.featured_media.preview_image
+  assign alt_img = false
+  if style == 'sale' and product.media.size > 1
+    assign alt_img = product.media[1].preview_image
+  endif
+-%}
+<a href="{{ product.url }}" class="mzc">
+  <div class="mzc-media">
+    {%- if img -%}
+      <img src="{{ img | image_url: width: 800 }}" alt="{{ product.title | escape }}" loading="lazy"
+           class="{% if style == 'sale' %}{% if alt_img %}mzc-has-alt{% endif %}{% else %}mzc-zoom{% endif %}">
+    {%- endif -%}
+    {%- if alt_img -%}
+      <img src="{{ alt_img | image_url: width: 800 }}" alt="" loading="lazy" class="mzc-alt">
+    {%- endif -%}
+    {%- if style == 'sale' -%}
+      <span class="mz-badge mz-badge--sale">Sale</span>
+    {%- else -%}
+      <span class="mzc-shade"></span>
+    {%- endif -%}
+    {%- unless product.available -%}
+      <span class="mz-badge mz-badge--sold">Sold out</span>
+    {%- endunless -%}
+    {%- unless style == 'sale' -%}
+      <span class="mzc-arrow">{% render 'mz-icon', name: 'arrow-up-right', size: 14 %}</span>
+    {%- endunless -%}
+  </div>
+  <p class="mzc-name">{{ product.title }}</p>
+  {%- if style == 'sale' -%}
+    <p class="mzc-price">
+      <span class="mzc-now">{{ product.price | money }}</span>
+      {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
+    </p>
+  {%- else -%}
+    <p class="mzc-price">{{ product.price | money }}</p>
+  {%- endif -%}
+</a>
