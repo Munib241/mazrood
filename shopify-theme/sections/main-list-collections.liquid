@@ -1,0 +1,28 @@
+<div class="page-width" style="padding-bottom: 90px;">
+  <div class="page-head">
+    <span class="eyebrow">Shop</span>
+    <h1>Collections</h1>
+  </div>
+
+  <div class="product-grid" style="grid-template-columns: repeat(3, 1fr);">
+    {%- for collection in collections -%}
+      <a href="{{ collection.url }}" class="card">
+        <div class="card-media">
+          {%- if collection.featured_image -%}
+            {{ collection.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: collection.title | escape }}
+          {%- endif -%}
+        </div>
+        <div class="card-info">
+          <h3>{{ collection.title }}</h3>
+        </div>
+      </a>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collections list",
+  "settings": []
+}
+{% endschema %}

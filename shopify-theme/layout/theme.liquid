@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_background }}">
+  <title>
+    {{ page_title }}
+    {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
+    {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  {{ settings.type_heading_font | font_face: font_display: 'swap' }}
+  {{ settings.type_body_font | font_face: font_display: 'swap' }}
+
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">
+  {%- endif -%}
+
+  <link href="{{ 'base.css' | asset_url }}" rel="stylesheet" type="text/css" media="all">
+  <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+  {{ content_for_header }}
+
+  <style>
+    :root {
+      --bg: rgb({{ settings.color_background }});
+      --bg-rgb: {{ settings.color_background }};
+      --fg: rgb({{ settings.color_text }});
+      --muted: rgb({{ settings.color_text_muted }});
+      --card: rgb({{ settings.color_card }});
+      --border: rgb({{ settings.color_border }});
+      --primary: rgb({{ settings.color_primary }});
+      --primary-fg: rgb({{ settings.color_primary_text }});
+      --primary-rgb: {{ settings.color_primary }};
+      --brand-blue: rgb({{ settings.color_brand_blue }});
+      --radius: {{ settings.corner_radius }}px;
+      --page-width: {{ settings.page_width }}px;
+      --font-heading: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+      --font-body: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#MainContent">Skip to content</a>
+
+  {% sections 'header-group' %}
+
+  <main id="MainContent" class="main-content" role="main">
+    {{ content_for_layout }}
+  </main>
+
+  {% sections 'footer-group' %}
+
+  <div class="cart-toast" id="CartToast" hidden></div>
+</body>
+</html>

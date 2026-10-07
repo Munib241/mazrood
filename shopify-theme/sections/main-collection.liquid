@@ -1,0 +1,33 @@
+<div class="page-width">
+  <div class="page-head">
+    {%- if collection.description != blank -%}
+      <span class="eyebrow">Collection</span>
+    {%- endif -%}
+    <h1>{{ collection.title }}</h1>
+    <p>{{ collection.description }}</p>
+  </div>
+
+  <div class="product-grid" style="padding-bottom: 90px;">
+    {%- paginate collection.products by 24 -%}
+      {%- for product in collection.products -%}
+        {% render 'product-card', product: product %}
+      {%- else -%}
+        <p>Nothing here yet. Check back soon.</p>
+      {%- endfor -%}
+
+      {%- if paginate.pages > 1 -%}
+        <div class="pagination">
+          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">&larr; Previous</a>{%- endif -%}
+          {%- if paginate.next -%}<a href="{{ paginate.next.url }}">Next &rarr;</a>{%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": []
+}
+{% endschema %}

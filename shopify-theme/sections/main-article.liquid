@@ -1,0 +1,22 @@
+<div class="page-width" style="padding-bottom: 90px;">
+  <div class="page-head">
+    <span class="eyebrow">Journal</span>
+    <h1>{{ article.title }}</h1>
+    <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%b %d, %Y' }}</time>
+  </div>
+
+  {%- if article.image -%}
+    <div class="article-hero">
+      {{ article.image | image_url: width: 2000 | image_tag: alt: article.title | escape }}
+    </div>
+  {%- endif -%}
+
+  <div class="article-body rte">{{ article.content }}</div>
+</div>
+
+{% schema %}
+{
+  "name": "Article",
+  "settings": []
+}
+{% endschema %}

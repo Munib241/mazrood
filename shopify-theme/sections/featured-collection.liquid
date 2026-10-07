@@ -1,0 +1,56 @@
+{%- liquid
+  assign col = section.settings.collection
+  assign count = section.settings.products_to_show
+-%}
+<section class="section">
+  <div class="page-width">
+    <div class="section-head">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      {%- endif -%}
+      <h2>{{ section.settings.heading | escape | default: 'New arrivals' }}</h2>
+    </div>
+
+    <div class="product-grid">
+      {%- if col != blank -%}
+        {%- for product in col.products limit: count -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for product in collections.all.products limit: count -%}
+          {% render 'product-card', product: product %}
+        {%- else -%}
+          <p>Choose a collection for this section in the theme editor.</p>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_view_all and col != blank -%}
+      <div style="margin-top: 44px;">
+        <a href="{{ col.url }}" class="btn btn-ghost">View all</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label", "default": "Just landed" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "New arrivals" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    { "type": "checkbox", "id": "show_view_all", "label": "Show 'View all' button", "default": true }
+  ],
+  "presets": [{ "name": "Featured collection" }]
+}
+{% endschema %}

@@ -1,0 +1,78 @@
+<div class="page-width" style="padding-bottom: 90px;">
+  <div class="page-head">
+    <span class="eyebrow">Bag</span>
+    <h1>Your cart</h1>
+  </div>
+
+  {%- if cart.item_count == 0 -%}
+    <div class="empty-state">
+      <p>Your cart is empty.</p>
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn-ghost">Continue shopping</a>
+    </div>
+  {%- else -%}
+    {%- form 'cart', cart -%}
+      <table class="cart-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for item in cart.items -%}
+            <tr class="cart-row">
+              <td>
+                <a href="{{ item.url }}" style="display: flex; gap: 16px; align-items: center;">
+                  <span class="cart-item-media">
+                    {%- if item.image -%}
+                      {{ item.image | image_url: width: 300 | image_tag: alt: item.title | escape }}
+                    {%- endif -%}
+                  </span>
+                  <span>
+                    <span class="cart-item-title">{{ item.product.title }}</span><br>
+                    {%- unless item.variant.title contains 'Default' -%}
+                      <span class="cart-item-variant">{{ item.variant.title }}</span>
+                    {%- endunless -%}
+                  </span>
+                </a>
+              </td>
+              <td class="cart-item-price">{{ item.final_price | money }}</td>
+              <td>
+                <input
+                  class="qty-update"
+                  type="number"
+                  name="updates[]"
+                  value="{{ item.quantity }}"
+                  min="0"
+                  aria-label="Quantity for {{ item.title | escape }}"
+                >
+              </td>
+              <td>{{ item.final_line_price | money }}</td>
+              <td>
+                <a class="cart-remove" href="{{ item.url_to_remove }}">Remove</a>
+              </td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+
+      <div class="cart-footer">
+        <p class="cart-subtotal">Subtotal {{ cart.total_price | money_with_currency }}</p>
+        <p class="cart-note">Taxes and shipping calculated at checkout.</p>
+        <div class="cart-actions">
+          <button type="submit" name="update" class="btn btn-ghost">Update cart</button>
+          <button type="submit" name="checkout" class="btn btn-solid">Checkout</button>
+        </div>
+      </div>
+    {%- endform -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Cart",
+  "settings": []
+}
+{% endschema %}

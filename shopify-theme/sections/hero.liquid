@@ -1,0 +1,46 @@
+{%- liquid
+  assign h = 'hero--medium'
+  if section.settings.full_height
+    assign h = ''
+  endif
+-%}
+<section class="hero {{ h }}">
+  {%- if section.settings.image != blank -%}
+    <div class="hero__media">
+      {{ section.settings.image | image_url: width: 2400 | image_tag: loading: 'eager', fetchpriority: 'high', alt: section.settings.heading | escape }}
+    </div>
+  {%- endif -%}
+  <div class="hero__overlay" aria-hidden="true"></div>
+  <div class="hero__content">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="eyebrow">{{ section.settings.eyebrow | escape }}</span>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2>{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <p>{{ section.settings.text | escape }}</p>
+    {%- endif -%}
+    {%- if section.settings.button_label != blank -%}
+      <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="btn btn-solid">
+        {{ section.settings.button_label | escape }}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Background image" },
+    { "type": "checkbox", "id": "full_height", "label": "Full screen height", "default": true },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label", "default": "Mazrood Studio" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Engineered for the night" },
+    { "type": "text", "id": "text", "label": "Subheading", "default": "Atmospheric design, distilled into garments." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop the collection" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

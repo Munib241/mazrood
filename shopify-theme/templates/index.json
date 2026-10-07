@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {}
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {}
+    },
+    "lookbook": {
+      "type": "lookbook",
+      "settings": {}
+    }
+  },
+  "order": ["hero", "featured", "lookbook"]
+}

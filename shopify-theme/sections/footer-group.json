@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    }
+  },
+  "order": ["newsletter", "footer"]
+}

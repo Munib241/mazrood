@@ -1,0 +1,30 @@
+{%- liquid
+  assign price = product.price
+  assign compare = product.compare_at_price
+-%}
+<a href="{{ product.url }}" class="card">
+  <div class="card-media">
+    <div class="card-badges">
+      {%- if compare > price -%}
+        <span class="badge">Sale</span>
+      {%- endif -%}
+      {%- unless product.available -%}
+        <span class="badge badge--sold">Sold out</span>
+      {%- endunless -%}
+    </div>
+    {%- if product.featured_media -%}
+      {{ product.featured_media | image_url: width: 900 | image_tag: loading: 'lazy', alt: product.title | escape }}
+    {%- endif -%}
+  </div>
+  <div class="card-info">
+    <h3>{{ product.title }}</h3>
+    <p class="card-price">
+      {%- if compare > price -%}
+        {{ price | money }}
+        <s>{{ compare | money }}</s>
+      {%- else -%}
+        {{ price | money }}
+      {%- endif -%}
+    </p>
+  </div>
+</a>

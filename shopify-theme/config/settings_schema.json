@@ -1,0 +1,132 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Mazrood",
+    "theme_author": "Mazrood Studio",
+    "theme_version": "1.0.0",
+    "theme_documentation_url": "https://mazrood.com",
+    "theme_support_url": "https://mazrood.com"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background",
+        "default": "#09090b"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text",
+        "default": "#d1d1d6"
+      },
+      {
+        "type": "color",
+        "id": "color_text_muted",
+        "label": "Muted text",
+        "default": "#8c8c94"
+      },
+      {
+        "type": "color",
+        "id": "color_card",
+        "label": "Card surface",
+        "default": "#101013"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Borders and rules",
+        "default": "#2a2a30"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Accent (buttons, highlights)",
+        "default": "#f1eee2"
+      },
+      {
+        "type": "color",
+        "id": "color_primary_text",
+        "label": "Text on accent",
+        "default": "#09090b"
+      },
+      {
+        "type": "color",
+        "id": "color_brand_blue",
+        "label": "Brand blue (wordmark)",
+        "default": "#000f9f"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_heading_font",
+        "label": "Heading font",
+        "default": "space_grotesk_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "label": "Body font",
+        "default": "inter_n4"
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "label": "Page width",
+        "min": 1100,
+        "max": 1600,
+        "step": 50,
+        "unit": "px",
+        "default": 1400
+      },
+      {
+        "type": "range",
+        "id": "corner_radius",
+        "label": "Corner radius",
+        "min": 0,
+        "max": 16,
+        "step": 2,
+        "unit": "px",
+        "default": 0
+      }
+    ]
+  },
+  {
+    "name": "Logo",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image (optional — overrides the text wordmark)"
+      },
+      {
+        "type": "text",
+        "id": "logo_text",
+        "label": "Text wordmark",
+        "default": "MAZROOD"
+      },
+      {
+        "type": "checkbox",
+        "id": "logo_show_tm",
+        "label": "Show ™ after the wordmark",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      }
+    ]
+  }
+]
