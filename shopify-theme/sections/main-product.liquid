@@ -3,6 +3,7 @@
 <section class="container">
   <div class="pp">
     <div class="pp-gallery" data-pp-gallery>
+      <script type="application/json" data-pp-media>[{%- for media in product.media -%}{{ media.preview_image | img_url: '1200x' | json }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]</script>
       <div class="pp-main-img">
         {%- if product.featured_media -%}
           <img src="{{ product.featured_media | img_url: '1200x' }}"
@@ -96,8 +97,6 @@
 </section>
 
 <script type="application/json" data-pp-variants>{{ product.variants | json }}</script>
-<script type="application/json" data-pp-media>[{%- for media in product.media -%}{{ media.preview_image | img_url: '1200x' | json }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]</script>
-
 {% schema %}
 {
   "name": "Product",

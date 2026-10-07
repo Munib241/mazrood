@@ -137,7 +137,7 @@
   /* ── Product page: gallery carousel ── */
   var gallery = document.querySelector('[data-pp-gallery]');
   if (gallery) {
-    var mjson = gallery.querySelector('[data-pp-media]');
+    var mjson = document.querySelector('[data-pp-media]');
     var mainImg = gallery.querySelector('[data-pp-main]');
     var media = [];
     try { media = mjson ? JSON.parse(mjson.textContent) : (mainImg ? [mainImg.src] : []); } catch (e) {}
