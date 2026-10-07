@@ -1,5 +1,12 @@
 {
   "general": {
     "skip_to_content": "Skip to content"
+  },
+  "products": {
+    "labels": {
+      "sale": "Sale",
+      "sold_out": "Sold out",
+      "new": "New"
+    }
   }
 }
