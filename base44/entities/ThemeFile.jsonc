@@ -6,9 +6,9 @@
       "type": "string",
       "description": "Theme asset path as Shopify expects it, e.g. 'assets/theme.css', 'sections/header.liquid'"
     },
-    "content": {
+    "file_uri": {
       "type": "string",
-      "description": "File contents (text) to push to Shopify"
+      "description": "Private storage URI of the file's contents"
     },
     "deleted": {
       "type": "boolean",
@@ -17,6 +17,7 @@
     }
   },
   "required": [
-    "path"
+    "path",
+    "file_uri"
   ]
 }

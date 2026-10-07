@@ -50,7 +50,7 @@ export default async function (req: Request): Promise<Response> {
     }
 
     const all = await base44.entities.ThemeFile.filter({});
-    const files = all.filter((f) => f.path && f.content != null && !f.deleted);
+    const files = all.filter((f) => f.path && f.file_uri && !f.deleted);
     const deletions = all.filter((f) => f.path && f.deleted);
 
     // Find the synced theme (any role — the merchant may have published it),
@@ -67,8 +67,42 @@ export default async function (req: Request): Promise<Response> {
       theme = created.theme;
     }
 
-    // Remove assets flagged deleted.
+    const errors = [];
+    let synced = 0;
     let removed = 0;
+
+    // Uploads run in batches of 6; each asset needs its file fetched from
+    // private storage through a short-lived signed URL first.
+    for (let i = 0; i < files.length; i += 6) {
+      const batch = files.slice(i, i + 6);
+      const results = await Promise.allSettled(
+        batch.map(async (f) => {
+          const { signed_url } =
+            await base44.asServiceRole.integrations.Core.CreateFileSignedUrl({
+              file_uri: f.file_uri,
+              expires_in: 300,
+            });
+          if (!signed_url) throw new Error("Could not sign the stored file.");
+          const content = await fetch(signed_url, {
+            signal: AbortSignal.timeout(10000),
+          }).then((r) => r.text());
+          await adminApi(token, `/themes/${theme.id}/assets.json`, {
+            method: "PUT",
+            body: JSON.stringify({ asset: { key: f.path, value: content } }),
+          });
+        })
+      );
+      results.forEach((r, j) => {
+        if (r.status === "fulfilled") synced++;
+        else
+          errors.push({
+            path: batch[j].path,
+            error: String(r.reason?.message || r.reason),
+          });
+      });
+    }
+
+    // Remove assets flagged deleted.
     const delResults = await Promise.allSettled(
       deletions.map((f) =>
         fetch(
@@ -88,29 +122,6 @@ export default async function (req: Request): Promise<Response> {
       else if (r.status === "rejected")
         errors.push({ path: "?", error: String(r.reason?.message || r.reason) });
     });
-
-    // Upload text assets in batches of 6 parallel calls.
-    const errors = [];
-    let synced = 0;
-    for (let i = 0; i < files.length; i += 6) {
-      const batch = files.slice(i, i + 6);
-      const results = await Promise.allSettled(
-        batch.map((f) =>
-          adminApi(token, `/themes/${theme.id}/assets.json`, {
-            method: "PUT",
-            body: JSON.stringify({ asset: { key: f.path, value: f.content } }),
-          })
-        )
-      );
-      results.forEach((r, j) => {
-        if (r.status === "fulfilled") synced++;
-        else
-          errors.push({
-            path: batch[j].path,
-            error: String(r.reason?.message || r.reason),
-          });
-      });
-    }
 
     return Response.json({
       configured: true,
