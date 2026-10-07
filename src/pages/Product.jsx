@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
@@ -15,6 +16,7 @@ export default function Product() {
   const [qty, setQty] = useState(1);
   const [imgIndex, setImgIndex] = useState(0);
   const [imgDims, setImgDims] = useState(null);
+  const touchX = useRef(null);
   const [busy, setBusy] = useState(false);
   const [added, setAdded] = useState(false);
   const [checkoutError, setCheckoutError] = useState(null);
@@ -205,6 +207,15 @@ export default function Product() {
             <div
               className="relative overflow-hidden rounded-sm bg-[hsl(var(--background))]"
               style={{ aspectRatio: imgDims ? `${imgDims.w} / ${imgDims.h}` : "4 / 5" }}
+              onTouchStart={(e) => {
+                touchX.current = e.touches[0].clientX;
+              }}
+              onTouchEnd={(e) => {
+                if (images.length < 2) return;
+                const dx = e.changedTouches[0].clientX - touchX.current;
+                if (dx < -40) setImgIndex((i) => (i + 1) % images.length);
+                else if (dx > 40) setImgIndex((i) => (i - 1 + images.length) % images.length);
+              }}
             >
               <AnimatePresence initial={false}>
                 {shown && (
@@ -240,23 +251,44 @@ export default function Product() {
                     "radial-gradient(115% 115% at 50% 50%, transparent 52%, hsl(var(--background)) 98%)",
                 }}
               />
+              {images.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setImgIndex((i) => (i - 1 + images.length) % images.length)}
+                    aria-label="Previous photo"
+                    className="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--background))]/80 text-[hsl(var(--foreground))] backdrop-blur-sm transition hover:border-[hsl(var(--primary))] hover:text-[hsl(var(--primary))]"
+                  >
+                    <ChevronLeft size={18} strokeWidth={1.5} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setImgIndex((i) => (i + 1) % images.length)}
+                    aria-label="Next photo"
+                    className="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--background))]/80 text-[hsl(var(--foreground))] backdrop-blur-sm transition hover:border-[hsl(var(--primary))] hover:text-[hsl(var(--primary))]"
+                  >
+                    <ChevronRight size={18} strokeWidth={1.5} />
+                  </button>
+                  <span className="absolute right-3 top-3 rounded-sm bg-[hsl(var(--background))]/80 px-2 py-1 font-mono-tech text-[0.6rem] tracking-[0.2em] text-[hsl(var(--foreground))] backdrop-blur-sm">
+                    {Math.min(imgIndex, images.length - 1) + 1} / {images.length}
+                  </span>
+                </>
+              )}
             </div>
             {images.length > 1 && (
-              <div className="mt-4 flex gap-3">
+              <div className="mt-4 flex items-center justify-center gap-2.5">
                 {images.map((img, i) => (
                   <button
                     key={img}
                     type="button"
                     onClick={() => setImgIndex(i)}
                     aria-label={`View image ${i + 1}`}
-                    className={`h-16 w-14 overflow-hidden rounded-sm border transition ${
+                    className={`!min-h-0 !min-w-0 h-2 w-2 rounded-full p-0 transition ${
                       i === imgIndex
-                        ? "border-[hsl(var(--primary))]"
-                        : "border-[hsl(var(--border))] opacity-60 hover:opacity-100"
+                        ? "bg-[hsl(var(--primary))]"
+                        : "border border-[hsl(var(--muted-foreground))] bg-transparent opacity-50 hover:opacity-100"
                     }`}
-                  >
-                    <Image src={img} alt="" fittingType="fill" className="h-full w-full object-cover" />
-                  </button>
+                  />
                 ))}
               </div>
             )}
