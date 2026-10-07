@@ -136,24 +136,43 @@
 
   /* ── Product page: gallery carousel ── */
   var gallery = document.querySelector('[data-pp-gallery]');
-  if (gallery) {
-    var mjson = document.querySelector('[data-pp-media]');
-    var mainImg = gallery.querySelector('[data-pp-main]');
-    var media = [];
-    try { media = mjson ? JSON.parse(mjson.textContent) : (mainImg ? [mainImg.src] : []); } catch (e) {}
+  var goToMedia = null;
+  var track = gallery && gallery.querySelector('[data-pp-track]');
+  if (track) {
+    var slides = Array.prototype.slice.call(track.children);
     var dots = Array.prototype.slice.call(gallery.querySelectorAll('[data-pp-dot]'));
+    var countEl = gallery.querySelector('[data-pp-count]');
     var gidx = 0;
-    function showMedia(i) {
-      if (!media.length) return;
-      gidx = (i + media.length) % media.length;
-      if (mainImg) mainImg.src = media[gidx];
-      dots.forEach(function (d, j) { d.classList.toggle('is-on', j === gidx); });
+    function markMedia(i) {
+      gidx = i;
+      dots.forEach(function (d, j) { d.classList.toggle('is-on', j === i); });
+      if (countEl) countEl.textContent = (i + 1) + ' / ' + slides.length;
     }
+    function showMedia(i) {
+      if (slides.length < 2) return;
+      i = (i + slides.length) % slides.length;
+      track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' });
+      markMedia(i);
+    }
+    /* keep dots + counter in sync with finger swipes */
+    var settle;
+    track.addEventListener('scroll', function () {
+      clearTimeout(settle);
+      settle = setTimeout(function () {
+        var i = Math.round(track.scrollLeft / (track.clientWidth || 1));
+        markMedia(Math.max(0, Math.min(slides.length - 1, i)));
+      }, 80);
+    }, { passive: true });
     var prevBtn = gallery.querySelector('[data-pp-prev]');
     var nextBtn = gallery.querySelector('[data-pp-next]');
     if (prevBtn) prevBtn.addEventListener('click', function () { showMedia(gidx - 1); });
     if (nextBtn) nextBtn.addEventListener('click', function () { showMedia(gidx + 1); });
     dots.forEach(function (d, j) { d.addEventListener('click', function () { showMedia(j); }); });
+    goToMedia = function (mediaId) {
+      for (var s = 0; s < slides.length; s++) {
+        if (slides[s].getAttribute('data-media-id') === String(mediaId)) { showMedia(s); return; }
+      }
+    };
   }
 
   /* ── Product page: swatch + size variant picker ── */
@@ -243,7 +262,18 @@
     valueBtns.forEach(function (b) {
       b.addEventListener('click', function () {
         var oi = parseInt(b.getAttribute('data-pp-option-index'), 10);
-        chosen[oi] = b.getAttribute('data-pp-value');
+        var val = b.getAttribute('data-pp-value');
+        chosen[oi] = val;
+        /* a color swatch jumps the carousel to that color's photo */
+        if (goToMedia && b.classList.contains('pp-sw')) {
+          for (var k = 0; k < variants.length; k++) {
+            var vk = variants[k];
+            if ([vk.option1, vk.option2, vk.option3][oi] === val && vk.featured_media) {
+              goToMedia(vk.featured_media.id);
+              break;
+            }
+          }
+        }
         var v = findVariant();
         if (!v) {
           for (var i = 0; i < variants.length; i++) {

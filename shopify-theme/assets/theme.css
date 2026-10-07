@@ -273,14 +273,48 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--btn-bg); ou
 .pp { display: grid; grid-template-columns: 1fr; gap: 32px; padding: 32px 0 64px; }
 @media (min-width: 900px) { .pp { grid-template-columns: 1.15fr .85fr; gap: 56px; padding: 56px 0 88px; } }
 
-.pp-main-img { position: relative; background: var(--surface); }
-.pp-main-img img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.pp-main-img { position: relative; overflow: hidden; background: var(--page-bg); }
+/* swipeable track: native scroll-snap, so swiping works even before JS loads */
+.pp-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.pp-track::-webkit-scrollbar { display: none; }
+.pp-slide { flex: 0 0 100%; scroll-snap-align: start; }
+.pp-slide img, .pp-placeholder { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; display: block; -webkit-user-select: none; user-select: none; }
+/* soft vignette: photos fade into the page at every edge */
+.pp-main-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(115% 115% at 50% 50%, transparent 52%, var(--page-bg) 98%);
+}
+.pp-count {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  padding: 4px 8px;
+  background: rgba(246, 243, 239, .85);
+  font-family: var(--font-head);
+  font-size: 10px;
+  letter-spacing: .2em;
+  color: var(--text);
+}
 
 /* gallery carousel controls */
 .pp-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -293,30 +327,27 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--btn-bg); ou
   cursor: pointer;
   transition: border-color .25s;
 }
-.pp-nav:hover { border-color: var(--text); }
+.pp-nav:hover { border-color: var(--btn-bg); color: var(--btn-bg); }
 .pp-nav--prev { left: 12px; }
 .pp-nav--next { right: 12px; }
 .pp-dots {
-  position: absolute;
-  bottom: 14px;
-  left: 0;
-  right: 0;
+  margin-top: 16px;
   display: flex;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
 }
 .pp-dot {
   width: 8px;
   height: 8px;
   padding: 0;
   border-radius: 50%;
-  border: none;
+  border: 1px solid var(--text);
+  background: transparent;
+  opacity: .45;
   cursor: pointer;
-  background: rgba(255, 255, 255, .55);
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, .18);
-  transition: background .25s;
+  transition: background .25s, opacity .25s, border-color .25s;
 }
-.pp-dot.is-on { background: var(--text); }
+.pp-dot.is-on { background: var(--btn-bg); border-color: var(--btn-bg); opacity: 1; }
 
 /* color swatches */
 .pp-opt label span { font-weight: 400; opacity: .7; text-transform: none; letter-spacing: .05em; }
