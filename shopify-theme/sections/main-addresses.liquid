@@ -1,0 +1,131 @@
+<section class="addresses">
+  <h1 class="sec-title">Addresses</h1>
+  <a href="{{ routes.account_url }}" class="auth-alt" style="margin:0 0 20px">&larr; Back to account</a>
+
+  <div id="NewAddress" class="address-form" {% if customer.addresses.size > 0 %}hidden{% endif %}>
+    <h2 style="font-size:14px;letter-spacing:.2em;text-transform:uppercase;font-weight:500">Add a new address</h2>
+    {%- form 'customer_address', customer.new_address, id: 'AddressNewForm' -%}
+      <div class="field">
+        <label for="naFirst">First name</label>
+        <input id="naFirst" type="text" name="address[first_name]" autocomplete="given-name">
+      </div>
+      <div class="field">
+        <label for="naLast">Last name</label>
+        <input id="naLast" type="text" name="address[last_name]" autocomplete="family-name">
+      </div>
+      <div class="field">
+        <label for="naCompany">Company</label>
+        <input id="naCompany" type="text" name="address[company]" autocomplete="organization">
+      </div>
+      <div class="field">
+        <label for="naAddress1">Address 1</label>
+        <input id="naAddress1" type="text" name="address[address1]" autocomplete="address-line1">
+      </div>
+      <div class="field">
+        <label for="naAddress2">Address 2</label>
+        <input id="naAddress2" type="text" name="address[address2]" autocomplete="address-line2">
+      </div>
+      <div class="field">
+        <label for="naCity">City</label>
+        <input id="naCity" type="text" name="address[city]" autocomplete="address-level2">
+      </div>
+      <div class="field">
+        <label for="naCountry">Country</label>
+        <select id="naCountry" name="address[country]" data-default="{{ form.country }}" autocomplete="country">{{ all_country_option_tags }}</select>
+      </div>
+      <div class="field">
+        <label for="naZip">Postal / ZIP code</label>
+        <input id="naZip" type="text" name="address[zip]" autocomplete="postal-code">
+      </div>
+      <div class="field">
+        <label for="naPhone">Phone</label>
+        <input id="naPhone" type="tel" name="address[phone]" autocomplete="tel">
+      </div>
+      <button type="submit" class="btn btn-solid">Save address</button>
+    {%- endform -%}
+  </div>
+
+  {%- for address in customer.addresses -%}
+    <div class="address-card">
+      {%- if address == customer.default_address -%}<p class="ft-head" style="margin-bottom:6px">Default</p>{%- endif -%}
+      <p style="margin:0">{{ address | format_address }}</p>
+      <div class="address-actions">
+        <a href="#edit-{{ address.id }}" data-address-toggle="{{ address.id }}" style="text-decoration:underline;font-size:12px">Edit</a>
+        {%- form 'customer_address', address -%}
+          <input type="hidden" name="_method" value="delete">
+          <button type="submit" style="background:none;border:none;cursor:pointer;font-size:12px;text-decoration:underline;color:var(--text);padding:0">Delete</button>
+        {%- endform -%}
+      </div>
+
+      <div id="edit-{{ address.id }}" class="address-form" hidden>
+        {%- form 'customer_address', address -%}
+          <div class="field">
+            <label for="eaFirst{{ address.id }}">First name</label>
+            <input id="eaFirst{{ address.id }}" type="text" name="address[first_name]" value="{{ address.first_name }}" autocomplete="given-name">
+          </div>
+          <div class="field">
+            <label for="eaLast{{ address.id }}">Last name</label>
+            <input id="eaLast{{ address.id }}" type="text" name="address[last_name]" value="{{ address.last_name }}" autocomplete="family-name">
+          </div>
+          <div class="field">
+            <label for="eaCompany{{ address.id }}">Company</label>
+            <input id="eaCompany{{ address.id }}" type="text" name="address[company]" value="{{ address.company }}" autocomplete="organization">
+          </div>
+          <div class="field">
+            <label for="eaAddress1{{ address.id }}">Address 1</label>
+            <input id="eaAddress1{{ address.id }}" type="text" name="address[address1]" value="{{ address.address1 }}" autocomplete="address-line1">
+          </div>
+          <div class="field">
+            <label for="eaAddress2{{ address.id }}">Address 2</label>
+            <input id="eaAddress2{{ address.id }}" type="text" name="address[address2]" value="{{ address.address2 }}" autocomplete="address-line2">
+          </div>
+          <div class="field">
+            <label for="eaCity{{ address.id }}">City</label>
+            <input id="eaCity{{ address.id }}" type="text" name="address[city]" value="{{ address.city }}" autocomplete="address-level2">
+          </div>
+          <div class="field">
+            <label for="eaCountry{{ address.id }}">Country</label>
+            <select id="eaCountry{{ address.id }}" name="address[country]" data-default="{{ address.country }}">{{ all_country_option_tags }}</select>
+          </div>
+          <div class="field">
+            <label for="eaZip{{ address.id }}">Postal / ZIP code</label>
+            <input id="eaZip{{ address.id }}" type="text" name="address[zip]" value="{{ address.zip }}" autocomplete="postal-code">
+          </div>
+          <div class="field">
+            <label for="eaPhone{{ address.id }}">Phone</label>
+            <input id="eaPhone{{ address.id }}" type="tel" name="address[phone]" value="{{ address.phone }}" autocomplete="tel">
+          </div>
+          <button type="submit" class="btn btn-solid">Update address</button>
+        {%- endform -%}
+      </div>
+    </div>
+  {%- endfor -%}
+
+  <button type="button" class="btn btn-ghost2" data-new-address-toggle>Add a new address</button>
+</section>
+
+<script>
+  (function(){
+    var btn = document.querySelector('[data-new-address-toggle]');
+    var formEl = document.getElementById('NewAddress');
+    if (btn && formEl) {
+      btn.addEventListener('click', function(){
+        formEl.hidden = !formEl.hidden;
+      });
+    }
+    document.querySelectorAll('[data-address-toggle]').forEach(function(t){
+      t.addEventListener('click', function(e){
+        e.preventDefault();
+        var el = document.getElementById('edit-' + t.getAttribute('data-address-toggle'));
+        if (el) el.hidden = !el.hidden;
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Addresses",
+  "settings": []
+}
+{% endschema %}

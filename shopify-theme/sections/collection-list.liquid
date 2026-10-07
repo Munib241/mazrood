@@ -1,0 +1,63 @@
+<section class="sec">
+  <div class="container">
+    {%- if section.settings.title != blank -%}
+      <div class="sec-head">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}<p class="sec-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+          <h2 class="sec-title">{{ section.settings.title }}</h2>
+        </div>
+      </div>
+    {%- endif -%}
+    <div class="clgrid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign cl = collections[block.settings.collection]
+          assign cl_img = block.settings.image
+          if cl_img == blank and cl != blank
+            assign cl_img = cl.featured_image
+          endif
+        -%}
+        <a href="{{ cl.url | default: routes.all_products_collection_url }}" class="cl-card" {{ block.shopify_attributes }}>
+          <div class="cl-img">
+            {%- if cl_img != blank -%}
+              <img src="{{ cl_img | img_url: '700x' }}" alt="{{ cl.title | default: block.settings.collection | escape }}" loading="lazy">
+            {%- endif -%}
+          </div>
+          <p class="cl-name">{{ cl.title | default: block.settings.collection }}</p>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection list",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Categories" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "Shop by Category" }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Custom image (optional)" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Collection list",
+      "blocks": [
+        { "type": "collection" },
+        { "type": "collection" },
+        { "type": "collection" },
+        { "type": "collection" }
+      ]
+    }
+  ]
+}
+{% endschema %}

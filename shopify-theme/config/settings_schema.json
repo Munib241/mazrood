@@ -1,132 +1,67 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Mazrood",
-    "theme_author": "Mazrood Studio",
-    "theme_version": "1.0.0",
+    "theme_name": "Mazrood Studio",
+    "theme_version": "2.0.0",
+    "theme_author": "Mazrood",
     "theme_documentation_url": "https://mazrood.com",
     "theme_support_url": "https://mazrood.com"
   },
   {
     "name": "Colors",
     "settings": [
-      {
-        "type": "color",
-        "id": "color_background",
-        "label": "Background",
-        "default": "#09090b"
-      },
-      {
-        "type": "color",
-        "id": "color_text",
-        "label": "Text",
-        "default": "#d1d1d6"
-      },
-      {
-        "type": "color",
-        "id": "color_text_muted",
-        "label": "Muted text",
-        "default": "#8c8c94"
-      },
-      {
-        "type": "color",
-        "id": "color_card",
-        "label": "Card surface",
-        "default": "#101013"
-      },
-      {
-        "type": "color",
-        "id": "color_border",
-        "label": "Borders and rules",
-        "default": "#2a2a30"
-      },
-      {
-        "type": "color",
-        "id": "color_primary",
-        "label": "Accent (buttons, highlights)",
-        "default": "#f1eee2"
-      },
-      {
-        "type": "color",
-        "id": "color_primary_text",
-        "label": "Text on accent",
-        "default": "#09090b"
-      },
-      {
-        "type": "color",
-        "id": "color_brand_blue",
-        "label": "Brand blue (wordmark)",
-        "default": "#000f9f"
-      }
+      { "type": "color", "id": "col_page_bg", "label": "Page background", "default": "#f6f3ee" },
+      { "type": "color", "id": "col_text", "label": "Body text", "default": "#000f9f" },
+      { "type": "color", "id": "col_headings", "label": "Headings", "default": "#000f9f" },
+      { "type": "color", "id": "col_links", "label": "Links", "default": "#000f9f" },
+      { "type": "color", "id": "col_border", "label": "Borders and rules", "default": "#e7e0d4" },
+      { "type": "color", "id": "col_btn_bg", "label": "Button background", "default": "#000f9f" },
+      { "type": "color", "id": "col_btn", "label": "Button text", "default": "#ffffff" },
+      { "type": "color", "id": "col_announcement_bg", "label": "Announcement bar background", "default": "#423f3f" },
+      { "type": "color", "id": "col_announcement_text", "label": "Announcement bar text", "default": "#ffffff" },
+      { "type": "color", "id": "col_footer_bg", "label": "Footer background", "default": "#f6f3ee" },
+      { "type": "color", "id": "col_footer_text", "label": "Footer text", "default": "#000f9f" },
+      { "type": "color", "id": "col_sale", "label": "Sale label", "default": "#b03a2e" },
+      { "type": "color", "id": "col_sold", "label": "Sold out label", "default": "#000f9f" },
+      { "type": "color", "id": "col_new", "label": "New label", "default": "#60a567" }
     ]
   },
   {
     "name": "Typography",
     "settings": [
-      {
-        "type": "font_picker",
-        "id": "type_heading_font",
-        "label": "Heading font",
-        "default": "space_grotesk_n4"
-      },
-      {
-        "type": "font_picker",
-        "id": "type_body_font",
-        "label": "Body font",
-        "default": "inter_n4"
-      }
-    ]
-  },
-  {
-    "name": "Layout",
-    "settings": [
-      {
-        "type": "range",
-        "id": "page_width",
-        "label": "Page width",
-        "min": 1100,
-        "max": 1600,
-        "step": 50,
-        "unit": "px",
-        "default": 1400
-      },
-      {
-        "type": "range",
-        "id": "corner_radius",
-        "label": "Corner radius",
-        "min": 0,
-        "max": 16,
-        "step": 2,
-        "unit": "px",
-        "default": 0
-      }
+      { "type": "paragraph", "content": "Headings and body text use Jost, matching the Mazrood editorial identity." }
     ]
   },
   {
     "name": "Logo",
     "settings": [
-      {
-        "type": "image_picker",
-        "id": "logo",
-        "label": "Logo image (optional — overrides the text wordmark)"
-      },
-      {
-        "type": "text",
-        "id": "logo_text",
-        "label": "Text wordmark",
-        "default": "MAZROOD"
-      },
-      {
-        "type": "checkbox",
-        "id": "logo_show_tm",
-        "label": "Show ™ after the wordmark",
-        "default": true
-      },
-      {
-        "type": "image_picker",
-        "id": "favicon",
-        "label": "Favicon"
-      }
+      { "type": "image_picker", "id": "logo", "label": "Logo image (optional, overrides wordmark)" },
+      { "type": "range", "id": "logo_width", "label": "Logo image width (desktop)", "min": 60, "max": 300, "step": 10, "unit": "px", "default": 150 },
+      { "type": "text", "id": "logo_text", "label": "Wordmark text", "default": "MAZROOD" },
+      { "type": "text", "id": "logo_tm", "label": "Trademark mark", "default": "™" }
+    ]
+  },
+  {
+    "name": "Product cards",
+    "settings": [
+      { "type": "select", "id": "swatch_source", "label": "Color swatches", "options": [ { "value": "native", "label": "Shopify native swatches" }, { "value": "theme", "label": "Theme option match" }, { "value": "none", "label": "No swatches" } ], "default": "native" },
+      { "type": "text", "id": "swatch_option_name", "label": "Option name for theme-matched swatches", "default": "Color" }
+    ]
+  },
+  {
+    "name": "Social",
+    "settings": [
+      { "type": "text", "id": "social_instagram", "label": "Instagram URL", "default": "https://www.instagram.com/mazrood/" },
+      { "type": "text", "id": "social_tiktok", "label": "TikTok URL" },
+      { "type": "text", "id": "social_facebook", "label": "Facebook URL" },
+      { "type": "text", "id": "social_pinterest", "label": "Pinterest URL" },
+      { "type": "text", "id": "social_whatsapp", "label": "WhatsApp number or URL" }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      { "type": "image_picker", "id": "favicon", "label": "Favicon" }
     ]
   }
 ]

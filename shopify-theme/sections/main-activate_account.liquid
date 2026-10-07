@@ -1,0 +1,28 @@
+<section class="auth">
+  <div class="auth-card">
+    <h1 class="sec-title">Activate account</h1>
+    <p class="auth-alt" style="margin:0 0 18px">Create your password to activate your account.</p>
+    {%- form 'activate_customer_password' -%}
+      {%- if form.errors -%}
+        <p class="nl-err">{{ form.errors | default_errors }}</p>
+      {%- endif -%}
+      <div class="field">
+        <label for="aaPassword">Password</label>
+        <input id="aaPassword" type="password" name="customer[password]" required autocomplete="new-password">
+      </div>
+      <div class="field">
+        <label for="aaConfirm">Confirm password</label>
+        <input id="aaConfirm" type="password" name="customer[password_confirmation]" required autocomplete="new-password">
+      </div>
+      <button type="submit" class="btn btn-solid">Activate account</button>
+      <button type="submit" name="decline" class="btn btn-ghost2" style="width:100%;margin-top:10px">Decline invitation</button>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Activate account",
+  "settings": []
+}
+{% endschema %}

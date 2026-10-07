@@ -1,0 +1,48 @@
+<section class="auth">
+  <div class="auth-card">
+    <h1 class="sec-title">Login</h1>
+
+    <div id="customerLogin">
+      {%- form 'customer_login', id: 'customerLoginForm' -%}
+        {%- if form.errors -%}
+          <p class="nl-err">{{ form.errors | default_errors }}</p>
+        {%- endif -%}
+        <div class="field">
+          <label for="clEmail">Email</label>
+          <input id="clEmail" type="email" name="customer[email]" required autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="clPassword">Password</label>
+          <input id="clPassword" type="password" name="customer[password]" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-solid">Sign in</button>
+      {%- endform -%}
+    </div>
+
+    <div id="recover" hidden>
+      {%- form 'recover_customer_password' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="auth-alt">We've sent you an email with a link to update your password.</p>
+        {%- endif -%}
+        {%- if form.errors -%}
+          <p class="nl-err">{{ form.errors | default_errors }}</p>
+        {%- endif -%}
+        <div class="field">
+          <label for="rcEmail">Email</label>
+          <input id="rcEmail" type="email" name="email" required autocomplete="email">
+        </div>
+        <button type="submit" class="btn btn-solid">Send reset link</button>
+      {%- endform -%}
+    </div>
+
+    <p class="auth-alt"><a href="#recover" data-recover-toggle>Forgot your password?</a></p>
+    <p class="auth-alt">New here? <a href="{{ routes.account_register_url }}">Create account</a></p>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Login",
+  "settings": []
+}
+{% endschema %}

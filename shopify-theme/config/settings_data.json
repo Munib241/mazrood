@@ -1,3 +1,27 @@
 {
-  "current": {}
+  "current": {
+    "col_page_bg": "#f6f3ee",
+    "col_text": "#000f9f",
+    "col_headings": "#000f9f",
+    "col_links": "#000f9f",
+    "col_border": "#e7e0d4",
+    "col_btn_bg": "#000f9f",
+    "col_btn": "#ffffff",
+    "col_announcement_bg": "#423f3f",
+    "col_announcement_text": "#ffffff",
+    "col_footer_bg": "#f6f3ee",
+    "col_footer_text": "#000f9f",
+    "col_sale": "#b03a2e",
+    "col_sold": "#000f9f",
+    "col_new": "#60a567",
+    "swatch_source": "native",
+    "swatch_option_name": "Color",
+    "logo_text": "MAZROOD",
+    "logo_tm": "™",
+    "social_instagram": "https://www.instagram.com/mazrood/",
+    "social_tiktok": "https://www.tiktok.com/@mazrood",
+    "social_facebook": "https://www.facebook.com/MazroodKSA/",
+    "social_pinterest": "https://www.pinterest.com/Mazrood2016/",
+    "favicon": "shopify://shop_images/favicon.png"
+  }
 }

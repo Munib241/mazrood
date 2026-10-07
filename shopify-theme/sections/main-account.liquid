@@ -1,0 +1,60 @@
+<section class="account">
+  <h1 class="sec-title">Account</h1>
+  <div class="account-grid">
+    <aside>
+      <div class="account-meta">
+        <p><strong>{{ customer.name }}</strong></p>
+        <p>{{ customer.email }}</p>
+        {%- if customer.default_address -%}
+          <p>{{ customer.default_address | format_address }}</p>
+        {%- endif -%}
+        <p><a href="{{ routes.account_addresses_url }}">Addresses</a></p>
+        <p><a href="{{ routes.account_logout_url }}">Log out</a></p>
+      </div>
+    </aside>
+    <div>
+      <h2 style="font-size:14px;letter-spacing:.2em;text-transform:uppercase;font-weight:500">Order history</h2>
+      {%- paginate customer.orders by 10 -%}
+        {%- if customer.orders.size > 0 -%}
+          <table class="account-table">
+            <thead>
+              <tr>
+                <th scope="col">Order</th>
+                <th scope="col">Date</th>
+                <th scope="col">Payment status</th>
+                <th scope="col">Fulfillment status</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for order in customer.orders -%}
+                <tr>
+                  <td><a href="{{ order.customer_url }}">{{ order.name }}</a></td>
+                  <td>{{ order.created_at | date: '%b %-d, %Y' }}</td>
+                  <td>{{ order.financial_status_label }}</td>
+                  <td>{{ order.fulfillment_status_label }}</td>
+                  <td>{{ order.total_price | money }}</td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+          {%- if paginate.pages > 1 -%}
+            <nav class="pager" style="justify-content:flex-start" aria-label="Pagination">
+              {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">&larr;</a>{%- endif -%}
+              {%- if paginate.next -%}<a href="{{ paginate.next.url }}">&rarr;</a>{%- endif -%}
+            </nav>
+          {%- endif -%}
+        {%- else -%}
+          <p>You haven't placed any orders yet. <a href="{{ routes.all_products_collection_url }}">Start shopping</a></p>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Account",
+  "settings": []
+}
+{% endschema %}

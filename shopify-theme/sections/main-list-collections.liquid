@@ -1,24 +1,23 @@
-<div class="page-width" style="padding-bottom: 90px;">
-  <div class="page-head">
-    <span class="eyebrow">Shop</span>
-    <h1>Collections</h1>
+<section class="container sec">
+  <div class="sec-head">
+    <div>
+      <p class="sec-eyebrow">Browse</p>
+      <h1 class="sec-title">Collections</h1>
+    </div>
   </div>
-
-  <div class="product-grid" style="grid-template-columns: repeat(3, 1fr);">
+  <div class="lc-grid">
     {%- for collection in collections -%}
-      <a href="{{ collection.url }}" class="card">
-        <div class="card-media">
+      <a href="{{ collection.url }}" class="cl-card">
+        <div class="cl-img">
           {%- if collection.featured_image -%}
-            {{ collection.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: collection.title | escape }}
+            <img src="{{ collection.featured_image | img_url: '700x' }}" alt="{{ collection.title | escape }}" loading="lazy">
           {%- endif -%}
         </div>
-        <div class="card-info">
-          <h3>{{ collection.title }}</h3>
-        </div>
+        <p class="cl-name">{{ collection.title }}</p>
       </a>
     {%- endfor -%}
   </div>
-</div>
+</section>
 
 {% schema %}
 {

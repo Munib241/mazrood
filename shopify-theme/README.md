@@ -1,41 +1,26 @@
-# Mazrood Shopify Theme
+# Mazrood Studio — Shopify Theme (v2.0.0)
 
-A custom Shopify Online Store 2.0 theme built for Mazrood: obsidian background,
-bone-white typography (Space Grotesk headings, Inter body), brand-blue #000f9f
-wordmark, sharp editorial corners.
+A complete, self-contained Shopify theme rebuilt on the architecture of the live working store: scoped section CSS, settings-driven colors, Jost typography throughout, and the proven SS26 home section with its swatch-driven product cards.
 
 ## Install
 
-1. Zip this folder (or use the provided zip).
-2. In Shopify admin go to **Online Store → Themes → Add theme → Upload zip file**.
-3. Upload, then click **Customize** on the Mazrood theme.
+1. Shopify admin → **Online Store → Themes → Add theme → Upload zip file**.
+2. Upload `mazrood-shopify-theme-v2.zip`.
+3. Click **Customize** to adjust colors, logo, menus and homepage sections, then **Publish**.
 
-## Set up after install
+## What's included
 
-- **Colors and fonts** are editable under Theme settings → Colors / Typography
-  (defaults already match the Mazrood design).
-- **Logo**: Theme settings → Logo. Leave empty to use the text wordmark
-  (default "MAZROOD" in brand blue, with the ™).
-- **Header menu**: the header uses Shopify's `main-menu` navigation. The footer
-  uses the `footer` menu — edit both under Online Store → Navigation.
-- **Homepage**: in the theme editor, pick a background image for the Hero,
-  choose a collection for "Featured collection", and add images/text to the
-  two Lookbook blocks.
-- **Newsletter**: signups land in Shopify Customers tagged `newsletter`.
-- Customer accounts use Shopify's new hosted account experience (no legacy
-  templates needed).
+- **Home** — the SS26 launch section (hero with parallax and 3D floating cards, stats strip, product grid with interactive swatch cards, lookbook, banner, newsletter) plus a featured "Sale" collection row and a "Shop by Category" grid.
+- **Collection pages** — sorting, 24-per-page pagination, swatch product cards.
+- **Product pages** — gallery with thumbnails, per-option variant pickers with live price/availability updates, quantity, add-to-cart.
+- **Cart** — slide-in cart drawer with AJAX quantity updates, plus a full cart page.
+- **Search, blog, article, pages, 404, collections list**.
+- **Customer accounts** — login (with password recovery), register, account dashboard, order history, addresses, reset/activate password.
+- **Password page and gift card page**.
 
-## Structure
+## Notes
 
-- `layout/theme.liquid` — base layout, renders header/footer section groups
-- `sections/` — header, footer, hero, featured collection, lookbook,
-  newsletter, and main templates (product, collection, cart, search, blog…)
-- `snippets/product-card.liquid` — shared product card
-- `assets/base.css`, `assets/theme.js` — styles and AJAX add-to-cart
-- `templates/*.json` — Online Store 2.0 JSON templates
-
-## Not included
-
-- Gift card page (`gift_card.liquid`) — add it before selling gift cards.
-- Variant-specific image swapping and color-swatch pickers — variants are
-  chosen from a single dropdown (standard, reliable).
+- Colors and wordmark are theme settings (Theme settings → Colors / Logo) — default Mazrood palette: bone white `#f6f3ee`, brand blue `#000f9f`.
+- The homepage "New Arrivals" grid and collection blocks reference collection handles (`caps`, `new-2026`, `fw25-26`, etc.). After installing, open Customize → each section and re-pick the right collection if any handle was renamed.
+- Homepage hero/lookbook images are picked in Customize → SS26 Launch Section.
+- Color swatches use Shopify's native swatch feature; change behavior under Theme settings → Product cards.

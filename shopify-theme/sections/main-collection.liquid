@@ -1,33 +1,54 @@
-<div class="page-width">
-  <div class="page-head">
-    {%- if collection.description != blank -%}
-      <span class="eyebrow">Collection</span>
+<section class="container coll">
+  <header class="coll-head">
+    {%- if section.settings.eyebrow != blank -%}<p class="sec-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+    <h1 class="sec-title">{{ collection.title }}</h1>
+    {%- if collection.description != blank and section.settings.show_description -%}
+      <div class="coll-desc rte">{{ collection.description }}</div>
     {%- endif -%}
-    <h1>{{ collection.title }}</h1>
-    <p>{{ collection.description }}</p>
+  </header>
+
+  <div class="coll-toolbar">
+    <p class="coll-count">{{ collection.products_count }} products</p>
+    <form method="get" action="{{ collection.url }}" data-auto-submit>
+      <select name="sort_by" class="pp-select" aria-label="Sort">
+        {%- for option in collection.sort_options -%}
+          <option value="{{ option.value }}"{% if option.value == collection.sort_by %} selected{% endif %}>{{ option.name }}</option>
+        {%- endfor -%}
+      </select>
+    </form>
   </div>
 
-  <div class="product-grid" style="padding-bottom: 90px;">
-    {%- paginate collection.products by 24 -%}
+  {%- paginate collection.products by 24 -%}
+    <div class="prod-grid" style="grid-template-columns:repeat(4,1fr)">
       {%- for product in collection.products -%}
-        {% render 'product-card', product: product %}
+        {% render 'mz-product-card', product: product %}
       {%- else -%}
-        <p>Nothing here yet. Check back soon.</p>
+        <p class="sec-empty">No products found</p>
       {%- endfor -%}
+    </div>
 
-      {%- if paginate.pages > 1 -%}
-        <div class="pagination">
-          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">&larr; Previous</a>{%- endif -%}
-          {%- if paginate.next -%}<a href="{{ paginate.next.url }}">Next &rarr;</a>{%- endif -%}
-        </div>
-      {%- endif -%}
-    {%- endpaginate -%}
-  </div>
-</div>
+    {%- if paginate.pages > 1 -%}
+      <nav class="pager" aria-label="Pagination">
+        {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">&larr;</a>{%- endif -%}
+        {%- for part in paginate.parts -%}
+          {%- if part.is_link -%}
+            <a href="{{ part.url }}">{{ part.title }}</a>
+          {%- else -%}
+            <span class="is-current">{{ part.title }}</span>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if paginate.next -%}<a href="{{ paginate.next.url }}">&rarr;</a>{%- endif -%}
+      </nav>
+    {%- endif -%}
+  {%- endpaginate -%}
+</section>
 
 {% schema %}
 {
   "name": "Collection",
-  "settings": []
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "checkbox", "id": "show_description", "label": "Show collection description", "default": false }
+  ]
 }
 {% endschema %}

@@ -1,0 +1,28 @@
+<section class="gc">
+  <h1 class="sec-title" style="font-size:clamp(20px,3vw,32px)">Here's your {{ gift_card.initial_value | money }} gift card for {{ shop.name }}.</h1>
+  {%- assign gift_card_balance = gift_card.balance | money -%}
+  {%- if gift_card.balance != gift_card.initial_value -%}
+    <p>Gift card balance: {{ gift_card_balance }}</p>
+  {%- endif -%}
+
+  {%- if gift_card.expired -%}
+    <p class="gc-disabled">This gift card has expired.</p>
+  {%- elsif gift_card.enabled != true -%}
+    <p class="gc-disabled">This gift card is disabled.</p>
+  {%- endif -%}
+
+  <p class="gc-code">{{ gift_card.code | format_code }}</p>
+
+  {%- if gift_card.pass_enabled -%}
+    <a href="{{ gift_card.pass_url }}" class="btn btn-solid">Add to Apple Wallet</a>
+  {%- endif -%}
+
+  <p class="auth-alt" style="margin-top:20px"><a href="{{ shop.url }}" target="_blank" rel="noopener">Start shopping</a></p>
+</section>
+
+{% schema %}
+{
+  "name": "Gift card",
+  "settings": []
+}
+{% endschema %}

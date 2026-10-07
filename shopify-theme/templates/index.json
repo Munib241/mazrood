@@ -1,17 +1,27 @@
 {
   "sections": {
-    "hero": {
-      "type": "hero",
-      "settings": {}
+    "home": {
+      "type": "mz-ss26-home"
     },
-    "featured": {
+    "sale": {
       "type": "featured-collection",
-      "settings": {}
+      "settings": {
+        "title": "Sale",
+        "collection": "fw25-26",
+        "columns": 4,
+        "count": 8
+      }
     },
-    "lookbook": {
-      "type": "lookbook",
-      "settings": {}
+    "categories": {
+      "type": "collection-list",
+      "blocks": {
+        "c1": { "type": "collection", "settings": { "collection": "t-shirts" } },
+        "c2": { "type": "collection", "settings": { "collection": "shirts" } },
+        "c3": { "type": "collection", "settings": { "collection": "caps" } },
+        "c4": { "type": "collection", "settings": { "collection": "hoodies-and-sweaters" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4"]
     }
   },
-  "order": ["hero", "featured", "lookbook"]
+  "order": ["home", "sale", "categories"]
 }

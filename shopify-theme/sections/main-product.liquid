@@ -1,86 +1,81 @@
-{%- liquid
-  assign v = product.selected_or_first_available_variant
--%}
-<div class="page-width product-page">
-  <div class="product-gallery">
-    {%- for media in product.media -%}
-      {%- if media.media_type == 'image' -%}
-        {{ media | image_url: width: 1400 | image_tag: class: 'product-photo', loading: 'lazy', alt: media.alt | default: product.title | escape }}
-      {%- else -%}
-        {{ media | media_tag: image_size: '1200x' }}
-      {%- endif -%}
-    {%- else -%}
-      <div class="product-photo"></div>
-    {%- endfor -%}
-  </div>
+{%- assign current_variant = product.selected_or_first_available_variant -%}
 
-  <div class="product-info">
-    <span class="eyebrow">{{ product.vendor | default: 'Mazrood Studio' }}</span>
-    <h1>{{ product.title }}</h1>
-
-    <p class="product-price">
-      {%- if v.compare_at_price > v.price -%}
-        {{ v.price | money }}
-        <s>{{ v.compare_at_price | money }}</s>
-      {%- else -%}
-        {{ v.price | money }}
-      {%- endif -%}
-    </p>
-
-    {%- if product.available -%}
-      <p class="stock-note stock-note--in">In stock</p>
-    {%- else -%}
-      <p class="stock-note stock-note--out">Currently sold out</p>
-    {%- endif -%}
-
-    <div class="product-desc rte">{{ product.description }}</div>
-
-    {%- form 'product', product, class: 'product-buy' -%}
-      {%- unless product.has_only_default_variant -%}
-        <div class="variant-field">
-          <label for="VariantSelect-{{ section.id }}">Option</label>
-          <select id="VariantSelect-{{ section.id }}" name="id" class="variant-select">
-            {%- for variant in product.variants -%}
-              <option
-                value="{{ variant.id }}"
-                {% if variant == v %}selected{% endif %}
-                {% unless variant.available %}disabled{% endunless %}
-              >
-                {{ variant.title }} — {{ variant.price | money }}{% unless variant.available %} (sold out){% endunless %}
-              </option>
-            {%- endfor -%}
-          </select>
-        </div>
-      {%- else -%}
-        <input type="hidden" name="id" value="{{ v.id }}">
-      {%- endunless -%}
-
-      <div class="qty-field">
-        <label for="Quantity-{{ section.id }}">Quantity</label>
-        <input
-          id="Quantity-{{ section.id }}"
-          class="qty-input"
-          type="number"
-          name="quantity"
-          value="1"
-          min="1"
-          max="10"
-        >
+<section class="container">
+  <div class="pp">
+    <div class="pp-media">
+      <div class="pp-main-img">
+        {%- if product.featured_media -%}
+          <img src="{{ product.featured_media | img_url: '1200x' }}"
+               alt="{{ product.featured_media.alt | default: product.title | escape }}"
+               id="ppMain" data-pp-main>
+        {%- endif -%}
       </div>
+      {%- if product.media.size > 1 -%}
+        <div class="pp-thumbs">
+          {%- for media in product.media -%}
+            <button type="button"
+                    class="pp-thumb{% if forloop.first %} is-on{% endif %}"
+                    data-pp-thumb="{{ media.preview_image | img_url: '1200x' }}"
+                    aria-label="View image {{ forloop.index }}">
+              <img src="{{ media.preview_image | img_url: '150x' }}" alt="" loading="lazy">
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
 
-      <button type="submit" class="btn btn-solid" {% unless product.available %}disabled{% endunless %}>
-        {%- if product.available -%}Add to cart{%- else -%}Sold out{%- endif -%}
-      </button>
-      {{ form | payment_button }}
-    {%- endform -%}
+    <div class="pp-info">
+      {%- if section.settings.show_vendor and product.vendor != blank -%}
+        <p class="pp-vendor">{{ product.vendor }}</p>
+      {%- endif -%}
+      <h1 class="pp-title">{{ product.title }}</h1>
+      <p class="pp-price">
+        <span data-pp-price>{{ current_variant.price | money }}</span>
+        {%- if current_variant.compare_at_price > current_variant.price -%}
+          <s class="pp-compare" data-pp-compare>{{ current_variant.compare_at_price | money }}</s>
+        {%- endif -%}
+      </p>
 
-    <p class="secure-note">Secure checkout</p>
+      {%- form 'product', product, id: 'ppForm' -%}
+        <input type="hidden" name="id" value="{{ current_variant.id }}" data-pp-id>
+        {%- unless product.has_only_default_variant -%}
+          <div class="pp-options">
+            {%- for option in product.options_with_values -%}
+              <div class="pp-opt">
+                <label for="ppOpt{{ forloop.index }}">{{ option.name | escape }}</label>
+                <select id="ppOpt{{ forloop.index }}" class="pp-select" data-pp-option-index="{{ forloop.index0 }}">
+                  {%- for value in option.values -%}
+                    <option value="{{ value | escape }}"{% if option.selected_value == value %} selected{% endif %}>{{ value }}</option>
+                  {%- endfor -%}
+                </select>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endunless -%}
+        <div class="pp-qty">
+          <label for="ppQty">Quantity</label>
+          <input id="ppQty" type="number" name="quantity" value="1" min="1" inputmode="numeric">
+        </div>
+        <p class="pp-stock" data-pp-stock>{%- if current_variant.available -%}In stock{%- else -%}Sold out{%- endif -%}</p>
+        <button type="submit" name="add" class="btn btn-solid pp-add"{% unless current_variant.available %} disabled{% endunless %} data-pp-add>
+          {%- if current_variant.available -%}Add to cart{%- else -%}Sold out{%- endif -%}
+        </button>
+      {%- endform -%}
+
+      {%- if product.description != blank -%}
+        <div class="pp-desc rte">{{ product.description }}</div>
+      {%- endif -%}
+    </div>
   </div>
-</div>
+</section>
+
+<script type="application/json" data-pp-variants>{{ product.variants | json }}</script>
 
 {% schema %}
 {
   "name": "Product",
-  "settings": []
+  "settings": [
+    { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": false }
+  ]
 }
 {% endschema %}

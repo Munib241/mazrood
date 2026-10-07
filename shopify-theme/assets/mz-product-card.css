@@ -1,0 +1,27 @@
+/* mz-product-card — SS26 swatch-driven card (mzp-) */
+.mzp-card{background:transparent;display:block;position:relative;overflow:hidden;opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s,box-shadow .3s}
+.mzp-card.mzp-vis{opacity:1;transform:translateY(0)}
+.mzp-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.08);z-index:2}
+
+.mzp-img{display:block;position:relative;aspect-ratio:4/5;overflow:hidden;background:transparent;text-decoration:none}
+.mzp-view{position:absolute;inset:0;opacity:0;transition:opacity .55s cubic-bezier(.25,.46,.45,.94)}
+.mzp-view.mzp-on{opacity:1}
+.mzp-view img{width:100%;height:100%;object-fit:cover;display:block;background:transparent;transition:transform .9s cubic-bezier(.25,.46,.45,.94)}
+.mzp-card:hover .mzp-view img{transform:scale(1.05)}
+
+.mzp-badge{position:absolute;top:8px;left:8px;z-index:3;font-family:'Jost',sans-serif;font-size:7px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;padding:4px 8px 4px 10px;background:#c4a882;color:#011122;pointer-events:none}
+
+.mzp-info{padding:10px 10px 12px;display:flex;flex-direction:column;gap:7px;border-top:1px solid rgba(0,0,0,.04)}
+@media(min-width:641px){.mzp-info{padding:11px 14px 13px}}
+.mzp-row{display:flex;justify-content:space-between;align-items:flex-start;gap:6px}
+.mzp-name{font-family:'Jost',sans-serif;font-size:8px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#1c1917;line-height:1.5;text-decoration:none;max-width:68%}
+.mzp-name:hover{color:#1c1917;text-decoration:none}
+.mzp-price{font-family:'Jost',sans-serif;font-size:10px;font-weight:300;color:#9a9490;flex-shrink:0;white-space:nowrap}
+.mzp-was{color:#c9c2ba;font-size:9px;margin-left:5px}
+@media(max-width:640px){.mzp-name{font-size:7px}.mzp-price{font-size:9px}}
+
+.mzp-swatches{display:flex;gap:6px;align-items:center}
+.mzp-sw{width:15px;height:15px;border-radius:50%;border:none;cursor:pointer;padding:0;background-color:#ddd;box-shadow:0 0 0 1px rgba(0,0,0,.15);transition:box-shadow .25s;-webkit-appearance:none;appearance:none}
+.mzp-sw.mzp-sw-on{box-shadow:0 0 0 2px #fff,0 0 0 3.5px #c4a882}
+.mzp-sw-more{font-family:'Jost',sans-serif;font-size:8px;font-weight:400;color:#9a9490}
+.mzp-sw-name{font-family:'Jost',sans-serif;font-size:8px;font-weight:300;letter-spacing:.1em;color:#9a9490;margin-left:2px}

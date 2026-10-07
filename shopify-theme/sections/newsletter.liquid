@@ -1,37 +1,38 @@
-<section class="section section--tight newsletter">
-  <div class="page-width">
-    <span class="eyebrow">{{ section.settings.eyebrow | escape | default: 'Newsletter' }}</span>
-    <h2>{{ section.settings.heading | escape | default: 'Join the list' }}</h2>
-    <p>{{ section.settings.text | escape | default: 'Early access to drops, restocks and private sales.' }}</p>
-
-    {%- form 'customer', class: 'newsletter-form' -%}
-      <input type="hidden" name="contact[tags]" value="newsletter">
-      <input
-        type="email"
-        name="contact[email]"
-        placeholder="Email address"
-        aria-label="Email address"
-        required
-        {% if form.posted_successfully? %}autofocus{% endif %}
-      >
-      <button type="submit" class="btn btn-solid">Subscribe</button>
-      {%- if form.posted_successfully? -%}
-        <p class="newsletter-success">You're on the list.</p>
-      {%- elsif form.errors -%}
-        <p style="color: var(--muted);">{{ form.errors.messages.form }}</p>
+{%- if section.settings.show -%}
+<section class="nl">
+  {%- if section.settings.eyebrow != blank -%}<p class="nl-eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+  {%- if section.settings.title != blank -%}<h2 class="nl-title">{{ section.settings.title }}</h2>{%- endif -%}
+  {%- if section.settings.sub != blank -%}<p class="nl-sub">{{ section.settings.sub }}</p>{%- endif -%}
+  {%- form 'customer' -%}
+    <input type="hidden" name="contact[tags]" value="newsletter">
+    {%- if form.posted_successfully? -%}
+      <p class="nl-ok">Thank you for subscribing.</p>
+    {%- else -%}
+      <div class="nl-form">
+        <input type="email" name="contact[email]" class="nl-input" placeholder="{{ section.settings.placeholder | escape }}" required autocomplete="email" aria-label="Email address">
+        <button type="submit" class="btn btn-solid">{{ section.settings.button }}</button>
+      </div>
+      {%- if form.errors -%}
+        <p class="nl-err">{{ form.errors.messages['form'] }}</p>
       {%- endif -%}
-    {%- endform -%}
-  </div>
+    {%- endif -%}
+  {%- endform -%}
 </section>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Newsletter",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow label", "default": "Newsletter" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Join the list" },
-    { "type": "text", "id": "text", "label": "Text", "default": "Early access to drops, restocks and private sales." }
+    { "type": "checkbox", "id": "show", "label": "Show section", "default": true },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Stay in the loop" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "Never miss a drop" },
+    { "type": "text", "id": "sub", "label": "Subheading", "default": "New arrivals, exclusive access, and early sales — straight to your inbox." },
+    { "type": "text", "id": "placeholder", "label": "Placeholder", "default": "Your email address" },
+    { "type": "text", "id": "button", "label": "Button label", "default": "Subscribe" }
   ],
-  "presets": [{ "name": "Newsletter" }]
+  "presets": [
+    { "name": "Newsletter" }
+  ]
 }
 {% endschema %}

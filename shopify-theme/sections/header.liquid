@@ -1,53 +1,65 @@
-<header class="site-header">
-  <div class="page-width">
-    <nav class="header-inner" aria-label="Main navigation">
-      <a href="{{ routes.root_url }}" class="wordmark" aria-label="{{ shop.name | escape }} home">
-        {%- if settings.logo != blank -%}
-          {{ settings.logo | image_url: width: 300 | image_tag: alt: shop.name }}
-        {%- else -%}
-          {{ settings.logo_text | default: shop.name }}{%- if settings.logo_show_tm -%}<sup>™</sup>{%- endif -%}
-        {%- endif -%}
-      </a>
+{%- if section.settings.show_announcement and section.settings.announcement_text != blank -%}
+  <div class="ann" style="background:var(--announcement-bg);color:var(--announcement-text)">
+    {{ section.settings.announcement_text | escape }}
+  </div>
+{%- endif -%}
 
-      <div class="header-nav">
+<header class="hdr" id="SiteHeader">
+  <div class="hdr-inner">
+    <button type="button" class="hdr-burger" data-nav-toggle aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <a href="{{ routes.root_url }}" class="hdr-logo" aria-label="{{ shop.name | escape }}">
+      {%- if section.settings.logo != blank -%}
+        <img src="{{ section.settings.logo | img_url: '400x' }}"
+             alt="{{ shop.name | escape }}"
+             style="max-width:{{ section.settings.logo_width }}px">
+      {%- else -%}
+        <span class="hdr-wordmark">{{ section.settings.logo_text | escape }}<sup>{{ section.settings.logo_tm | escape }}</sup></span>
+      {%- endif -%}
+    </a>
+
+    <nav class="hdr-nav" aria-label="Main navigation">
+      <ul>
         {%- for link in section.settings.menu.links -%}
-          <div class="nav-item">
-            <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title }}</a>
+          <li class="hdr-nav-item{% if link.links.size > 0 %} has-drop{% endif %}">
+            <a href="{{ link.url }}" class="hdr-nav-link{% if link.active or link.child_active %} is-active{% endif %}">{{ link.title }}</a>
             {%- if link.links.size > 0 -%}
-              <div class="nav-dropdown">
+              <ul class="hdr-drop">
                 {%- for child in link.links -%}
-                  <a href="{{ child.url }}">{{ child.title }}</a>
+                  <li><a href="{{ child.url }}">{{ child.title }}</a></li>
                 {%- endfor -%}
-              </div>
+              </ul>
             {%- endif -%}
-          </div>
+          </li>
         {%- endfor -%}
-      </div>
+      </ul>
+    </nav>
 
-      <div class="header-actions">
-        <a href="{{ routes.search_url }}" aria-label="Search">Search</a>
-        <a href="{{ routes.cart_url }}" aria-label="Cart">
-          Cart <span class="cart-count" data-cart-count>{{ cart.item_count }}</span>
+    <div class="hdr-actions">
+      <a href="{{ routes.search_url }}" class="hdr-icon" aria-label="Search">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="11" cy="11" r="7"></circle>
+          <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+        </svg>
+      </a>
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="hdr-icon" aria-label="Account">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"></path>
+          </svg>
         </a>
-        <button
-          type="button"
-          class="menu-toggle"
-          data-menu-toggle
-          aria-controls="MobileNav"
-          aria-expanded="false"
-          aria-label="Menu"
-        >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-        </button>
-      </div>
-    </nav>
-
-    <nav class="mobile-nav" id="MobileNav" aria-label="Mobile navigation">
-      {%- for link in section.settings.menu.links -%}
-        <a href="{{ link.url }}">{{ link.title }}</a>
-      {%- endfor -%}
-      <a href="{{ routes.search_url }}">Search</a>
-    </nav>
+      {%- endif -%}
+      <a href="{{ routes.cart_url }}" class="hdr-icon hdr-cart" data-cart-open aria-label="Cart">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M6 7h12l-1.2 12.2a1.8 1.8 0 0 1-1.8 1.6H9a1.8 1.8 0 0 1-1.8-1.6L6 7z"></path>
+          <path d="M9 9V6a3 3 0 0 1 6 0v3"></path>
+        </svg>
+        <span class="hdr-cart-count" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</span>
+      </a>
+    </div>
   </div>
 </header>
 
@@ -55,12 +67,13 @@
 {
   "name": "Header",
   "settings": [
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Menu",
-      "default": "main-menu"
-    }
+    { "type": "image_picker", "id": "logo", "label": "Logo image (optional)" },
+    { "type": "range", "id": "logo_width", "label": "Logo image width", "min": 60, "max": 300, "step": 10, "unit": "px", "default": 150 },
+    { "type": "text", "id": "logo_text", "label": "Wordmark text", "default": "MAZROOD" },
+    { "type": "text", "id": "logo_tm", "label": "Trademark mark", "default": "™" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "checkbox", "id": "show_announcement", "label": "Show announcement bar", "default": true },
+    { "type": "text", "id": "announcement_text", "label": "Announcement text", "default": "Free shipping on orders over 300 SAR" }
   ]
 }
 {% endschema %}

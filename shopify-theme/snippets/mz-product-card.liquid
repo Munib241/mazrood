@@ -1,0 +1,98 @@
+{%- comment -%}
+  mz-product-card — SS26 swatch-driven product card (design 2a)
+  Usage: {% render 'mz-product-card', product: product %}
+  Requires: mz-product-card.css + mz-product-card.js (loaded once per page)
+  Swatches: native Shopify color swatches (settings.swatch_source == 'native'),
+  falls back to theme option-name matching, else renders a plain card.
+{%- endcomment -%}
+
+{%- liquid
+  assign cheapest_variant = product.variants | sort: 'price' | first
+  assign on_sale = false
+  if cheapest_variant.compare_at_price > cheapest_variant.price
+    assign on_sale = true
+  endif
+
+  assign color_option = blank
+  if settings.swatch_source == 'native'
+    for opt in product.options_with_values
+      if opt.values.first.swatch
+        assign color_option = opt
+        break
+      endif
+    endfor
+  else
+    for opt in product.options_with_values
+      if settings.swatch_option_name contains opt.name
+        assign color_option = opt
+        break
+      endif
+    endfor
+  endif
+
+  assign has_swatches = false
+  if color_option != blank and color_option.values.size > 1
+    assign has_swatches = true
+  endif
+
+  assign sw_limit = 4
+-%}
+
+<div class="mzp-card" data-mzp>
+  <a class="mzp-img" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+    {%- if has_swatches -%}
+      {%- for value in color_option.values limit: sw_limit -%}
+        {%- liquid
+          assign view_img = product.featured_image
+          if value.variant.featured_media.preview_image
+            assign view_img = value.variant.featured_media.preview_image
+          endif
+        -%}
+        <div class="mzp-view{% if forloop.first %} mzp-on{% endif %}" data-mzp-view="{{ forloop.index0 }}">
+          {%- if view_img != blank -%}
+            <img src="{{ view_img | img_url: '700x' }}" alt="{{ product.title | escape }} — {{ value.name | escape }}" loading="lazy">
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <div class="mzp-view mzp-on">
+        {%- if product.featured_image -%}
+          <img src="{{ product.featured_image | img_url: '700x' }}" alt="{{ product.title | escape }}" loading="lazy">
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    {%- if on_sale -%}
+      <span class="mzp-badge">{{ 'products.labels.sale' | t | default: 'Sale' }}</span>
+    {%- endif -%}
+  </a>
+  <div class="mzp-info">
+    <div class="mzp-row">
+      <a class="mzp-name" href="{{ product.url }}">{{ product.title }}</a>
+      <span class="mzp-price">
+        {{ cheapest_variant.price | money }}
+        {%- if on_sale %} <s class="mzp-was">{{ cheapest_variant.compare_at_price | money }}</s>{% endif -%}
+      </span>
+    </div>
+    {%- if has_swatches -%}
+      <div class="mzp-swatches">
+        {%- for value in color_option.values limit: sw_limit -%}
+          <button type="button"
+            class="mzp-sw{% if forloop.first %} mzp-sw-on{% endif %}"
+            data-mzp-sw="{{ forloop.index0 }}"
+            data-mzp-sw-name="{{ value.name | escape }}"
+            title="{{ value.name | escape }}"
+            aria-label="{{ value.name | escape }}"
+            {%- if value.swatch.image %}
+              style="background-image:url({{ value.swatch.image | image_url: width: 48, height: 48 }});background-size:cover"
+            {%- elsif value.swatch.color %}
+              style="background-color:rgb({{ value.swatch.color.rgb }})"
+            {%- endif %}></button>
+        {%- endfor -%}
+        {%- if color_option.values.size > sw_limit -%}
+          <span class="mzp-sw-more">&plus;{{ color_option.values.size | minus: sw_limit }}</span>
+        {%- endif -%}
+        <span class="mzp-sw-name" data-mzp-sw-label>{{ color_option.values.first.name }}</span>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
