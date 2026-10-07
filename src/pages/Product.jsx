@@ -175,12 +175,34 @@ export default function Product() {
   const price = variant ? variant.price : p.price;
   const currency = variant ? variant.currency : p.currency;
 
+  // Photo selection follows the color: when the color + size combination has
+  // no exact variant yet (e.g. the size is still on its default), lead the
+  // gallery with the first available variant wearing the chosen color.
+  const colorName = optionNames.find((n) => n.toLowerCase() === "color");
+  const photoVariant =
+    variant ||
+    (colorName && selections[colorName]
+      ? variants.find(
+          (v) =>
+            !v.soldOut &&
+            (v.options || []).some(
+              (o) => o.name === colorName && o.value === selections[colorName]
+            )
+        ) ||
+        variants.find(
+          (v) =>
+            (v.options || []).some(
+              (o) => o.name === colorName && o.value === selections[colorName]
+            )
+        )
+      : null);
+
   // The selected variant's own photo leads the gallery; the product's full
   // image set follows, deduped. Declared after `variant` so a size/color
   // switch instantly shows that variant's photo first.
   const images = Array.from(
     new Set(
-      [variant?.image, ...(p.images?.length ? p.images : [p.img, p.alt].filter(Boolean))].filter(
+      [photoVariant?.image, ...(p.images?.length ? p.images : [p.img, p.alt].filter(Boolean))].filter(
         Boolean
       )
     )
