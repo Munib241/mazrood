@@ -11,7 +11,7 @@
            style="object-position:{{ section.settings.focal_x }}% {{ section.settings.focal_y }}%">
     {%- else -%}
       <img id="mzh-hero-img"
-           src="https://cdn.shopify.com/s/files/1/0628/3706/3928/files/hf_20260330_023019_256a6bf6-a38b-4c8b-b881-d46a4b072d62_2_2.png?v=1777223323"
+           src="https://mazrood.com/cdn/shop/files/hf_20260910_025717_834f1492-07a4-423a-8a08-0767d3051c43_2000x.png?v=1789013116"
            alt="{{ section.settings.hero_title | escape }}"
            loading="eager">
     {%- endif -%}
@@ -67,6 +67,10 @@
     {%- for w in mq_words -%}<span class="mzh-mq-item{% cycle '', ' mzh-gold', '', '', ' mzh-gold', '' %}">{{ w | strip }}</span>{%- endfor -%}
   </div>
 </div>
+{%- endif -%}
+
+{%- if section.settings.show_rope -%}
+  {% render 'mz-rope' %}
 {%- endif -%}
 
 {%- if section.settings.show_stats -%}
@@ -220,22 +224,24 @@
     { "type": "image_picker", "id": "hero_img",    "label": "Background image" },
     { "type": "range", "id": "focal_x", "min": 0, "max": 100, "step": 5, "label": "Focal point X%", "default": 50 },
     { "type": "range", "id": "focal_y", "min": 0, "max": 100, "step": 5, "label": "Focal point Y%", "default": 20 },
-    { "type": "text",         "id": "hero_eye",    "label": "Eyebrow",               "default": "Mazrood Studio — Summer 2026" },
-    { "type": "text",         "id": "hero_title",  "label": "Title (light)",         "default": "Summer" },
-    { "type": "text",         "id": "hero_bold",   "label": "Title (bold line)",     "default": "26" },
-    { "type": "text",         "id": "hero_desc",   "label": "Description",           "default": "The new collection. Now live." },
-    { "type": "text",         "id": "cta1",        "label": "Primary CTA label",     "default": "Shop New Arrivals" },
+    { "type": "text",         "id": "hero_eye",    "label": "Eyebrow",               "default": "Mazrood Studio — SS26" },
+    { "type": "text",         "id": "hero_title",  "label": "Title (light)",         "default": "End of" },
+    { "type": "text",         "id": "hero_bold",   "label": "Title (bold line)",     "default": "Season." },
+    { "type": "text",         "id": "hero_desc",   "label": "Description",           "default": "New-season streetwear, knits and headwear — cut in the studio, made to outlast the season." },
+    { "type": "text",         "id": "cta1",        "label": "Primary CTA label",     "default": "Shop SS26" },
     { "type": "url",          "id": "cta1_url",    "label": "Primary CTA link" },
-    { "type": "text",         "id": "cta2",        "label": "Secondary CTA label",   "default": "View All" },
+    { "type": "text",         "id": "cta2",        "label": "Secondary CTA label",   "default": "Shop Sale" },
     { "type": "url",          "id": "cta2_url",    "label": "Secondary CTA link" },
     { "type": "header",       "content": "🃏 Floating Cards" },
     { "type": "image_picker", "id": "card_1",      "label": "Card image 1" },
     { "type": "image_picker", "id": "card_2",      "label": "Card image 2" },
     { "type": "header",       "content": "📢 Marquee" },
     { "type": "checkbox",     "id": "show_marquee","label": "Show marquee",           "default": true },
-    { "type": "textarea",     "id": "marquee_text","label": "Items (comma-separated)","default": "New Arrivals, SS26, Mazrood Studio, Summer 2026, Now Live, Free Returns" },
+    { "type": "textarea",     "id": "marquee_text","label": "Items (comma-separated)","default": "End of Season, SS26, Mazrood Studio, New Arrivals, Now Live, Free Returns" },
+    { "type": "header",       "content": "🪢 Rope Line" },
+    { "type": "checkbox",     "id": "show_rope",   "label": "Show rope line",         "default": true },
     { "type": "header",       "content": "📊 Stats" },
-    { "type": "checkbox",     "id": "show_stats",  "label": "Show stats",             "default": true },
+    { "type": "checkbox",     "id": "show_stats",  "label": "Show stats",             "default": false },
     { "type": "text", "id": "s1v", "label": "Stat 1 value", "default": "SS26" },
     { "type": "text", "id": "s1l", "label": "Stat 1 label", "default": "New Season" },
     { "type": "text", "id": "s2v", "label": "Stat 2 value", "default": "KSA & Global" },
@@ -249,8 +255,8 @@
     { "type": "collection",   "id": "collection",  "label": "Collection" },
     { "type": "range", "id": "grid_count", "min": 4, "max": 16, "step": 4, "label": "Products to show", "default": 8 },
     { "type": "range", "id": "grid_cols",  "min": 2, "max": 5,  "step": 1, "label": "Desktop columns",  "default": 4 },
-    { "type": "text",         "id": "grid_eye",    "label": "Section eyebrow",        "default": "SS26" },
-    { "type": "text",         "id": "grid_title",  "label": "Section title",          "default": "New Arrivals" },
+    { "type": "text",         "id": "grid_eye",    "label": "Section eyebrow",        "default": "03 — New Arrivals" },
+    { "type": "text",         "id": "grid_title",  "label": "Section title",          "default": "SS26, fresh from the studio." },
     { "type": "text",         "id": "grid_all",    "label": "View all label",         "default": "View All" },
     { "type": "header",       "content": "📷 Lookbook" },
     { "type": "checkbox",     "id": "show_look",   "label": "Show lookbook",          "default": true },

@@ -11,7 +11,7 @@ body {
   margin: 0;
   background: var(--page-bg);
   color: var(--text);
-  font-family: 'Jost', sans-serif;
+  font-family: var(--font-body);
   font-size: 15px;
   font-weight: 400;
   line-height: 1.6;
@@ -21,7 +21,7 @@ body {
 body.drawer-open { overflow: hidden; }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Jost', sans-serif;
+  font-family: var(--font-head);
   color: var(--headings);
   margin: 0 0 .5em;
   line-height: 1.15;
@@ -106,7 +106,7 @@ img { max-width: 100%; height: auto; display: block; }
 /* ── Buttons ── */
 .btn {
   display: inline-block;
-  font-family: 'Jost', sans-serif;
+  font-family: var(--font-head);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: .28em;
@@ -144,10 +144,10 @@ input[type="number"],
 select,
 textarea {
   width: 100%;
-  font-family: 'Jost', sans-serif;
+  font-family: var(--font-head);
   font-size: 14px;
   color: var(--text);
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 0;
   padding: 12px 14px;
@@ -195,7 +195,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--btn-bg); ou
 .hdr-logo img { width: auto; }
 
 .hdr-wordmark {
-  font-family: 'Jost', sans-serif;
+  font-family: var(--font-head);
   font-size: 22px;
   font-weight: 600;
   letter-spacing: .3em;
@@ -398,7 +398,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--btn-bg); ou
   padding: 14px 0;
   border-bottom: 1px solid var(--border);
 }
-.cd-item-img { background: #fff; }
+.cd-item-img { background: var(--surface); }
 .cd-item-img img { width: 100%; height: auto; }
 .cd-item-info a { font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
 .cd-variant { margin: 2px 0 8px; font-size: 11px; opacity: .6; }
@@ -450,14 +450,14 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--btn-bg); ou
 .pp { display: grid; grid-template-columns: 1fr; gap: 32px; padding: 32px 0 64px; }
 @media (min-width: 900px) { .pp { grid-template-columns: 1.15fr .85fr; gap: 56px; padding: 56px 0 88px; } }
 
-.pp-main-img { background: #f0eeeb; }
+.pp-main-img { background: var(--surface); }
 .pp-main-img img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
 .pp-thumbs { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
 .pp-thumb {
   width: 64px;
   height: 80px;
   padding: 0;
-  background: #f0eeeb;
+  background: var(--surface);
   border: 1px solid transparent;
   cursor: pointer;
   overflow: hidden;
@@ -520,7 +520,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--btn-bg); ou
 @media (min-width: 768px) {
   .cartp-row { grid-template-columns: 110px 1fr 130px 110px; }
 }
-.cartp-img { background: #fff; }
+.cartp-img { background: var(--surface); }
 .cartp-title { display: block; font-size: 13px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
 .cartp-variant { margin: 2px 0 0; font-size: 12px; opacity: .6; }
 .cartp-price { margin: 6px 0 0; font-size: 13px; }
@@ -546,7 +546,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--btn-bg); ou
 /* ── Collection list ── */
 .clgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; }
 @media (min-width: 768px) { .clgrid { grid-template-columns: repeat(4, 1fr); } }
-.cl-card { position: relative; display: block; overflow: hidden; background: #f0eeeb; }
+.cl-card { position: relative; display: block; overflow: hidden; background: var(--surface); }
 .cl-card:hover { text-decoration: none; }
 .cl-img { aspect-ratio: 3 / 4; }
 .cl-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s ease; }
@@ -591,7 +591,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--btn-bg); ou
 }
 @media (min-width: 768px) { .ft-inner { grid-template-columns: 2fr 1fr 1fr 1.4fr; padding: 72px 40px 40px; } }
 .ft-wordmark {
-  font-family: 'Jost', sans-serif;
+  font-family: var(--font-head);
   font-size: 24px;
   font-weight: 600;
   letter-spacing: .3em;
@@ -632,7 +632,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--btn-bg); ou
 
 /* ── Auth (customer pages) ── */
 .auth { max-width: 460px; margin: 0 auto; padding: 56px 16px 88px; }
-.auth-card { background: #fff; border: 1px solid var(--border); padding: 32px 28px; }
+.auth-card { background: var(--surface); border: 1px solid var(--border); padding: 32px 28px; }
 .auth-card .sec-title { font-size: 24px; margin-bottom: 20px; }
 .auth-alt { font-size: 13px; margin: 14px 0 0; }
 .auth-alt a { text-decoration: underline; }
@@ -650,9 +650,9 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--btn-bg); ou
 
 /* ── Addresses ── */
 .addresses { max-width: 900px; margin: 0 auto; padding: 48px 16px 88px; }
-.address-card { border: 1px solid var(--border); background: #fff; padding: 20px; margin-bottom: 16px; }
+.address-card { border: 1px solid var(--border); background: var(--surface); padding: 20px; margin-bottom: 16px; }
 .address-actions { display: flex; gap: 10px; margin-top: 12px; }
-.address-form { border: 1px solid var(--border); background: #fff; padding: 20px; margin-bottom: 24px; }
+.address-form { border: 1px solid var(--border); background: var(--surface); padding: 20px; margin-bottom: 24px; }
 
 /* ── Password page ── */
 .pw { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
@@ -679,7 +679,7 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--btn-bg); ou
 @media (min-width: 768px) { .blog-grid { grid-template-columns: repeat(3, 1fr); } }
 .blog-card { display: block; }
 .blog-card:hover { text-decoration: none; }
-.blog-card-img { aspect-ratio: 3 / 2; background: #f0eeeb; margin-bottom: 12px; }
+.blog-card-img { aspect-ratio: 3 / 2; background: var(--surface); margin-bottom: 12px; }
 .blog-card-img img { width: 100%; height: 100%; object-fit: cover; }
 .blog-card h3 { font-size: 14px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; }
 .blog-card p { font-size: 13px; opacity: .7; margin: 0; }
@@ -713,3 +713,11 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--btn-bg); ou
 .rte ul, .rte ol { padding-left: 20px; }
 .rte table { border-collapse: collapse; }
 .rte td, .rte th { border: 1px solid var(--border); padding: 8px 12px; }
+
+/* ── Brand wordmark — Archivo Expanded, Mazrood blue #000f9f ── */
+.hdr-wordmark, .ft-wordmark, .pw-wordmark {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  font-stretch: 125%;
+  color: #000f9f;
+}
