@@ -1,0 +1,22 @@
+{
+  "name": "ThemeFile",
+  "type": "object",
+  "properties": {
+    "path": {
+      "type": "string",
+      "description": "Theme asset path as Shopify expects it, e.g. 'assets/theme.css', 'sections/header.liquid'"
+    },
+    "content": {
+      "type": "string",
+      "description": "File contents (text) to push to Shopify"
+    },
+    "deleted": {
+      "type": "boolean",
+      "default": false,
+      "description": "When true, the sync removes this asset from the Shopify theme"
+    }
+  },
+  "required": [
+    "path"
+  ]
+}

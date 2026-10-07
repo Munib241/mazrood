@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import ProfileCard from "@/components/mazrood/ProfileCard";
 import PasswordCard from "@/components/mazrood/PasswordCard";
+import ThemeSyncCard from "@/components/mazrood/ThemeSyncCard";
 
 export default function Settings() {
   const [deleting, setDeleting] = useState(false);
