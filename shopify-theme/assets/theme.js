@@ -302,6 +302,26 @@
     render();
   }
 
+  /* ── Product page: AJAX add to cart, then open the drawer ── */
+  var ppForm = document.getElementById('ppForm');
+  if (ppForm) {
+    ppForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var addBtn = ppForm.querySelector('[data-pp-add]');
+      if (addBtn) { addBtn.disabled = true; addBtn.textContent = 'Adding…'; }
+      fetch('/cart/add.js', { method: 'POST', body: new FormData(ppForm) })
+        .then(function (r) {
+          if (!r.ok) throw new Error('Add to cart failed');
+          return r.json();
+        })
+        .then(function () {
+          if (addBtn) { addBtn.disabled = false; addBtn.textContent = 'Add to cart'; }
+          openDrawer();
+        })
+        .catch(function () { ppForm.submit(); });
+    });
+  }
+
   /* ── Auto-submitting selects (collection sort) ── */
   document.querySelectorAll('[data-auto-submit]').forEach(function (f) {
     f.addEventListener('change', function () { f.submit(); });

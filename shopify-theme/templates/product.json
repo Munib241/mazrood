@@ -2,7 +2,11 @@
   "sections": {
     "main": {
       "type": "main-product"
+    },
+    "related": {
+      "type": "related-products",
+      "settings": {}
     }
   },
-  "order": ["main"]
+  "order": ["main", "related"]
 }

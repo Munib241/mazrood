@@ -1,0 +1,43 @@
+{%- liquid
+  # Products picked in the "Pairs with" product metafield; falls back to
+  # the first collection the product belongs to.
+  assign related = product.metafields.custom.pairs_with.value
+  if related == blank
+    assign related = product.collections.first.products
+  endif
+-%}
+{%- if related.size > 0 -%}
+  <section class="mz mz-sec mz-sec--rule" aria-labelledby="h-{{ section.id }}">
+    <div class="mz-wrap">
+      <div class="mzp-head">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}<p class="mz-eye">{{ section.settings.eyebrow }}</p>{%- endif -%}
+          <h2 id="h-{{ section.id }}" class="mz-h2">{{ section.settings.title }} <b>{{ section.settings.title_bold }}</b></h2>
+        </div>
+      </div>
+      <div class="mzp-grid">
+        {%- assign shown = 0 -%}
+        {%- for rel in related -%}
+          {%- if shown >= section.settings.count -%}{%- break -%}{%- endif -%}
+          {%- unless rel.id == product.id -%}
+            {%- render 'mz-card', product: rel, style: 'new' -%}
+            {%- assign shown = shown | plus: 1 -%}
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Pairs with",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Matching Sets & Outfits" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Complete the" },
+    { "type": "text", "id": "title_bold", "label": "Title (bold)", "default": "look." },
+    { "type": "range", "id": "count", "label": "Products to show", "min": 2, "max": 8, "step": 1, "default": 4 }
+  ],
+  "presets": [{ "name": "Pairs with" }]
+}
+{% endschema %}
