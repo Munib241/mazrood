@@ -20,6 +20,7 @@ export default function Store() {
     // permanently empty until another navigation.
     const load = (attempt = 0) => {
       base44.functions
+        // "all" isn't a Shopify collection — the shop's latest products load instead.
         .invoke("shopify_products", collection === "all" ? {} : { collection, type })
         .then((res) => {
           if (cancelled) return;
