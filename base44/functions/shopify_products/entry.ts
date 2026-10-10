@@ -35,6 +35,10 @@ const mapProduct = (p) => {
   const gallery = (p.images?.edges || [])
     .map((e) => width(e.node?.url))
     .filter(Boolean);
+  const pairs = (p.pairs?.references?.edges || [])
+    .map((e) => mapProduct(e.node))
+    .filter(Boolean);
+
   return {
     handle: p.handle,
     name: p.title,
@@ -58,6 +62,7 @@ const mapProduct = (p) => {
         value: o.value,
       })),
     })),
+    related: pairs.length ? pairs : null,
   };
 };
 
@@ -110,10 +115,17 @@ export default async function(req: Request): Promise<Response> {
         }
       }`;
     } else if (clean.length > 0) {
+      // Each product also carries its "Pairs with" metafield
+      // (custom.pairs_with) with the full data of the referenced pieces.
       const selections = clean
         .map(
           (h, i) => `
-        p${i}: product(handle: "${h}") { ${PRODUCT_FIELDS} }`
+        p${i}: product(handle: "${h}") {
+          ${PRODUCT_FIELDS}
+          pairs: metafield(namespace: "custom", key: "pairs_with") {
+            references(first: 12) { edges { node { ... on Product { ${PRODUCT_FIELDS} } } } }
+          }
+        }`
         )
         .join("\n");
       query = `{${selections}}`;

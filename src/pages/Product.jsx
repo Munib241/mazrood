@@ -8,6 +8,7 @@ import Nav from "@/components/mazrood/Nav";
 import BottomTabs from "@/components/mazrood/BottomTabs";
 import { formatPrice } from "@/hooks/useShopifyProducts";
 import { addToCart as addItemToCart } from "@/lib/cart";
+import RelatedProducts from "@/components/mazrood/RelatedProducts";
 
 export default function Product() {
   const { handle } = useParams();
@@ -20,6 +21,7 @@ export default function Product() {
   const [busy, setBusy] = useState(false);
   const [added, setAdded] = useState(false);
   const [checkoutError, setCheckoutError] = useState(null);
+  const [related, setRelated] = useState([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -29,6 +31,7 @@ export default function Product() {
     setImgIndex(0);
     setImgDims(null);
     setCheckoutError(null);
+    setRelated([]);
     base44.functions
       .invoke("shopify_products", { handles: [handle] })
       .then((res) => {
@@ -65,6 +68,31 @@ export default function Product() {
       }
     });
   }, [state.product]);
+
+  // "Pairs with" pieces from the Shopify metafield; when none were picked,
+  // the store's latest available pieces stand in so the section isn't a dead end.
+  useEffect(() => {
+    if (!state.product) return;
+    const meta = state.product.related || [];
+    if (meta.length > 0) {
+      setRelated(meta.slice(0, 4));
+      return;
+    }
+    let cancelled = false;
+    base44.functions
+      .invoke("shopify_products", {})
+      .then((res) => {
+        if (cancelled) return;
+        const live = Array.isArray(res?.data?.products) ? res.data.products : [];
+        setRelated(
+          live.filter((x) => x.handle !== handle && !x.soldOut).slice(0, 4)
+        );
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [state.product, handle]);
 
   const startCheckout = async () => {
     setBusy(true);
@@ -510,6 +538,7 @@ export default function Product() {
             </div>
           </div>
         </div>
+        <RelatedProducts products={related} />
       </main>
       <div className="h-20 md:hidden" />
       <BottomTabs />
