@@ -9,6 +9,7 @@ import BottomTabs from "@/components/mazrood/BottomTabs";
 import { formatPrice } from "@/hooks/useShopifyProducts";
 import { addToCart as addItemToCart } from "@/lib/cart";
 import RelatedProducts from "@/components/mazrood/RelatedProducts";
+import SizeGuide from "@/components/mazrood/SizeGuide";
 
 export default function Product() {
   const { handle } = useParams();
@@ -416,6 +417,7 @@ export default function Product() {
                             {selections[name]}
                           </span>
                         )}
+                        {!isColor && name.toLowerCase().includes("size") && <SizeGuide />}
                       </p>
                       <div className={isColor ? "flex flex-wrap items-center gap-3" : "flex flex-wrap gap-2"}>
                         {valuesFor(name).map((value) => {
