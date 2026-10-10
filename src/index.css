@@ -208,6 +208,14 @@
   }
 }
 
+/* cart badge "pop" when an item lands in the cart */
+@keyframes badge-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+.badge-pop { animation: badge-pop 0.45s ease-out; }
+
 @keyframes spectrum-cycle {
   0% { background-position: 0% 50%; }
   100% { background-position: 100% 50%; }

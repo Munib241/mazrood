@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, Settings as SettingsIcon, ShoppingCart, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
@@ -17,6 +17,10 @@ export default function Nav() {
   const [links, setLinks] = useState(FALLBACK_MENU);
   const [cartOpen, setCartOpen] = useState(false);
   const [cartItemsCount, setCartItemsCount] = useState(0);
+  // The badge pops whenever an item lands in the cart, so an AJAX add
+  // is visibly confirmed without leaving the page.
+  const [badgePop, setBadgePop] = useState(false);
+  const prevCount = useRef(null);
   // White text only while floating over the home hero photo. The logo
   // itself always stays Mazrood blue regardless of this.
   const tone =
@@ -34,6 +38,16 @@ export default function Nav() {
     setCartItemsCount(cartCount());
     return onCartChange((cart) => setCartItemsCount(cartCount(cart)));
   }, []);
+
+  useEffect(() => {
+    const prev = prevCount.current;
+    prevCount.current = cartItemsCount;
+    if (prev !== null && cartItemsCount > prev) {
+      setBadgePop(true);
+      const t = window.setTimeout(() => setBadgePop(false), 500);
+      return () => window.clearTimeout(t);
+    }
+  }, [cartItemsCount]);
 
   // Live Shopify main menu — same structure as the store's own navigation.
   useEffect(() => {
@@ -98,7 +112,9 @@ export default function Nav() {
             >
               <ShoppingCart size={17} />
               {cartItemsCount > 0 && (
-                <span className="absolute -right-1.5 -top-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-[hsl(var(--primary))] px-1 font-mono-tech text-[0.55rem] leading-none text-[hsl(var(--primary-foreground))]">
+                <span
+                  className={`absolute -right-1.5 -top-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-[hsl(var(--primary))] px-1 font-mono-tech text-[0.55rem] leading-none text-[hsl(var(--primary-foreground))] ${badgePop ? "badge-pop" : ""}`}
+                >
                   {cartItemsCount}
                 </span>
               )}
@@ -120,7 +136,9 @@ export default function Nav() {
             >
               <ShoppingCart size={20} />
               {cartItemsCount > 0 && (
-                <span className="absolute -right-1.5 -top-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-[hsl(var(--primary))] px-1 font-mono-tech text-[0.55rem] leading-none text-[hsl(var(--primary-foreground))]">
+                <span
+                  className={`absolute -right-1.5 -top-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-[hsl(var(--primary))] px-1 font-mono-tech text-[0.55rem] leading-none text-[hsl(var(--primary-foreground))] ${badgePop ? "badge-pop" : ""}`}
+                >
                   {cartItemsCount}
                 </span>
               )}
