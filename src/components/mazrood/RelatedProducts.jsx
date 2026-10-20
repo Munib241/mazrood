@@ -24,7 +24,7 @@ export default function RelatedProducts({ products }) {
                 src={p.img}
                 alt={`${p.name} — Mazrood.`}
                 fittingType="fill"
-                className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.08]"
               />
               {p.soldOut && (
                 <span className="absolute right-3 top-3 rounded-sm bg-[hsl(var(--destructive))] px-2 py-1 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--destructive-foreground))]">

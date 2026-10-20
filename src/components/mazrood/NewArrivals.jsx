@@ -81,7 +81,7 @@ export default function NewArrivals({ refreshKey = 0 }) {
                   src={c.img}
                   alt={`${c.name} — Mazrood headwear.`}
                   fittingType="fill"
-                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                  className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.08]"
                 />
                 <div className="absolute inset-0 bg-black/0 transition duration-500 group-hover:bg-black/15" />
                 {c.soldOut && (

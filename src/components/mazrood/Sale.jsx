@@ -95,7 +95,7 @@ export default function Sale({ refreshKey = 0 }) {
                     src={p.img}
                     alt={`${p.name} — Mazrood sale.`}
                     fittingType="fill"
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.08]"
                   />
                 </div>
                 {p.alt && (
@@ -104,7 +104,7 @@ export default function Sale({ refreshKey = 0 }) {
                       src={p.alt}
                       alt=""
                       fittingType="fill"
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.08]"
                     />
                   </div>
                 )}
