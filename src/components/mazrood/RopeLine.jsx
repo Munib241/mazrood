@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Image } from "@/components/ui/image";
 import useShopifyProducts, { productPath } from "@/hooks/useShopifyProducts";
+import { FEATURED_PIECES } from "@/lib/featuredPieces";
 
 // Sailor-yellow rope drawn as one sagging curve (viewBox 0 0 100 100,
 // stretched to the section width). Products hang from it on clothespins —
@@ -16,36 +17,7 @@ const pointAt = (t) => {
   };
 };
 
-const HANGING = [
-  {
-    t: 0.17,
-    drop: 0,
-    name: "mzrd Bubble Cap",
-    img: "https://mazrood.com/cdn/shop/files/DSC06373Large_700x.jpg?v=1787983760",
-    url: "https://mazrood.com/products/mzrd-bubble-cap",
-  },
-  {
-    t: 0.4,
-    drop: 40,
-    name: "Diner Hoodie",
-    img: "https://mazrood.com/cdn/shop/files/MZ-27_1_900x.jpg?v=1780383212",
-    url: "https://mazrood.com/products/mazrood-diner-hoodie",
-  },
-  {
-    t: 0.62,
-    drop: 18,
-    name: "Peacemaker Cap",
-    img: "https://mazrood.com/cdn/shop/files/DSC06361Large_700x.jpg?v=1787983290",
-    url: "https://mazrood.com/products/peacemaker-cap",
-  },
-  {
-    t: 0.85,
-    drop: 0,
-    name: "Warning: Closet Envy Cap",
-    img: "https://mazrood.com/cdn/shop/files/DSC06338Large_700x.jpg?v=1787982586",
-    url: "https://mazrood.com/products/warning-closet-envy-cap",
-  },
-];
+const HANGING = FEATURED_PIECES;
 
 export default function RopeLine({ refreshKey = 0 }) {
   const live = useShopifyProducts(HANGING, refreshKey);

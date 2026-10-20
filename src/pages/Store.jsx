@@ -6,6 +6,16 @@ import { Image } from "@/components/ui/image";
 import Nav from "@/components/mazrood/Nav";
 import BottomTabs from "@/components/mazrood/BottomTabs";
 import { formatPrice } from "@/hooks/useShopifyProducts";
+import { FEATURED_HANDLES } from "@/lib/featuredPieces";
+
+// Featured studio-line pieces float to the top of the grid, in their
+// homepage rope order; everything else keeps its store ordering.
+const rankFeatured = (products) =>
+  [...products].sort((a, b) => {
+    const fa = FEATURED_HANDLES.indexOf(a.handle);
+    const fb = FEATURED_HANDLES.indexOf(b.handle);
+    return (fa === -1 ? FEATURED_HANDLES.length : fa) - (fb === -1 ? FEATURED_HANDLES.length : fb);
+  });
 
 export default function Store() {
   const { collection = "all" } = useParams();
@@ -35,7 +45,12 @@ export default function Store() {
             collection === "fw25-26" || /sale/i.test(rawTitle || "")
               ? "Archive"
               : rawTitle;
-          setState({ loading: false, products: live, error: live.length === 0, title });
+          setState({
+            loading: false,
+            products: rankFeatured(live),
+            error: live.length === 0,
+            title,
+          });
         })
         .catch(() => {
           if (cancelled) return;
@@ -109,6 +124,11 @@ export default function Store() {
                   {p.soldOut && (
                     <span className="absolute right-3 top-3 rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--background))]/90 px-2 py-1 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">
                       Sold out
+                    </span>
+                  )}
+                  {!p.soldOut && FEATURED_HANDLES.includes(p.handle) && (
+                    <span className="absolute right-3 top-3 rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--background))]/90 px-2 py-1 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--primary))]">
+                      Featured
                     </span>
                   )}
                   {p.was != null && !p.soldOut && (
