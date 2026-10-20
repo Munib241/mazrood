@@ -151,19 +151,34 @@ export default function Store() {
       <div className="light-leak" />
       <Nav />
       <main className="relative z-10 mx-auto max-w-[1600px] px-6 pb-24 pt-28 md:px-10 md:pt-32">
-        <p className="font-mono-tech mb-4 text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
-          Store
-        </p>
-        <h1 className="font-heading text-4xl font-light leading-tight tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-6xl">
-          {label} <span className="font-bold">collection.</span>
-        </h1>
+        <nav
+          aria-label="Breadcrumb"
+          className="font-mono-tech text-[0.65rem] uppercase tracking-[0.25em] text-[hsl(var(--muted-foreground))]"
+        >
+          <Link to="/" className="transition hover:text-[hsl(var(--primary))]">
+            Home
+          </Link>
+          <span className="mx-2">/</span>
+          <span className="text-[hsl(var(--foreground))]">{label}</span>
+        </nav>
+        <div className="mt-4 flex flex-wrap items-baseline justify-between gap-3 border-b border-[hsl(var(--border))] pb-6">
+          <h1 className="font-heading text-3xl font-light leading-tight tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-5xl">
+            {label}
+          </h1>
+          {!state.loading && state.products.length > 0 && (
+            <p className="font-mono-tech text-[0.65rem] uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">
+              {state.products.length} products
+            </p>
+          )}
+        </div>
 
         {state.loading ? (
           <div className="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
             {Array.from({ length: 8 }).map((_, i) => (
               <div key={i} className="animate-pulse">
-                <div className="aspect-[4/5] rounded-sm bg-[hsl(var(--secondary))]" />
-                <div className="mt-4 h-4 w-2/3 rounded-sm bg-[hsl(var(--secondary))]" />
+                <div className="aspect-square rounded-sm bg-[hsl(var(--secondary))]" />
+                <div className="mt-3 h-4 w-2/3 rounded-sm bg-[hsl(var(--secondary))]" />
+                <div className="mt-2 h-3 w-1/4 rounded-sm bg-[hsl(var(--secondary))]" />
                 <div className="mt-2 h-3 w-1/3 rounded-sm bg-[hsl(var(--secondary))]" />
               </div>
             ))}
