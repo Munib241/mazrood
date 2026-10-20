@@ -186,11 +186,24 @@ export default function Product() {
       .filter((o) => o.name === name && !seen.has(o.value) && seen.add(o.value))
       .map((o) => o.value);
   };
+  const hasOption = (v, name, value) =>
+    (v.options || []).some((o) => o.name === name && o.value === value);
+  const fitsOtherSelections = (v, sel, changed) =>
+    (v.options || []).every(
+      (o) =>
+        o.name === changed ||
+        sel[o.name] === undefined ||
+        sel[o.name] === o.value
+    );
+  // Sizes reflect the chosen color; colors reflect the whole product so
+  // every colorway stays visible and clickable.
   const valueAvailable = (name, value) =>
     variants.some(
       (v) =>
         !v.soldOut &&
-        (v.options || []).some((o) => o.name === name && o.value === value)
+        hasOption(v, name, value) &&
+        (name.toLowerCase() === "color" ||
+          fitsOtherSelections(v, selections, name))
     );
   const findVariant = (sel) =>
     variants.find((v) => (v.options || []).every((o) => sel[o.name] === o.value)) ||
@@ -436,7 +449,35 @@ export default function Product() {
                               aria-label={`${name}: ${value}${!available ? ", sold out" : ""}`}
                               onClick={() => {
                                 setImgIndex(0);
-                                setSelections((s) => ({ ...s, [name]: value }));
+                                setSelections((prev) => {
+                                  const next = { ...prev, [name]: value };
+                                  // The click must land on a variant that
+                                  // really wears the chosen value: when the
+                                  // other selections don't exist alongside it,
+                                  // adopt a combination that does.
+                                  if (!findVariant(next)) {
+                                    const candidates = variants.filter((v) =>
+                                      hasOption(v, name, value)
+                                    );
+                                    const match =
+                                      candidates.find(
+                                        (v) =>
+                                          !v.soldOut &&
+                                          fitsOtherSelections(v, next, name)
+                                      ) ||
+                                      candidates.find((v) =>
+                                        fitsOtherSelections(v, next, name)
+                                      ) ||
+                                      candidates.find((v) => !v.soldOut) ||
+                                      candidates[0];
+                                    if (match) {
+                                      (match.options || []).forEach((o) => {
+                                        if (o.name !== name) next[o.name] = o.value;
+                                      });
+                                    }
+                                  }
+                                  return next;
+                                });
                               }}
                               className={
                                 isColor
