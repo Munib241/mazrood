@@ -20,7 +20,7 @@ const PRODUCT_FIELDS = `
   images(first: 12) { edges { node { url } } }
   priceRange { minVariantPrice { amount currencyCode } }
   compareAtPriceRange { minVariantPrice { amount } }
-  variants(first: 12) {
+  variants(first: 100) {
     edges { node { id title availableForSale price { amount currencyCode } image { url } selectedOptions { name value } } }
   }
 `;
