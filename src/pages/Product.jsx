@@ -428,20 +428,23 @@ export default function Product() {
                             <button
                               key={value}
                               type="button"
-                              disabled={!available}
-                              title={value}
-                              aria-label={`${name}: ${value}`}
+                              // Sold-out colors stay fully visible and
+                              // clickable so shoppers can preview every
+                              // colorway; only sizes disable when unavailable.
+                              disabled={!isColor && !available}
+                              title={`${value}${!available ? " — sold out" : ""}`}
+                              aria-label={`${name}: ${value}${!available ? ", sold out" : ""}`}
                               onClick={() => {
                                 setImgIndex(0);
                                 setSelections((s) => ({ ...s, [name]: value }));
                               }}
                               className={
                                 isColor
-                                  ? `h-10 w-10 overflow-hidden rounded-full border transition ${
+                                  ? `relative h-10 w-10 overflow-hidden rounded-full border transition ${
                                       selected
                                         ? "border-[hsl(var(--foreground))] shadow-[0_0_0_2px_hsl(var(--background)),0_0_0_3.5px_hsl(var(--primary))]"
                                         : "border-[hsl(var(--border))]"
-                                    } ${!available ? "cursor-not-allowed opacity-30" : "hover:opacity-80"}`
+                                    } ${available ? "hover:opacity-80" : "opacity-80"}`
                                   : `rounded-sm border px-4 py-2.5 font-mono-tech text-xs uppercase tracking-[0.2em] transition ${
                                       selected
                                         ? "border-[hsl(var(--primary))] bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]"
@@ -449,6 +452,16 @@ export default function Product() {
                                     } ${!available ? "cursor-not-allowed line-through opacity-40" : ""}`
                               }
                             >
+                              {isColor && !available && (
+                                <span
+                                  aria-hidden="true"
+                                  className="absolute inset-0"
+                                  style={{
+                                    background:
+                                      "linear-gradient(to top right, transparent 46.5%, hsl(var(--muted-foreground)) 46.5%, hsl(var(--muted-foreground)) 53.5%, transparent 53.5%)",
+                                  }}
+                                />
+                              )}
                               {swatch ? (
                                 <img
                                   src={swatch}
