@@ -139,6 +139,8 @@
   /* headings always render in Space Grotesk — body stays Inter */
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
   }
 
   ::selection {

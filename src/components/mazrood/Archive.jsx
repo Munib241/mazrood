@@ -39,7 +39,7 @@ export default function Archive({ refreshKey = 0 }) {
             <p className="font-mono-tech mb-4 text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
               02 — The Archive
             </p>
-            <h2 id="archive-heading" className="font-heading text-4xl font-light leading-tight tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-6xl">
+            <h2 id="archive-heading" className="font-heading text-4xl font-light leading-[1.05] tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-6xl">
               Final pieces, <span className="font-bold italic">quietly reduced.</span>
             </h2>
           </div>

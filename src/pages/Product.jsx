@@ -154,7 +154,7 @@ export default function Product() {
           <p className="font-mono-tech mb-4 text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
             404
           </p>
-          <h1 className="font-heading text-4xl font-light text-[hsl(var(--foreground))]">
+          <h1 className="font-heading text-4xl font-light leading-[1.1] tracking-[-0.01em] text-[hsl(var(--foreground))]">
             Product not found.
           </h1>
           <p className="mt-3 text-sm text-[hsl(var(--muted-foreground))]">
@@ -349,7 +349,7 @@ export default function Product() {
             <p className="font-mono-tech text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
               Mazrood Studio
             </p>
-            <h1 className="mt-4 font-heading text-4xl font-light leading-tight tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-5xl">
+            <h1 className="mt-4 font-heading text-4xl font-light leading-[1.05] tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-5xl">
               {p.name}
             </h1>
 

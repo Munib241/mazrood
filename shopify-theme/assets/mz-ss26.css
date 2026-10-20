@@ -54,11 +54,11 @@ body:not(.template-index) #MainContent { padding-top: calc(106px + env(safe-area
   font-family: var(--mz-head);
   font-size: 36px;
   font-weight: 300;
-  line-height: 1.25;
+  line-height: 1.1;
   letter-spacing: -.01em;
   color: var(--mz-fg);
 }
-@media (min-width: 768px) { .mz-h2 { font-size: 60px; line-height: 1; } }
+@media (min-width: 768px) { .mz-h2 { font-size: 60px; line-height: 1.05; } }
 .mz-h2 b { font-weight: 700; }
 .mz-h2 em { font-style: italic; font-weight: 700; }
 

@@ -48,7 +48,7 @@ export default function Manifesto() {
                 <span className="font-mono-tech text-[0.7rem] tracking-[0.3em] text-[hsl(var(--primary))]">
                   {p.n}
                 </span>
-                <h3 className="font-heading text-xl font-medium tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-2xl">
+                <h3 className="font-heading text-xl font-medium leading-[1.2] tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-2xl">
                   {p.title}
                 </h3>
                 <p className="max-w-md font-body text-sm leading-relaxed text-[hsl(var(--foreground))] opacity-75 md:text-base">
