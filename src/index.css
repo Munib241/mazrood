@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Helvetica — matches the neutral sans of the live mazrood.com storefront */
+@font-face {
+  font-family: "Helvetica";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url("https://media.base44.com/files/public/builder-assets/wix-fonts/helvetica-300-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Helvetica";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://media.base44.com/files/public/builder-assets/wix-fonts/helvetica-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Helvetica";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://media.base44.com/files/public/builder-assets/wix-fonts/helvetica-700-normal.woff2") format("woff2");
+}
+
 @layer base {
   :root {
     --background: 240 10% 4%;
@@ -26,10 +49,10 @@
     --radius: 0.25rem;
     /* Mazrood brand blue (#000f9f) — fixed, same in light and dark mode */
     --brand-blue: 234 100% 31%;
-    --font-heading: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
-    --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
-    --font-mono: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+    --font-heading: 'Helvetica', Arial, sans-serif;
+    --font-body: 'Helvetica', Arial, sans-serif;
+    --font-display: 'Helvetica', Arial, sans-serif;
+    --font-mono: 'Helvetica', Arial, sans-serif;
   }
 
   /* Light mode — warm bone-white editorial palette with the sailor-rope brass accent */
