@@ -91,6 +91,10 @@ export default async function(req: Request): Promise<Response> {
       .filter((k) => /^[a-z &-]{2,30}$/.test(k))
       .slice(0, 5);
 
+    // Mode 4 input: catalog search term — matched against product name and category.
+    const searchTerm =
+      typeof body?.search === "string" ? body.search.trim().toLowerCase() : "";
+
     let query;
     if (body?.collections === true) {
       query = `{
@@ -129,6 +133,13 @@ export default async function(req: Request): Promise<Response> {
         )
         .join("\n");
       query = `{${selections}}`;
+    } else if (searchTerm && /^[a-z0-9 &-]{2,60}$/.test(searchTerm)) {
+      // Mode 4: search — the live catalog, matched by name or category below.
+      query = `{
+        s0: products(first: 100, sortKey: CREATED_AT, reverse: true) {
+          edges { node { ${PRODUCT_FIELDS} } }
+        }
+      }`;
     } else {
       // Mode 2: one collection; Mode 3: the shop's latest products.
       const rawCollection =
@@ -200,7 +211,20 @@ export default async function(req: Request): Promise<Response> {
         .map((c) => ({ handle: c.handle, title: c.title }));
       return Response.json({ configured: true, collections });
     }
-    if (clean.length > 0) {
+    if (searchTerm && data?.data?.s0) {
+      // Every word must appear in the product's name or category.
+      const words = searchTerm.split(/\s+/).filter(Boolean);
+      products = (data.data.s0.edges || [])
+        .map((e) => e.node)
+        .filter((n) => n?.availableForSale !== false)
+        .filter((n) => {
+          const hay = `${n?.title || ""} ${n?.productType || ""}`.toLowerCase();
+          return words.every((w) => hay.includes(w));
+        })
+        .slice(0, 12)
+        .map((n) => mapProduct(n))
+        .filter(Boolean);
+    } else if (clean.length > 0) {
       products = clean
         .map((_, i) => mapProduct(data?.data?.[`p${i}`]))
         .filter(Boolean);

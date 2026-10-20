@@ -7,6 +7,7 @@ import ThemeToggle from "@/components/mazrood/ThemeToggle";
 import NavDropdown from "@/components/mazrood/NavDropdown";
 import MobileMenu from "@/components/mazrood/MobileMenu";
 import { FALLBACK_MENU, buildMenu, menuFromCache, setMenuCache } from "@/lib/shopMenu";
+import NavSearch from "@/components/mazrood/NavSearch";
 import CartDrawer from "@/components/mazrood/CartDrawer";
 import { cartCount, onCartChange } from "@/lib/cart";
 
@@ -105,6 +106,7 @@ export default function Nav() {
               )
             )}
             <ThemeToggle className={tone} />
+            <NavSearch tone={tone} />
             <button
               onClick={() => setCartOpen(true)}
               aria-label={`Cart, ${cartItemsCount} items`}
@@ -129,6 +131,7 @@ export default function Nav() {
           </div>
 
           <div className="flex items-center gap-3 lg:hidden">
+            <NavSearch tone={tone} />
             <button
               onClick={() => setCartOpen(true)}
               aria-label={`Cart, ${cartItemsCount} items`}
