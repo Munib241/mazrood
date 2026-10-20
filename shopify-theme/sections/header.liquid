@@ -11,6 +11,9 @@
 -%}
 <header class="mz mzn{% if over %} mzn--over{% endif %}" id="SiteHeader">
   <div class="mzn-bar">
+    {%- if section.settings.announcement_text != blank -%}
+      <p class="mzn-announce"><strong>The Archive:</strong> {{ section.settings.announcement_text | escape }}</p>
+    {%- endif -%}
     <nav class="mzn-inner" aria-label="Main navigation">
       <a href="{{ routes.root_url }}" class="mzn-logo" aria-label="{{ shop.name | escape }} home">
         <span class="mz-wordmark">{{ section.settings.logo_text | escape }}<sup aria-hidden="true">{{ section.settings.logo_tm | escape }}</sup></span>
@@ -88,8 +91,8 @@
     <a href="{{ section.settings.tab_new_url }}" class="{% if request.path == section.settings.tab_new_url %}is-on{% endif %}" aria-label="New arrivals">
       {%- render 'mz-icon', name: 'sparkles', size: 20 -%}<span>New</span>
     </a>
-    <a href="{{ section.settings.tab_sale_url }}" class="{% if request.path == section.settings.tab_sale_url %}is-on{% endif %}" aria-label="Sale">
-      {%- render 'mz-icon', name: 'tag', size: 20 -%}<span>Sale</span>
+    <a href="{{ section.settings.tab_sale_url }}" class="{% if request.path == section.settings.tab_sale_url %}is-on{% endif %}" aria-label="Archive">
+      {%- render 'mz-icon', name: 'tag', size: 20 -%}<span>Archive</span>
     </a>
     <a href="{{ account_url }}" class="{% if template.name contains 'customers' %}is-on{% endif %}" aria-label="Account">
       {%- render 'mz-icon', name: 'user', size: 20 -%}<span>Account</span>
@@ -107,7 +110,8 @@
     { "type": "checkbox", "id": "transparent_on_home", "label": "Transparent over the home hero", "default": true },
     { "type": "header", "content": "Mobile bottom tabs" },
     { "type": "text", "id": "tab_new_url", "label": "New tab link", "default": "/collections/new-2026" },
-    { "type": "text", "id": "tab_sale_url", "label": "Sale tab link", "default": "/collections/sale" }
+    { "type": "text", "id": "announcement_text", "label": "Announcement bar text (shown after 'The Archive:')", "default": "select pieces reduced. Complimentary shipping over SAR 300." },
+    { "type": "text", "id": "tab_sale_url", "label": "Archive tab link", "default": "/collections/fw25-26" }
   ]
 }
 {% endschema %}

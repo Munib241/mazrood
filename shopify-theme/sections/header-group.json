@@ -9,8 +9,9 @@
         "logo_tm": "TM",
         "menu": "main-menu",
         "transparent_on_home": true,
+        "announcement_text": "select pieces reduced. Complimentary shipping over SAR 300.",
         "tab_new_url": "/collections/new-2026",
-        "tab_sale_url": "/collections/sale"
+        "tab_sale_url": "/collections/fw25-26"
       }
     }
   },

@@ -8,7 +8,7 @@
         "eyebrow": "06 — Stay in the loop",
         "title": "Join",
         "title_bold": "the list.",
-        "body": "Email me with news and offers — early access to drops, private sales and notes from the studio.",
+        "body": "Early access to new-season drops and notes from the studio.",
         "placeholder": "your@email.com",
         "button": "Sign Up",
         "note": "News and offers only. Unsubscribe anytime.",
@@ -22,7 +22,7 @@
         "c4": { "type": "collection_link", "settings": { "label": "Kids", "href": "/collections/kids" } },
         "c5": { "type": "collection_link", "settings": { "label": "Headwear", "href": "/collections/caps" } },
         "c6": { "type": "collection_link", "settings": { "label": "Accessories", "href": "/collections/accessories" } },
-        "c7": { "type": "collection_link", "settings": { "label": "Sale", "href": "/collections/sale" } },
+        "c7": { "type": "collection_link", "settings": { "label": "Archive", "href": "/collections/fw25-26" } },
         "s1": { "type": "support_link", "settings": { "label": "Shipping & Returns", "href": "/policies/shipping-policy", "accent": true } },
         "s2": { "type": "support_link", "settings": { "label": "Request a return / exchange", "href": "/policies/refund-policy", "accent": true } },
         "s3": { "type": "support_link", "settings": { "label": "Refund Policy", "href": "/policies/refund-policy", "accent": true } },
@@ -31,9 +31,10 @@
         "s6": { "type": "support_link", "settings": { "label": "Privacy Policy", "href": "/pages/privacy-policy", "accent": false } },
         "s7": { "type": "support_link", "settings": { "label": "Terms of Service", "href": "/pages/terms-of-service", "accent": false } },
         "s8": { "type": "support_link", "settings": { "label": "Consumer Complaints", "href": "/pages/consumer-complaints", "accent": false } },
-        "s9": { "type": "support_link", "settings": { "label": "Delete Account", "href": "/pages/delete-account", "accent": false } }
+        "s9": { "type": "support_link", "settings": { "label": "Delete Account", "href": "/pages/delete-account", "accent": false } },
+        "s10": { "type": "support_link", "settings": { "label": "Mazrood in Saudi Arabia", "href": "/pages/mazrood-in-saudi-arabia", "accent": false } }
       },
-      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9"]
+      "block_order": ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10"]
     }
   },
   "order": ["footer"]

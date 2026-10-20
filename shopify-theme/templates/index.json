@@ -4,95 +4,34 @@
       "type": "mz-hero",
       "settings": {
         "image_src": "https://mazrood.com/cdn/shop/files/hf_20260910_025717_834f1492-07a4-423a-8a08-0767d3051c43_2000x.png?v=1789013116",
-        "tag": "Mazrood Studio — SS26",
-        "eyebrow": "Spring / Summer 2026",
-        "title": "End of",
-        "title_bold": "Season.",
-        "desc": "New-season streetwear, knits and headwear — cut in the studio, made to outlast the season.",
-        "cta1": "Shop SS26",
-        "cta1_url": "/collections/new-2026",
-        "cta2": "Shop Sale",
-        "cta2_url": "/collections/fw25-26"
+        "tag": "Mazrood Studio — FW26",
+        "eyebrow": "Fall / Winter 2026",
+        "title": "Winter is",
+        "title_bold": "Coming...",
+        "desc": "Final pieces from last season's studio collection. Once they're gone, they're gone.",
+        "cta1": "Shop the Archive",
+        "cta1_url": "/collections/fw25-26",
+        "cta2": "Join the List",
+        "cta2_url": "#early-access"
       }
     },
-    "manifesto": {
-      "type": "mz-manifesto",
+    "intro": {
+      "type": "mz-intro",
       "settings": {
-        "eyebrow": "01 — Studio Manifesto",
-        "line_1": "We don't chase",
-        "line_bold": "trends.",
-        "line_2": "We build",
-        "line_3": "standards.",
-        "body": "Mazrood is a studio before it is a label. We design quietly, produce slowly, and release only what we believe belongs in the wardrobe for years — not weeks."
-      },
-      "blocks": {
-        "p1": { "type": "principle", "settings": { "n": "01", "title": "Cut with intent", "copy": "Every pattern starts as a question: what does this garment need to do — and nothing more. We strip until only the essential remains." } },
-        "p2": { "type": "principle", "settings": { "n": "02", "title": "Built to outlast", "copy": "Seasons pass; the pieces stay. We choose fabrics and construction that age into character rather than out of relevance." } },
-        "p3": { "type": "principle", "settings": { "n": "03", "title": "Made in the studio", "copy": "Nothing leaves the studio until we would wear it ourselves. Small runs, considered details, no shortcuts." } }
-      },
-      "block_order": ["p1", "p2", "p3"]
+        "intro_en": "Mazrood is a Saudi casual formal brand, founded in Riyadh in 2016. Shop shirts, knitwear, jackets and everyday essentials. Shown at Riyadh Fashion Week.",
+        "intro_ar": "مزرود علامة سعودية للأزياء الكاجوال الفورمال، تأسست في الرياض عام 2016. تسوق القمصان والتريكو والجاكيتات والأساسيات اليومية."
+      }
     },
-    "rope": {
-      "type": "mz-rope",
-      "settings": {
-        "eyebrow": "02 — Fresh off the line"
-      },
-      "blocks": {
-        "r1": { "type": "item", "settings": { "product": "mzrd-bubble-cap", "label": "mzrd Bubble Cap", "image_src": "https://mazrood.com/cdn/shop/files/DSC06373Large_700x.jpg?v=1787983760", "url": "/products/mzrd-bubble-cap", "position": 17, "drop": 0 } },
-        "r2": { "type": "item", "settings": { "product": "mazrood-diner-hoodie", "label": "Diner Hoodie", "image_src": "https://mazrood.com/cdn/shop/files/MZ-27_1_900x.jpg?v=1780383212", "url": "/products/mazrood-diner-hoodie", "position": 40, "drop": 40 } },
-        "r3": { "type": "item", "settings": { "product": "peacemaker-cap", "label": "Peacemaker Cap", "image_src": "https://mazrood.com/cdn/shop/files/DSC06361Large_700x.jpg?v=1787983290", "url": "/products/peacemaker-cap", "position": 62, "drop": 18 } },
-        "r4": { "type": "item", "settings": { "product": "warning-closet-envy-cap", "label": "Warning: Closet Envy Cap", "image_src": "https://mazrood.com/cdn/shop/files/DSC06338Large_700x.jpg?v=1787982586", "url": "/products/warning-closet-envy-cap", "position": 85, "drop": 0 } }
-      },
-      "block_order": ["r1", "r2", "r3", "r4"]
-    },
-    "new": {
+    "archive": {
       "type": "mz-products",
       "settings": {
-        "style": "new",
-        "anchor": "new",
+        "style": "archive",
+        "anchor": "archive",
         "rule": false,
-        "eyebrow": "03 — New Arrivals",
-        "title": "SS26, fresh",
-        "title_bold": "from the studio.",
-        "link_label": "View All",
-        "link_url": "/collections/new-2026",
-        "products": [
-          "no-wasted-potential-cap",
-          "mzrd-bubble-cap",
-          "mzrd-lowercase-cap",
-          "peacemaker-cap",
-          "hotel-mzrd-cap",
-          "road-to-mazrood-cap",
-          "warning-closet-envy-cap",
-          "mz-varsity-cap"
-        ],
-        "collection": "caps",
-        "count": 8
-      }
-    },
-    "look": {
-      "type": "mz-look",
-      "settings": {
-        "eyebrow": "04 — The Look",
-        "title": "Worn well.",
-        "title_bold": "Shot on location."
-      },
-      "blocks": {
-        "l1": { "type": "look", "settings": { "image_src": "https://mazrood.com/cdn/shop/files/hf_20260910_031025_090974fc-de3a-4f1f-8d7c-390c503c81bb_900x.png?v=1789011867", "tag": "SS26 — Men", "title": "Mzrd Tencel Shirt", "copy": "A relaxed, breathable staple cut from Tencel — studio-tailored for the warmer months.", "cta": "Shop the Look", "product": "mazrood-tencel-shirt-style-a", "url": "/products/mazrood-tencel-shirt-style-a" } },
-        "l2": { "type": "look", "settings": { "image_src": "https://mazrood.com/cdn/shop/files/hf_20260713_061932_98e8898a-4db8-469c-8f87-77a7f2565886_900x.png?v=1789013026", "tag": "SS26 — Limited Edition", "title": "Riviera Bouclé Holdall", "copy": "A bouclé holdall finished for weekends away — numbered, limited run, gone when it's gone.", "cta": "Limited Edition", "product": "mazrood-riviera-boucle-holdall-limited-edition", "url": "/products/mazrood-riviera-boucle-holdall-limited-edition" } }
-      },
-      "block_order": ["l1", "l2"]
-    },
-    "sale": {
-      "type": "mz-products",
-      "settings": {
-        "style": "sale",
-        "anchor": "sale",
-        "rule": true,
-        "eyebrow": "05 — Sale",
-        "title": "End of season",
-        "title_bold": "markdowns.",
-        "link_label": "View All",
+        "eyebrow": "01 — The Archive",
+        "title": "Final pieces,",
+        "title_bold": "quietly reduced.",
+        "link_label": "View the Archive",
         "link_url": "/collections/fw25-26",
         "products": [
           "mazrood-essential-logo-hoodie",
@@ -106,7 +45,36 @@
         "collection": "fw25-26",
         "count": 8
       }
+    },
+    "manifesto": {
+      "type": "mz-manifesto",
+      "settings": {
+        "eyebrow": "02 — Studio Manifesto",
+        "line_1": "We don't chase",
+        "line_bold": "trends.",
+        "line_2": "We build",
+        "line_3": "standards.",
+        "body": "Mazrood is a studio before it is a label. We design quietly, produce slowly, and release only what we believe belongs in the wardrobe for years — not weeks."
+      },
+      "blocks": {
+        "p1": { "type": "principle", "settings": { "n": "01", "title": "Cut with intent", "copy": "Every pattern starts as a question: what does this garment need to do — and nothing more. We strip until only the essential remains." } },
+        "p2": { "type": "principle", "settings": { "n": "02", "title": "Built to outlast", "copy": "Seasons pass; the pieces stay. We choose fabrics and construction that age into character rather than out of relevance." } },
+        "p3": { "type": "principle", "settings": { "n": "03", "title": "Made in the studio", "copy": "Nothing leaves the studio until we would wear it ourselves. Small runs, considered details, no shortcuts." } }
+      },
+      "block_order": ["p1", "p2", "p3"]
+    },
+    "signup": {
+      "type": "mz-signup",
+      "settings": {
+        "eyebrow": "03 — Early access",
+        "title": "Be first to the",
+        "title_bold": "new season.",
+        "body": "Leave your email and be notified when the new season opens — before it reaches the store.",
+        "placeholder": "your@email.com",
+        "button": "Notify Me",
+        "note": "New-season early access only. Unsubscribe anytime."
+      }
     }
   },
-  "order": ["hero", "manifesto", "rope", "new", "look", "sale"]
+  "order": ["hero", "intro", "archive", "manifesto", "signup"]
 }

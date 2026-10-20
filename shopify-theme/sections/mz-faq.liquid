@@ -1,0 +1,77 @@
+{%- comment -%}
+  "Mazrood in Saudi Arabia" FAQ.
+  A draft notice stays on the page while any answer still contains a
+  [CONFIRM] placeholder — publish the page only after every answer is confirmed.
+{%- endcomment -%}
+{%- liquid
+  assign pending = false
+  if section.settings.a2 contains '[CONFIRM]'
+    assign pending = true
+  elsif section.settings.a3 contains '[CONFIRM]'
+    assign pending = true
+  elsif section.settings.a4 contains '[CONFIRM]'
+    assign pending = true
+  elsif section.settings.a5 contains '[CONFIRM]'
+    assign pending = true
+  elsif section.settings.a6 contains '[CONFIRM]'
+    assign pending = true
+  elsif section.settings.a7 contains '[CONFIRM]'
+    assign pending = true
+  endif
+-%}
+<section class="mz mz-sec mz-faq" aria-labelledby="h-{{ section.id }}">
+  <div class="mz-wrap mz-faq-wrap">
+    {%- if section.settings.eyebrow != blank -%}<p class="mz-eye">{{ section.settings.eyebrow }}</p>{%- endif -%}
+    <h2 id="h-{{ section.id }}" class="mz-h2">{{ section.settings.title }} <em>{{ section.settings.title_bold }}</em></h2>
+
+    {%- if pending -%}
+      <div class="mz-faq-draft" role="note">
+        <strong>Draft.</strong> Some answers below are still marked [CONFIRM]. Publish this page only once every answer has been confirmed with the studio.
+      </div>
+    {%- endif -%}
+
+    <div class="mz-faq-list">
+      {%- for i in (1..7) -%}
+        {%- liquid
+          assign q_key = 'q' | append: i
+          assign a_key = 'a' | append: i
+          assign q = section.settings[q_key]
+          assign a = section.settings[a_key]
+        -%}
+        {%- if q != blank and a != blank -%}
+          <details class="mz-faq-item">
+            <summary>{{ q }}</summary>
+            <p>{{ a }}</p>
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Mazrood in Saudi Arabia" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Mazrood in" },
+    { "type": "text", "id": "title_bold", "label": "Title (bold italic)", "default": "Saudi Arabia." },
+    { "type": "header", "content": "Questions and answers" },
+    { "type": "text", "id": "q1", "label": "Question 1", "default": "Where is Mazrood from?" },
+    { "type": "textarea", "id": "a1", "label": "Answer 1", "default": "Mazrood is a Saudi casual formal brand founded in Riyadh in 2016." },
+    { "type": "text", "id": "q2", "label": "Question 2", "default": "What does Mazrood sell?" },
+    { "type": "textarea", "id": "a2", "label": "Answer 2", "default": "[CONFIRM: product-range answer from the studio]" },
+    { "type": "text", "id": "q3", "label": "Question 3", "default": "Do you deliver within Saudi Arabia?" },
+    { "type": "textarea", "id": "a3", "label": "Answer 3", "default": "[CONFIRM: delivery coverage and timing from the studio]" },
+    { "type": "text", "id": "q4", "label": "Question 4", "default": "What currency are prices in?" },
+    { "type": "textarea", "id": "a4", "label": "Answer 4", "default": "All prices are shown in Saudi riyal (SAR)." },
+    { "type": "text", "id": "q5", "label": "Question 5", "default": "Which payment methods do you accept?" },
+    { "type": "textarea", "id": "a5", "label": "Answer 5", "default": "[CONFIRM: accepted payment methods from the studio]" },
+    { "type": "text", "id": "q6", "label": "Question 6", "default": "How do sizes fit?" },
+    { "type": "textarea", "id": "a6", "label": "Answer 6", "default": "[CONFIRM: fit guidance and size measurements from the studio]" },
+    { "type": "text", "id": "q7", "label": "Question 7", "default": "Where can I see Mazrood in person?" },
+    { "type": "textarea", "id": "a7", "label": "Answer 7", "default": "[CONFIRM: showroom or stockist details from the studio]" }
+  ],
+  "presets": [{ "name": "FAQ" }]
+}
+{% endschema %}

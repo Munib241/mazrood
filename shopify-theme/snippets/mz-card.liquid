@@ -1,40 +1,55 @@
 {%- comment -%}
-  Home product card — mirrors the app's New Arrivals and Sale cards.
-  style: 'new' (hover zoom + arrow) | 'sale' (Sale badge, hover crossfade, compare price)
+  Home product card — mirrors the app's Archive cards.
+  style: 'new' (hover zoom + arrow) | 'archive' (quiet tag, hover crossfade, compare price)
+  Reduced pieces carry an understated "Final Piece" / "Last Sizes" tag —
+  same typeface as the rest of the card, no discount wording or colour.
 {%- endcomment -%}
 {%- liquid
   assign img = product.featured_media.preview_image
   assign alt_img = false
-  if style == 'sale' and product.media.size > 1
+  if style == 'archive' and product.media.size > 1
     assign alt_img = product.media[1].preview_image
+  endif
+
+  assign reduced = false
+  assign reduced_tag = blank
+  if product.compare_at_price > product.price
+    assign reduced = true
+    assign reduced_tag = 'Final Piece'
+    for variant in product.variants
+      unless variant.available
+        assign reduced_tag = 'Last Sizes'
+        break
+      endunless
+    endfor
   endif
 -%}
 <a href="{{ product.url }}" class="mzc">
   <div class="mzc-media">
     {%- if img -%}
       <img src="{{ img | image_url: width: 800 }}" alt="{{ product.title | escape }}" loading="lazy"
-           class="{% if style == 'sale' %}{% if alt_img %}mzc-has-alt{% endif %}{% else %}mzc-zoom{% endif %}">
+           class="{% if style == 'archive' %}{% if alt_img %}mzc-has-alt{% endif %}{% else %}mzc-zoom{% endif %}">
     {%- endif -%}
     {%- if alt_img -%}
       <img src="{{ alt_img | image_url: width: 800 }}" alt="" loading="lazy" class="mzc-alt">
     {%- endif -%}
-    {%- if style == 'sale' -%}
-      <span class="mz-badge mz-badge--sale">Sale</span>
+    {%- if style == 'archive' and reduced -%}
+      <span class="mz-badge mz-badge--archive">{{ reduced_tag }}</span>
     {%- else -%}
       <span class="mzc-shade"></span>
     {%- endif -%}
     {%- unless product.available -%}
       <span class="mz-badge mz-badge--sold">Sold out</span>
     {%- endunless -%}
-    {%- unless style == 'sale' -%}
+    {%- unless style == 'archive' -%}
       <span class="mzc-arrow">{% render 'mz-icon', name: 'arrow-up-right', size: 14 %}</span>
     {%- endunless -%}
   </div>
   <p class="mzc-name">{{ product.title }}</p>
-  {%- if style == 'sale' -%}
+  {%- if style == 'archive' -%}
     <p class="mzc-price">
       <span class="mzc-now">{{ product.price | money }}</span>
-      {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
+      {%- if product.compare_at_price > product.price -%}<s class="mzc-was">{{ product.compare_at_price | money }}</s>{%- endif -%}
     </p>
   {%- else -%}
     <p class="mzc-price">{{ product.price | money }}</p>

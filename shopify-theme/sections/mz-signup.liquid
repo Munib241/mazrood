@@ -1,0 +1,43 @@
+<section class="mz mz-sec mz-sec--rule" id="early-access" aria-labelledby="h-{{ section.id }}">
+  <div class="mz-wrap">
+    {%- if section.settings.eyebrow != blank -%}<p class="mz-eye">{{ section.settings.eyebrow }}</p>{%- endif -%}
+    <h2 id="h-{{ section.id }}" class="mz-h2">{{ section.settings.title }} <em>{{ section.settings.title_bold }}</em></h2>
+    {%- if section.settings.body != blank -%}<p class="mzs-body">{{ section.settings.body }}</p>{%- endif -%}
+
+    {%- form 'customer', id: 'mzs-signup', class: 'mzs-form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <label for="mzs-email" class="visually-hidden">Email address</label>
+      <div class="mzs-in">
+        <input id="mzs-email" class="mzs-input" type="email" name="contact[email]" placeholder="{{ section.settings.placeholder | escape }}" required autocomplete="email">
+        <button type="submit" class="mz-btn mz-btn--solid">
+          {%- if form.posted_successfully? -%}
+            {%- render 'mz-icon', name: 'check', size: 14 -%} You're on the list
+          {%- else -%}
+            {{ section.settings.button }}{% render 'mz-icon', name: 'arrow-right', size: 14 %}
+          {%- endif -%}
+        </button>
+      </div>
+      {%- if form.errors -%}
+        <p class="mzf-note mzf-note--err" role="alert">Could not sign you up — please try again.</p>
+      {%- else -%}
+        <p class="mzf-note">{{ section.settings.note }}</p>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Early access signup",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "03 — Early access" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Be first to the" },
+    { "type": "text", "id": "title_bold", "label": "Title (bold italic)", "default": "new season." },
+    { "type": "textarea", "id": "body", "label": "Body", "default": "Leave your email and be notified when the new season opens — before it reaches the store." },
+    { "type": "text", "id": "placeholder", "label": "Email placeholder", "default": "your@email.com" },
+    { "type": "text", "id": "button", "label": "Button label", "default": "Notify Me" },
+    { "type": "text", "id": "note", "label": "Note under the field", "default": "New-season early access only. Unsubscribe anytime." }
+  ],
+  "presets": [{ "name": "Early access signup" }]
+}
+{% endschema %}

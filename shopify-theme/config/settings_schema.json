@@ -21,7 +21,7 @@
       { "type": "color", "id": "col_announcement_text", "label": "Announcement bar text", "default": "#f7f5f1" },
       { "type": "color", "id": "col_footer_bg", "label": "Footer background", "default": "#f6f3ef" },
       { "type": "color", "id": "col_footer_text", "label": "Footer text", "default": "#16161d" },
-      { "type": "color", "id": "col_sale", "label": "Sale label", "default": "#96782c" },
+      { "type": "color", "id": "col_sale", "label": "Archive label", "default": "#96782c" },
       { "type": "color", "id": "col_sold", "label": "Sold out label", "default": "#b02626" },
       { "type": "color", "id": "col_new", "label": "New label", "default": "#3e7a45" }
     ]

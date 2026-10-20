@@ -2,20 +2,20 @@
 // Every route below points at a live, in-stock Shopify collection.
 export const CATEGORIES = {
   men: [
-    { title: "T-Shirts", route: "/store/men-t-shirts" },
     { title: "Shirts", route: "/store/men-shirts" },
     { title: "Hoodies & Sweaters", route: "/store/men-hoodies-sweaters" },
-    { title: "Jackets & Vests", route: "/store/men-jackets-vests" },
     { title: "Pants & Shorts", route: "/store/men-pants-shorts" },
+    { title: "Jackets & Vests", route: "/store/men-jackets-vests" },
+    { title: "T-Shirts", route: "/store/men-t-shirts" },
     { title: "Underwear", route: "/store/men-underwear" },
     { title: "Ski", route: "/store/ski-men" },
   ],
   women: [
-    { title: "T-Shirts", route: "/store/women-t-shirts" },
     { title: "Shirts", route: "/store/women-shirts" },
     { title: "Hoodies & Sweaters", route: "/store/women-hoodies-sweaters" },
-    { title: "Jackets & Vests", route: "/store/women-jackets-vests" },
     { title: "Pants & Shorts", route: "/store/women-pants-shorts" },
+    { title: "Jackets & Vests", route: "/store/women-jackets-vests" },
+    { title: "T-Shirts", route: "/store/women-t-shirts" },
     { title: "Ski", route: "/store/ski-women" },
   ],
   kids: [

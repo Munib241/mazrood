@@ -1,0 +1,27 @@
+{
+  "sections": {
+    "faq": {
+      "type": "mz-faq",
+      "settings": {
+        "eyebrow": "Mazrood in Saudi Arabia",
+        "title": "Mazrood in",
+        "title_bold": "Saudi Arabia.",
+        "q1": "Where is Mazrood from?",
+        "a1": "Mazrood is a Saudi casual formal brand founded in Riyadh in 2016.",
+        "q2": "What does Mazrood sell?",
+        "a2": "[CONFIRM: product-range answer from the studio]",
+        "q3": "Do you deliver within Saudi Arabia?",
+        "a3": "[CONFIRM: delivery coverage and timing from the studio]",
+        "q4": "What currency are prices in?",
+        "a4": "All prices are shown in Saudi riyal (SAR).",
+        "q5": "Which payment methods do you accept?",
+        "a5": "[CONFIRM: accepted payment methods from the studio]",
+        "q6": "How do sizes fit?",
+        "a6": "[CONFIRM: fit guidance and size measurements from the studio]",
+        "q7": "Where can I see Mazrood in person?",
+        "a7": "[CONFIRM: showroom or stockist details from the studio]"
+      }
+    }
+  },
+  "order": ["faq"]
+}

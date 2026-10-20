@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Nav from "@/components/mazrood/Nav";
 import Hero from "@/components/mazrood/Hero";
+import BrandIntro from "@/components/mazrood/BrandIntro";
 import Manifesto from "@/components/mazrood/Manifesto";
 import Archive from "@/components/mazrood/Archive";
 import EarlyAccess from "@/components/mazrood/EarlyAccess";
@@ -24,6 +25,7 @@ export default function Home() {
       <PullToRefresh onRefresh={handleRefresh}>
         <main className="relative z-10">
           <Hero />
+          <BrandIntro />
           <Archive refreshKey={refreshTick} />
           <Manifesto />
           <EarlyAccess />

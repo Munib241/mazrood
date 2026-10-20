@@ -46,7 +46,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/45" />
 
       {/* campaign tag, top */}
-      <div className="absolute left-6 top-24 md:left-10 md:top-28">
+      <div className="absolute left-6 top-32 md:left-10 md:top-36">
         <p className="font-mono-tech text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
           Mazrood Studio — FW26
         </p>

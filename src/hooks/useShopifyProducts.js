@@ -12,10 +12,10 @@ export const formatPrice = (amount, currency) => {
   try {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: currency || "USD",
+      currency: currency || "SAR",
     }).format(amount);
   } catch {
-    return `$${amount.toFixed(2)}`;
+    return `${amount.toFixed(2)} SAR`;
   }
 };
 
