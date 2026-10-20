@@ -2,6 +2,7 @@ import { useState } from "react";
 import Nav from "@/components/mazrood/Nav";
 import Hero from "@/components/mazrood/Hero";
 import Manifesto from "@/components/mazrood/Manifesto";
+import InstagramFeed from "@/components/mazrood/InstagramFeed";
 import Archive from "@/components/mazrood/Archive";
 import RopeLine from "@/components/mazrood/RopeLine";
 import EarlyAccess from "@/components/mazrood/EarlyAccess";
@@ -28,6 +29,7 @@ export default function Home() {
           <RopeLine refreshKey={refreshTick} />
           <Archive refreshKey={refreshTick} />
           <Manifesto />
+          <InstagramFeed />
           <EarlyAccess />
           <FinalEmittance />
         </main>
