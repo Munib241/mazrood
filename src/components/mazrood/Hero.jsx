@@ -28,7 +28,7 @@ export default function Hero() {
       <div className="absolute inset-0">
         <Image
           src={HERO_IMG}
-          alt="Mazrood Studio SS26 campaign — End of Season."
+          alt="Mazrood Studio FW26 campaign — Winter is Coming."
           fittingType="fill"
           className="h-full w-full object-cover"
         />
@@ -48,35 +48,40 @@ export default function Hero() {
       {/* campaign tag, top */}
       <div className="absolute left-6 top-24 md:left-10 md:top-28">
         <p className="font-mono-tech text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
-          Mazrood Studio — SS26
+          Mazrood Studio — FW26
         </p>
       </div>
 
       {/* headline block, bottom */}
       <div className="absolute inset-x-0 bottom-0 px-6 pb-10 md:px-10 md:pb-14">
         <p className="font-mono-tech mb-4 text-[0.7rem] uppercase tracking-[0.4em] text-white/70">
-          Spring / Summer 2026
+          Fall / Winter 2026
         </p>
         <h1 className="font-heading text-[15vw] font-light leading-[0.9] tracking-[-0.02em] text-white md:text-[9.5vw]">
-          End of <span className="font-bold italic">Season.</span>
+          Winter <span className="font-bold italic">is</span> Coming...
         </h1>
         <p className="mt-6 max-w-lg font-body text-base leading-relaxed text-white/80 md:text-lg">
-          New-season streetwear, knits and headwear — cut in the studio, made
-          to outlast the season.
+          Final pieces from last season's studio collection. Once they're gone,
+          they're gone.
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-4">
           <Link
-            to="/store/new-2026"
+            to="/store/fw25-26"
             className="btn-solid rounded-sm px-8 py-4 font-mono-tech text-xs uppercase tracking-[0.25em]"
           >
-            Shop SS26
+            Shop the Archive
           </Link>
-          <Link
-            to="/store/fw25-26"
-            className="btn-ghost rounded-sm px-8 py-4 font-mono-tech text-xs uppercase tracking-[0.25em]"
+          <button
+            type="button"
+            onClick={() =>
+              document
+                .getElementById("early-access")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+            className="rounded-sm border border-white/60 px-8 py-4 font-mono-tech text-xs uppercase tracking-[0.25em] text-white transition hover:border-white hover:bg-white/10"
           >
-            Shop Sale
-          </Link>
+            Join the List
+          </button>
         </div>
       </div>
 

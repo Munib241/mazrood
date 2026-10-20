@@ -63,7 +63,10 @@ export const buildMenu = (items) =>
               .map((c) => ({ title: c.title, route: routeOf(c) }))
               .filter((c) => c.route)
           : CATEGORIES[item.handle] || [];
-      return { title: item.title, route, children };
+      // The reduced collection is presented as "The Archive" on the storefront.
+      const title =
+        String(item.title).toLowerCase() === "sale" ? "Archive" : item.title;
+      return { title, route, children };
     })
     .filter(Boolean);
 
@@ -84,5 +87,5 @@ export const FALLBACK_MENU = buildMenu([
   { title: "Activewear", handle: "activewear" },
   { title: "Headwear", handle: "caps" },
   { title: "Accessories", handle: "accessories" },
-  { title: "Sale", handle: "sale" },
+  { title: "Archive", handle: "fw25-26" },
 ]);

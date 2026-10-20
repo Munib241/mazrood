@@ -29,7 +29,13 @@ export default function Store() {
             return;
           }
           const live = Array.isArray(res?.data?.products) ? res.data.products : [];
-          setState({ loading: false, products: live, error: live.length === 0, title: res?.data?.title ?? null });
+          const rawTitle = res?.data?.title ?? null;
+          // The reduced collection is titled "Archive" — never sale language.
+          const title =
+            collection === "fw25-26" || /sale/i.test(rawTitle || "")
+              ? "Archive"
+              : rawTitle;
+          setState({ loading: false, products: live, error: live.length === 0, title });
         })
         .catch(() => {
           if (cancelled) return;
@@ -101,13 +107,13 @@ export default function Store() {
                   />
                   <div className="absolute inset-0 bg-black/0 transition duration-500 group-hover:bg-black/15" />
                   {p.soldOut && (
-                    <span className="absolute right-3 top-3 rounded-sm bg-[hsl(var(--destructive))] px-2 py-1 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--destructive-foreground))]">
+                    <span className="absolute right-3 top-3 rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--background))]/90 px-2 py-1 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">
                       Sold out
                     </span>
                   )}
                   {p.was != null && !p.soldOut && (
-                    <span className="absolute left-3 top-3 rounded-sm bg-[hsl(var(--background))] px-2 py-1 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--primary))]">
-                      Sale
+                    <span className="absolute left-3 top-3 rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--background))]/90 px-2 py-1 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">
+                      Final Piece
                     </span>
                   )}
                 </div>

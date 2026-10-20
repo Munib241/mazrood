@@ -2,10 +2,8 @@ import { useState } from "react";
 import Nav from "@/components/mazrood/Nav";
 import Hero from "@/components/mazrood/Hero";
 import Manifesto from "@/components/mazrood/Manifesto";
-import RopeLine from "@/components/mazrood/RopeLine";
-import NewArrivals from "@/components/mazrood/NewArrivals";
-import TheLook from "@/components/mazrood/TheLook";
-import Sale from "@/components/mazrood/Sale";
+import Archive from "@/components/mazrood/Archive";
+import EarlyAccess from "@/components/mazrood/EarlyAccess";
 import FinalEmittance from "@/components/mazrood/FinalEmittance";
 import PullToRefresh from "@/components/mazrood/PullToRefresh";
 import BottomTabs from "@/components/mazrood/BottomTabs";
@@ -26,11 +24,9 @@ export default function Home() {
       <PullToRefresh onRefresh={handleRefresh}>
         <main className="relative z-10">
           <Hero />
+          <Archive refreshKey={refreshTick} />
           <Manifesto />
-          <RopeLine refreshKey={refreshTick} />
-          <NewArrivals refreshKey={refreshTick} />
-          <TheLook />
-          <Sale refreshKey={refreshTick} />
+          <EarlyAccess />
           <FinalEmittance />
         </main>
       </PullToRefresh>

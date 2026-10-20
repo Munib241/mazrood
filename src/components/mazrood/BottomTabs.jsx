@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Home as HomeIcon, Sparkles, Tag, User } from "lucide-react";
+import { Archive as ArchiveIcon, Home as HomeIcon, Sparkles, User } from "lucide-react";
 
 // Scrolls to a home-page section, navigating home first when we are on
 // another route (e.g. Settings).
@@ -52,12 +52,12 @@ export default function BottomTabs() {
         </button>
         <button
           type="button"
-          onClick={() => navigate("/store/sale")}
-          aria-label="Sale"
-          className={tabClass(pathname === "/store/sale")}
+          onClick={() => navigate("/store/fw25-26")}
+          aria-label="Archive"
+          className={tabClass(pathname === "/store/fw25-26")}
         >
-          <Tag size={20} />
-          <span className="font-mono-tech text-[0.55rem] uppercase tracking-[0.2em]">Sale</span>
+          <ArchiveIcon size={20} />
+          <span className="font-mono-tech text-[0.55rem] uppercase tracking-[0.2em]">Archive</span>
         </button>
         <Link to="/settings" aria-label="Settings" className={tabClass(pathname === "/settings")}>
           <User size={20} />

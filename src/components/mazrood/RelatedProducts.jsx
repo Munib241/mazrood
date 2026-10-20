@@ -27,7 +27,7 @@ export default function RelatedProducts({ products }) {
                 className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.08]"
               />
               {p.soldOut && (
-                <span className="absolute right-3 top-3 rounded-sm bg-[hsl(var(--destructive))] px-2 py-1 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--destructive-foreground))]">
+                <span className="absolute right-3 top-3 rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--background))]/90 px-2 py-1 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">
                   Sold out
                 </span>
               )}
