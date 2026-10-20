@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { categoryLabel } from "@/lib/shopMenu";
 import { base44 } from "@/api/base44Client";
-import { Image } from "@/components/ui/image";
 import Nav from "@/components/mazrood/Nav";
 import BottomTabs from "@/components/mazrood/BottomTabs";
-import { formatPrice } from "@/hooks/useShopifyProducts";
+import ProductCard from "@/components/mazrood/ProductCard";
 import { FEATURED_HANDLES } from "@/lib/featuredPieces";
 
-// Featured studio-line pieces float to the top of the grid, in their
+// Products arrive page by page as the shopper scrolls, instead of one
+// heavy download on first paint.
+const PAGE_SIZE = 24;
+
+// Featured studio-line pieces float to the top of the first page, in their
 // homepage rope order; everything else keeps its store ordering.
 const rankFeatured = (products) =>
   [...products].sort((a, b) => {
@@ -21,17 +24,39 @@ export default function Store() {
   const { collection = "all" } = useParams();
   const [searchParams] = useSearchParams();
   const type = searchParams.get("type") || "";
-  const [state, setState] = useState({ loading: true, products: [], error: false });
+  const [state, setState] = useState({
+    loading: true,
+    products: [],
+    error: false,
+    title: null,
+    cursor: null,
+    hasMore: false,
+  });
+  const [loadingMore, setLoadingMore] = useState(false);
+  const fetchingRef = useRef(false);
+  const sentinelRef = useRef(null);
 
+  // First page only. One retry: a transient storefront failure used to
+  // leave the grid permanently empty until another navigation.
   useEffect(() => {
     let cancelled = false;
-    setState({ loading: true, products: [], error: false });
-    // One retry: a transient storefront failure used to leave the grid
-    // permanently empty until another navigation.
+    setState({
+      loading: true,
+      products: [],
+      error: false,
+      title: null,
+      cursor: null,
+      hasMore: false,
+    });
     const load = (attempt = 0) => {
       base44.functions
         // "all" isn't a Shopify collection — the shop's latest products load instead.
-        .invoke("shopify_products", collection === "all" ? {} : { collection, type })
+        .invoke(
+          "shopify_products",
+          collection === "all"
+            ? { limit: PAGE_SIZE }
+            : { collection, type, limit: PAGE_SIZE }
+        )
         .then((res) => {
           if (cancelled) return;
           if (res?.data?.error && attempt < 1) {
@@ -50,6 +75,8 @@ export default function Store() {
             products: rankFeatured(live),
             error: live.length === 0,
             title,
+            cursor: res?.data?.nextCursor ?? null,
+            hasMore: Boolean(res?.data?.hasMore),
           });
         })
         .catch(() => {
@@ -58,7 +85,14 @@ export default function Store() {
             window.setTimeout(() => !cancelled && load(attempt + 1), 1500);
             return;
           }
-          setState({ loading: false, products: [], error: true });
+          setState({
+            loading: false,
+            products: [],
+            error: true,
+            title: null,
+            cursor: null,
+            hasMore: false,
+          });
         });
     };
     load();
@@ -66,6 +100,47 @@ export default function Store() {
       cancelled = true;
     };
   }, [collection, type]);
+
+  // Next pages load only when the sentinel near the grid's end scrolls
+  // into view — never up front.
+  const loadMore = async () => {
+    if (fetchingRef.current || !state.cursor || !state.hasMore) return;
+    fetchingRef.current = true;
+    setLoadingMore(true);
+    try {
+      const res = await base44.functions.invoke("shopify_products", {
+        collection: collection === "all" ? "" : collection,
+        type,
+        cursor: state.cursor,
+        limit: PAGE_SIZE,
+      });
+      const live = Array.isArray(res?.data?.products) ? res.data.products : [];
+      setState((s) => ({
+        ...s,
+        products: [...s.products, ...live],
+        cursor: res?.data?.nextCursor ?? null,
+        hasMore: Boolean(res?.data?.hasMore),
+      }));
+    } catch {
+      // Keep what's on screen; stop asking for more.
+      setState((s) => ({ ...s, hasMore: false }));
+    }
+    fetchingRef.current = false;
+    setLoadingMore(false);
+  };
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el || state.loading || !state.hasMore) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) loadMore();
+      },
+      { rootMargin: "600px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [state, loadingMore]);
 
   const label = [state.title || "Store", categoryLabel(collection, type)]
     .filter(Boolean)
@@ -110,49 +185,24 @@ export default function Store() {
             </Link>
           </div>
         ) : (
-          <div className="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
-            {state.products.map((p) => (
-              <Link key={p.handle} to={`/product/${p.handle}`} className="group">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--card))]">
-                  <Image
-                    src={p.img}
-                    alt={`${p.name} — Mazrood store.`}
-                    fittingType="fill"
-                    className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.08]"
-                  />
-                  <div className="absolute inset-0 bg-black/0 transition duration-500 group-hover:bg-black/15" />
-                  {p.soldOut && (
-                    <span className="absolute right-3 top-3 rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--background))]/90 px-2 py-1 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">
-                      Sold out
-                    </span>
-                  )}
-                  {!p.soldOut && FEATURED_HANDLES.includes(p.handle) && (
-                    <span className="absolute right-3 top-3 rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--background))]/90 px-2 py-1 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--primary))]">
-                      Featured
-                    </span>
-                  )}
-                  {p.was != null && !p.soldOut && (
-                    <span className="absolute left-3 top-3 rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--background))]/90 px-2 py-1 font-mono-tech text-[0.6rem] uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">
-                      Final Piece
-                    </span>
-                  )}
-                </div>
-                <p className="mt-4 font-body text-sm font-medium text-[hsl(var(--foreground))]">
-                  {p.name}
-                </p>
-                <p className="mt-1 flex items-baseline gap-2">
-                  <span className="font-mono-tech text-sm text-[hsl(var(--primary))]">
-                    {formatPrice(p.price, p.currency)}
-                  </span>
-                  {p.was != null && (
-                    <s className="font-mono-tech text-xs text-[hsl(var(--muted-foreground))]">
-                      {formatPrice(p.was, p.currency)}
-                    </s>
-                  )}
-                </p>
-              </Link>
-            ))}
-          </div>
+          <>
+            <div className="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
+              {state.products.map((p) => (
+                <ProductCard key={p.handle} p={p} />
+              ))}
+            </div>
+            {state.hasMore && (
+              <div
+                ref={sentinelRef}
+                className="mt-12 flex h-10 items-center justify-center"
+                aria-hidden="true"
+              >
+                {loadingMore && (
+                  <div className="h-7 w-7 animate-spin rounded-full border-2 border-[hsl(var(--border))] border-t-[hsl(var(--primary))]" />
+                )}
+              </div>
+            )}
+          </>
         )}
       </main>
       <div className="h-20 md:hidden" />

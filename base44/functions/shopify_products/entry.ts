@@ -95,6 +95,16 @@ export default async function(req: Request): Promise<Response> {
     const searchTerm =
       typeof body?.search === "string" ? body.search.trim().toLowerCase() : "";
 
+    // Cursor pagination: collections and the latest-products feed return one
+    // page at a time; the caller passes the cursor of the last item it has.
+    // Shopify cursors are opaque base64 strings — only safe characters pass.
+    const rawCursor =
+      typeof body?.cursor === "string" ? body.cursor.trim() : "";
+    const cursor = /^[A-Za-z0-9+/=_-]{1,300}$/.test(rawCursor)
+      ? rawCursor
+      : "";
+    const limit = Math.min(Math.max(parseInt(body?.limit, 10) || 24, 4), 48);
+
     let query;
     if (body?.collections === true) {
       query = `{
@@ -150,14 +160,12 @@ export default async function(req: Request): Promise<Response> {
         query = `{
           c0: collectionByHandle(handle: "${rawCollection}") {
             title
-            products(first: ${typeKeys.length ? 100 : MAX_ITEMS * 2}, filters: { available: true }) { edges { node { ${PRODUCT_FIELDS} } } }
+            products(first: ${typeKeys.length ? 100 : limit}${cursor ? `, after: "${cursor}"` : ""}, filters: { available: true }) { edges { cursor node { ${PRODUCT_FIELDS} } } pageInfo { hasNextPage } }
           }
         }`;
       } else {
         query = `{
-          s0: products(first: ${MAX_ITEMS * 2}, sortKey: CREATED_AT, reverse: true) {
-            edges { node { ${PRODUCT_FIELDS} } }
-          }
+          s0: products(first: ${limit}${cursor ? `, after: "${cursor}"` : ""}, sortKey: CREATED_AT, reverse: true) { edges { cursor node { ${PRODUCT_FIELDS} } } pageInfo { hasNextPage } }
         }`;
       }
     }
@@ -185,6 +193,8 @@ export default async function(req: Request): Promise<Response> {
 
     let products = [];
     let title = null;
+    let nextCursor = null;
+    let hasMore = false;
     if (data?.data?.m0) {
       // Drops links to unpublished collections — they would open empty.
       const mapItem = (n) => {
@@ -230,9 +240,17 @@ export default async function(req: Request): Promise<Response> {
         .filter(Boolean);
     } else if (data?.data?.c0) {
       title = data.data.c0.title || null;
+      const edges = data.data.c0.products?.edges || [];
+      const pageInfo = data.data.c0.products?.pageInfo || {};
+      // Typed category views load one bounded fetch; plain collections
+      // page by cursor as the shopper scrolls.
+      if (typeKeys.length === 0) {
+        nextCursor = edges.length ? edges[edges.length - 1].cursor : null;
+        hasMore = Boolean(pageInfo.hasNextPage) && Boolean(nextCursor);
+      }
       // Shopify's stock filter isn't always applied, so sold-out items are
       // also dropped here — grids only ever show what can be bought.
-      products = (data.data.c0.products?.edges || [])
+      products = edges
         .map((e) => e.node)
         .filter((n) => n?.availableForSale !== false)
         .filter(
@@ -242,19 +260,30 @@ export default async function(req: Request): Promise<Response> {
               `${n?.productType || ""} ${n?.title || ""}`.toLowerCase().includes(k)
             )
         )
-        .slice(0, MAX_ITEMS)
+        .slice(0, limit)
         .map((n) => mapProduct(n))
         .filter(Boolean);
     } else {
-      products = (data?.data?.s0?.edges || [])
+      const edges = data?.data?.s0?.edges || [];
+      const pageInfo = data?.data?.s0?.pageInfo || {};
+      nextCursor = edges.length ? edges[edges.length - 1].cursor : null;
+      hasMore = Boolean(pageInfo.hasNextPage) && Boolean(nextCursor);
+      products = edges
         .map((e) => e.node)
         .filter((n) => n?.availableForSale !== false)
-        .slice(0, MAX_ITEMS)
         .map((n) => mapProduct(n))
         .filter(Boolean);
     }
 
-    return Response.json({ configured: true, title, products });
+    console.log(
+      "catalog page:",
+      products.length,
+      "hasMore:",
+      hasMore,
+      "cursor:",
+      nextCursor ? nextCursor.slice(0, 24) : null
+    );
+    return Response.json({ configured: true, title, products, nextCursor, hasMore });
   } catch (error) {
     return Response.json(
       { error: "Could not reach the store right now.", products: [] },
