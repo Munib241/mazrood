@@ -1,0 +1,41 @@
+{
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "webhook",
+      "events": [
+        "orders/create"
+      ],
+      "webhook_id": "6ad6c6c79e6cfb0a3605ad48",
+      "webhook_name": "shopify-order-events"
+    }
+  },
+  "name": "Shopify orders to Google Sheets",
+  "description": "Appends every new Shopify order to the sales tracking spreadsheet",
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "shopify_orders_to_sheets",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "append_order": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "orders_to_sheet",
+            "args": {
+              "order": "${ .trigger.data }"
+            }
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Append order to spreadsheet",
+            "description": "New order row in the sales sheet"
+          }
+        }
+      }
+    ]
+  }
+}
