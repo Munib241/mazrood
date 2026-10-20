@@ -58,7 +58,7 @@ export default function InstagramFeed() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
           {state.loading
             ? Array.from({ length: 8 }).map((_, i) => (
                 <div
@@ -79,9 +79,39 @@ export default function InstagramFeed() {
                     alt={post.caption || "Mazrood studio photography"}
                     className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.08]"
                   />
+                  {/* Editorial hover: caption rises from a soft floor gradient,
+                      a small chip confirms the tile leaves for the shop. */}
+                  {post.caption && (
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end bg-gradient-to-t from-[hsl(var(--background))]/85 via-[hsl(var(--background))]/35 to-transparent px-4 pb-3.5 pt-10 opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100"
+                    >
+                      <span className="font-mono-tech line-clamp-2 text-[0.62rem] uppercase leading-relaxed tracking-[0.18em] text-[hsl(var(--foreground))]">
+                        {post.caption}
+                      </span>
+                    </span>
+                  )}
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--background))]/70 text-[hsl(var(--foreground))] opacity-0 backdrop-blur-sm transition-all duration-500 ease-out group-hover:opacity-100"
+                  >
+                    <ArrowUpRight size={13} strokeWidth={1.5} />
+                  </span>
                 </Link>
               ))}
         </div>
+
+        <p className="mt-10 font-mono-tech text-[0.65rem] uppercase tracking-[0.3em] text-[hsl(var(--muted-foreground))]">
+          Follow the studio —{" "}
+          <a
+            href="https://www.instagram.com/mazrood"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[hsl(var(--foreground))] underline-offset-4 transition hover:text-[hsl(var(--primary))] hover:underline"
+          >
+            @mazrood
+          </a>
+        </p>
       </div>
     </section>
   );
