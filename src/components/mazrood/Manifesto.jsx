@@ -23,7 +23,7 @@ export default function Manifesto() {
         <div className="grid gap-12 md:grid-cols-[1fr_1.4fr] md:gap-20">
           <div>
             <p className="font-mono-tech mb-4 text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
-              01 — Studio Manifesto
+              03 — Studio Manifesto
             </p>
             <h2
               id="manifesto-heading"

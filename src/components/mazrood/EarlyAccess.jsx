@@ -34,7 +34,7 @@ export default function EarlyAccess() {
     >
       <div className="mx-auto max-w-[1600px] px-6 md:px-10">
         <p className="font-mono-tech mb-5 text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
-          03 — Early access
+          04 — Early access
         </p>
         <h2
           id="early-access-heading"

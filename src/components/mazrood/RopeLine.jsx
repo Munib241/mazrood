@@ -66,7 +66,7 @@ export default function RopeLine({ refreshKey = 0 }) {
       className="relative w-full overflow-hidden py-12 md:py-20"
     >
       <p className="font-mono-tech mb-12 px-6 text-center text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
-        02 — Fresh off the line
+        01 — Fresh off the line
       </p>
 
       <div className="relative h-[280px] md:h-[400px]">

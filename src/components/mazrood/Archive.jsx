@@ -37,7 +37,7 @@ export default function Archive({ refreshKey = 0 }) {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="font-mono-tech mb-4 text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
-              01 — The Archive
+              02 — The Archive
             </p>
             <h2 id="archive-heading" className="font-heading text-4xl font-light leading-tight tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-6xl">
               Final pieces, <span className="font-bold italic">quietly reduced.</span>
