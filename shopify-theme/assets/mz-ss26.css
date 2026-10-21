@@ -340,8 +340,10 @@ body:not(.template-index) #MainContent { padding-top: calc(106px + env(safe-area
   font-weight: 300;
   line-height: .9;
   letter-spacing: -.02em;
+  text-transform: lowercase;
   color: #fff;
 }
+.mzh-body .mz-eye { margin: 0 0 16px; }
 @media (min-width: 768px) { .mzh-title { font-size: 9.5vw; } }
 .mzh-title em { font-style: italic; font-weight: 700; }
 .mzh-desc { margin: 24px 0 0; max-width: 32rem; font-family: var(--mz-body); font-size: 16px; line-height: 1.625; color: rgba(255, 255, 255, .8); }
