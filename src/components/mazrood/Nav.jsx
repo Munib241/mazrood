@@ -80,13 +80,6 @@ export default function Nav() {
           scrolled || pathname !== "/" ? "glass-panel border-b" : "bg-transparent border-b border-transparent"
         }`}
       >
-        {/* slim Archive announcement bar */}
-        <div className="border-b border-[hsl(var(--border))] bg-[hsl(var(--card))]">
-          <p className="mx-auto max-w-[1600px] px-6 py-2 text-center font-mono-tech text-[0.6rem] uppercase tracking-[0.25em] text-[hsl(var(--muted-foreground))] md:px-10">
-            <span className="text-[hsl(var(--primary))]">The Archive:</span>{" "}
-            select pieces reduced. Complimentary shipping over SAR 300.
-          </p>
-        </div>
         <nav className="mx-auto flex h-[72px] max-w-[1600px] items-center justify-between px-6 md:px-10">
           <Link
             to="/"
