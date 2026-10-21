@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Image } from "@/components/ui/image";
 
 const HERO_IMG =
-  "https://media.base44.com/images/public/6abfc987ea748e49e7475c82/ba7a6e328_generated_image.png";
+  "https://media.base44.com/images/public/6abfc987ea748e49e7475c82/ab3abebe8_generated_image.png";
 
 export default function Hero() {
   const ref = useRef(null);
