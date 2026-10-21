@@ -326,7 +326,7 @@ body:not(.template-index) #MainContent { padding-top: calc(106px + env(safe-area
   background: radial-gradient(30% 30% at var(--mx, 50%) var(--my, 40%), rgba(242, 239, 234, .14), transparent 70%);
   mix-blend-mode: screen;
 }
-.mzh-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, .85), rgba(0, 0, 0, .25), rgba(0, 0, 0, .45)); }
+.mzh-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, .75), rgba(0, 0, 0, .10), rgba(0, 0, 0, .15)); }
 .mzh-tag { position: absolute; left: 24px; top: 128px; }
 @media (min-width: 768px) { .mzh-tag { left: 40px; top: 144px; } }
 .mzh-tag .mz-eye { margin: 0; }
