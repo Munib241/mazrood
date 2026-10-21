@@ -43,27 +43,13 @@ export default function Hero() {
           mixBlendMode: "screen",
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/45" />
-
-      {/* campaign tag, top */}
-      <div className="absolute left-6 top-32 md:left-10 md:top-36">
-        <p className="font-mono-tech text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
-          Mazrood Studio — FW26
-        </p>
-      </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/15" />
 
       {/* headline block, bottom */}
       <div className="absolute inset-x-0 bottom-0 px-6 pb-10 md:px-10 md:pb-14">
-        <p className="font-mono-tech mb-4 text-[0.7rem] uppercase tracking-[0.4em] text-white/70">
-          Fall / Winter 2026
-        </p>
         <h1 className="font-heading text-[15vw] font-light leading-[0.9] tracking-[-0.02em] text-white md:text-[9.5vw]">
           Winter <span className="font-bold italic">is</span> Coming...
         </h1>
-        <p className="mt-6 max-w-lg font-body text-base leading-relaxed text-white/80 md:text-lg">
-          Final pieces from last season's studio collection. Once they're gone,
-          they're gone.
-        </p>
         <div className="mt-8 flex flex-wrap items-center gap-4">
           <Link
             to="/store/fw25-26"
