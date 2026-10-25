@@ -44,7 +44,7 @@ export default function Manifesto() {
 
           <div className="flex flex-col divide-y divide-[hsl(var(--border))] border-y border-[hsl(var(--border))]">
             {PRINCIPLES.map((p) => (
-              <div key={p.n} className="grid gap-2 py-8 md:grid-cols-[64px_220px_1fr] md:items-baseline md:gap-10 md:py-10">
+              <div key={p.n} className="grid gap-2 py-8 xl:grid-cols-[64px_220px_1fr] xl:items-baseline xl:gap-10 xl:py-10">
                 <span className="font-mono-tech text-[0.7rem] tracking-[0.3em] text-[hsl(var(--primary))]">
                   {p.n}
                 </span>
