@@ -16,6 +16,7 @@ import {
 import ProfileCard from "@/components/mazrood/ProfileCard";
 import PasswordCard from "@/components/mazrood/PasswordCard";
 import ThemeSyncCard from "@/components/mazrood/ThemeSyncCard";
+import GithubPushCard from "@/components/mazrood/GithubPushCard";
 
 export default function Settings() {
   const [deleting, setDeleting] = useState(false);
@@ -49,6 +50,8 @@ export default function Settings() {
         <div className="mt-6">
           <PasswordCard />
         </div>
+
+        <GithubPushCard />
 
         <section
           aria-labelledby="delete-heading"
