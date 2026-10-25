@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { PackageCheck, RefreshCcw, BadgeDollarSign, MessageCircle } from "lucide-react";
 import Nav from "@/components/mazrood/Nav";
-import BottomTabs from "@/components/mazrood/BottomTabs";
 import FinalEmittance from "@/components/mazrood/FinalEmittance";
 
 const SECTIONS = [
@@ -141,8 +140,6 @@ export default function Policies() {
         </div>
       </main>
       <FinalEmittance />
-      <div className="h-20 md:hidden" />
-      <BottomTabs />
     </div>
   );
 }

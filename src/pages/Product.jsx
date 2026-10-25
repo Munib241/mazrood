@@ -5,7 +5,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { Image } from "@/components/ui/image";
 import Nav from "@/components/mazrood/Nav";
-import BottomTabs from "@/components/mazrood/BottomTabs";
 import { formatPrice } from "@/hooks/useShopifyProducts";
 import { addToCart as addItemToCart } from "@/lib/cart";
 import RelatedProducts from "@/components/mazrood/RelatedProducts";
@@ -359,10 +358,7 @@ export default function Product() {
           </div>
 
           <div>
-            <p className="font-mono-tech text-[0.7rem] uppercase tracking-[0.4em] text-[hsl(var(--primary))]">
-              Mazrood Studio
-            </p>
-            <h1 className="mt-4 font-heading text-4xl font-light leading-[1.05] tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-5xl">
+            <h1 className="font-heading text-4xl font-light leading-[1.05] tracking-[-0.01em] text-[hsl(var(--foreground))] md:text-5xl">
               {p.name}
             </h1>
 
@@ -588,16 +584,11 @@ export default function Product() {
                   {checkoutError}
                 </p>
               )}
-              <p className="mt-4 font-mono-tech text-[0.65rem] uppercase tracking-[0.25em] text-[hsl(var(--muted-foreground))]">
-                Secure checkout on Shopify
-              </p>
             </div>
           </div>
         </div>
         <RelatedProducts products={related} />
       </main>
-      <div className="h-20 md:hidden" />
-      <BottomTabs />
     </div>
   );
 }

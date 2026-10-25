@@ -80,23 +80,6 @@
   </div>
 </header>
 
-<nav class="mz mzt" aria-label="Primary mobile navigation">
-  <div class="mzt-inner">
-    <a href="{{ routes.root_url }}" class="{% if template.name == 'index' %}is-on{% endif %}" aria-label="Home">
-      {%- render 'mz-icon', name: 'home', size: 20 -%}<span>Home</span>
-    </a>
-    <a href="{{ section.settings.tab_new_url }}" class="{% if request.path == section.settings.tab_new_url %}is-on{% endif %}" aria-label="New arrivals">
-      {%- render 'mz-icon', name: 'sparkles', size: 20 -%}<span>New</span>
-    </a>
-    <a href="{{ section.settings.tab_sale_url }}" class="{% if request.path == section.settings.tab_sale_url %}is-on{% endif %}" aria-label="Archive">
-      {%- render 'mz-icon', name: 'tag', size: 20 -%}<span>Archive</span>
-    </a>
-    <a href="{{ account_url }}" class="{% if template.name contains 'customers' %}is-on{% endif %}" aria-label="Account">
-      {%- render 'mz-icon', name: 'user', size: 20 -%}<span>Account</span>
-    </a>
-  </div>
-</nav>
-
 {% schema %}
 {
   "name": "Header",

@@ -100,6 +100,14 @@
       {%- if product.description != blank -%}
         <div class="pp-desc rte">{{ product.description }}</div>
       {%- endif -%}
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == '@app' -%}
+          <div class="pp-app-block" {{ block.shopify_attributes }}>
+            {% render block %}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
     </div>
   </div>
 </section>
@@ -110,6 +118,7 @@
   "name": "Product",
   "settings": [
     { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": false }
-  ]
+  ],
+  "blocks": [{ "type": "@app" }]
 }
 {% endschema %}

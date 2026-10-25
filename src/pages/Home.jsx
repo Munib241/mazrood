@@ -8,7 +8,6 @@ import RopeLine from "@/components/mazrood/RopeLine";
 import EarlyAccess from "@/components/mazrood/EarlyAccess";
 import FinalEmittance from "@/components/mazrood/FinalEmittance";
 import PullToRefresh from "@/components/mazrood/PullToRefresh";
-import BottomTabs from "@/components/mazrood/BottomTabs";
 
 export default function Home() {
   const [refreshTick, setRefreshTick] = useState(0);
@@ -34,9 +33,6 @@ export default function Home() {
           <FinalEmittance />
         </main>
       </PullToRefresh>
-      {/* clearance for the mobile bottom tab bar */}
-      <div className="h-20 md:hidden" />
-      <BottomTabs />
     </div>
   );
 }

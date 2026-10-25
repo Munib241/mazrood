@@ -3,7 +3,6 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 import { categoryLabel } from "@/lib/shopMenu";
 import { base44 } from "@/api/base44Client";
 import Nav from "@/components/mazrood/Nav";
-import BottomTabs from "@/components/mazrood/BottomTabs";
 import ProductCard from "@/components/mazrood/ProductCard";
 import { FEATURED_HANDLES } from "@/lib/featuredPieces";
 
@@ -220,8 +219,6 @@ export default function Store() {
           </>
         )}
       </main>
-      <div className="h-20 md:hidden" />
-      <BottomTabs />
     </div>
   );
 }
