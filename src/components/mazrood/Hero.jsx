@@ -79,14 +79,6 @@ export default function Hero() {
           </Link>
         </div>
       </div>
-
-      {/* soft rounded corner marks */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <span className="absolute left-6 top-6 h-5 w-5 rounded-tl-[8px] border-l border-t opacity-60 md:left-10 md:top-10" />
-        <span className="absolute right-6 top-6 h-5 w-5 rounded-tr-[8px] border-r border-t opacity-60 md:right-10 md:top-10" />
-        <span className="absolute bottom-6 left-6 h-5 w-5 rounded-bl-[8px] border-b border-l opacity-60 md:bottom-10 md:left-10" />
-        <span className="absolute bottom-6 right-6 h-5 w-5 rounded-br-[8px] border-b border-r opacity-60 md:bottom-10 md:right-10" />
-      </div>
     </section>
   );
 }
