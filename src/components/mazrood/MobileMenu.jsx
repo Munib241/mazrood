@@ -8,7 +8,7 @@ const subClass =
   "font-mono-tech py-3 pl-4 text-xs uppercase tracking-[0.2em] text-[hsl(var(--foreground))] opacity-80";
 
 // Small-screen menu: same structure as the header, categories expand in place.
-export default function MobileMenu({ links, onClose }) {
+export default function MobileMenu({ links, onClose, isAdmin = false }) {
   const [expanded, setExpanded] = useState(null);
 
   return (
@@ -44,9 +44,11 @@ export default function MobileMenu({ links, onClose }) {
           </Link>
         )
       )}
-      <Link to="/settings" onClick={onClose} className={`${rowClass} border-b-0`}>
-        Settings
-      </Link>
+      {isAdmin && (
+        <Link to="/settings" onClick={onClose} className={`${rowClass} border-b-0`}>
+          Settings
+        </Link>
+      )}
     </div>
   );
 }

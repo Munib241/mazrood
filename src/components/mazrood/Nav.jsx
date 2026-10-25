@@ -10,9 +10,12 @@ import { FALLBACK_MENU, buildMenu, menuFromCache, setMenuCache } from "@/lib/sho
 import NavSearch from "@/components/mazrood/NavSearch";
 import CartDrawer from "@/components/mazrood/CartDrawer";
 import { cartCount, onCartChange } from "@/lib/cart";
+import { useAuth } from "@/lib/AuthContext";
 
 export default function Nav() {
   const { pathname } = useLocation();
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [links, setLinks] = useState(FALLBACK_MENU);
@@ -121,13 +124,15 @@ export default function Nav() {
                 </span>
               )}
             </button>
-            <Link
-              to="/settings"
-              aria-label="Settings"
-              className={`inline-flex h-9 w-9 items-center justify-center rounded-sm ${tone} transition hover:text-[hsl(var(--primary))]`}
-            >
-              <SettingsIcon size={17} />
-            </Link>
+            {isAdmin && (
+              <Link
+                to="/settings"
+                aria-label="Settings"
+                className={`inline-flex h-9 w-9 items-center justify-center rounded-sm ${tone} transition hover:text-[hsl(var(--primary))]`}
+              >
+                <SettingsIcon size={17} />
+              </Link>
+            )}
           </div>
 
           <div className="flex items-center gap-3 lg:hidden">
@@ -158,7 +163,7 @@ export default function Nav() {
           </div>
         </nav>
 
-        {open && <MobileMenu links={links} onClose={() => setOpen(false)} />}
+        {open && <MobileMenu links={links} isAdmin={isAdmin} onClose={() => setOpen(false)} />}
       </div>
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
     </header>

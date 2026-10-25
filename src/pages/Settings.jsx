@@ -17,9 +17,25 @@ import ProfileCard from "@/components/mazrood/ProfileCard";
 import PasswordCard from "@/components/mazrood/PasswordCard";
 import ThemeSyncCard from "@/components/mazrood/ThemeSyncCard";
 import GithubPushCard from "@/components/mazrood/GithubPushCard";
+import { useAuth } from "@/lib/AuthContext";
+import PageNotFound from "@/lib/PageNotFound";
 
 export default function Settings() {
+  const { user, isLoadingAuth, authChecked } = useAuth();
   const [deleting, setDeleting] = useState(false);
+
+  // Settings is the studio's own back office: admin accounts only.
+  if (isLoadingAuth || !authChecked) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[hsl(var(--background))]">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[hsl(var(--border))] border-t-[hsl(var(--primary))]" />
+      </div>
+    );
+  }
+
+  if (user?.role !== "admin") {
+    return <PageNotFound />;
+  }
 
   const confirmDelete = async () => {
     setDeleting(true);
