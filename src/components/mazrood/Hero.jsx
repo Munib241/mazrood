@@ -60,10 +60,6 @@ export default function Hero() {
         <h1 className="font-heading text-[15vw] font-light leading-[0.9] tracking-[-0.02em] text-white md:text-[9.5vw]">
           End of <span className="font-bold italic">Season.</span>
         </h1>
-        <p className="mt-6 max-w-lg font-body text-base leading-relaxed text-[hsl(var(--foreground))] opacity-80 md:text-lg">
-          New-season streetwear, knits and headwear — cut in the studio, made
-          to outlast the season.
-        </p>
         <div className="mt-8 flex flex-wrap items-center gap-4">
           <Link
             to="/store/new-2026"
