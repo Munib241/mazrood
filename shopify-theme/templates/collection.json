@@ -1,8 +1,1 @@
-{
-  "sections": {
-    "main": {
-      "type": "main-collection"
-    }
-  },
-  "order": ["main"]
-}
+{"sections":{"main":{"type":"main-collection","custom_css":[".line-1,.line-2 {color: #000f9f !important;}",".feature-header {font-family: \"Syne\", sans-serif !important; font-weight: 500 !important; letter-spacing: 0.08em !important; text-transform: uppercase !important;}"],"settings":{"show_collection_content":false,"show_collection_image":false,"description_position":"bottom","layout":"rows","grid":4,"grid_mobile":"2","products_per_page":48,"enable_infinite_scroll":true,"show_vendor":false,"show_filter_counts":true,"ajax_products":true,"filter_mode":"sidebar","sticky_sidebar":true,"collapse_filters_method":"all","collapse_sort_by":true,"enable_sorting":true,"show_featured_in_sort":false}}},"order":["main"]}

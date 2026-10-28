@@ -1,2 +1,58 @@
-.shop-the-look-section .shop-the-look__layout{display:flex;align-items:flex-start;gap:48px}.shop-the-look-section .shop-the-look__image{flex:0 0 38%;max-width:460px}.shop-the-look-section .shop-the-look__image img{width:100%;height:auto;display:block}.shop-the-look-section .shop-the-look__products{flex:1 1 auto;min-width:0}.shop-the-look-section .shop-the-look__subtext{margin-bottom:24px;font-size:.9em;line-height:1.7;letter-spacing:.02em;color:var(--maz-charcoal, #423f3f);opacity:.85}.shop-the-look-section .shop-the-look__slider .swiper-button-prev,.shop-the-look-section .shop-the-look__slider .swiper-button-next{color:var(--maz-cobalt, #000f9f)}@media(max-width:767px){.shop-the-look-section .shop-the-look__layout{flex-direction:column;gap:24px}.shop-the-look-section .shop-the-look__image{flex:0 0 auto;max-width:100%}.shop-the-look-section{padding-top:36px!important;padding-bottom:36px!important}}
-/*# sourceMappingURL=/cdn/shop/t/88/assets/mazrood-enhancements-shop-the-look.css.map */
+/* =============================================
+   SHOP THE LOOK SECTION
+   Uses existing Mazrood brand tokens defined in
+   mazrood-enhancements.css (--maz-cobalt, --maz-charcoal, etc.)
+   ============================================= */
+
+.shop-the-look-section .shop-the-look__layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 48px;
+}
+
+.shop-the-look-section .shop-the-look__image {
+  flex: 0 0 38%;
+  max-width: 460px;
+}
+
+.shop-the-look-section .shop-the-look__image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.shop-the-look-section .shop-the-look__products {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.shop-the-look-section .shop-the-look__subtext {
+  margin-bottom: 24px;
+  font-size: 0.9em;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  color: var(--maz-charcoal, #423f3f);
+  opacity: 0.85;
+}
+
+.shop-the-look-section .shop-the-look__slider .swiper-button-prev,
+.shop-the-look-section .shop-the-look__slider .swiper-button-next {
+  color: var(--maz-cobalt, #000f9f);
+}
+
+@media (max-width: 767px) {
+  .shop-the-look-section .shop-the-look__layout {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .shop-the-look-section .shop-the-look__image {
+    flex: 0 0 auto;
+    max-width: 100%;
+  }
+
+  .shop-the-look-section {
+    padding-top: 36px !important;
+    padding-bottom: 36px !important;
+  }
+}

@@ -1,0 +1,270 @@
+{%- liquid
+  assign cheapest_variant = product.variants | sort: 'price' | first
+
+  assign on_sale = false
+  if cheapest_variant.compare_at_price > cheapest_variant.price
+    assign on_sale = true
+  endif
+
+  assign product_url = product.url | within: collection
+
+  if animation_type == blank
+    assign animation_type = "cc-fade-in-up"
+  endif
+
+  assign product_has_swatches = false
+  assign first_swatch_media = blank
+  if settings.prod_block_swatches and hide_swatches != true
+    if settings.swatch_source == 'theme'
+      for product_option in product.options_with_values
+        if settings.swatch_option_name contains product_option.name
+          if product_option.values.size > 1 or settings.prod_block_swatches_single
+            assign product_has_swatches = true
+            if first_swatch_media == blank and product_option.values.first.variant.featured_media
+              assign first_swatch_media = product_option.values.first.variant.featured_media
+            endif
+            break
+          endif
+        endif
+      endfor
+    elsif settings.swatch_source == 'native'
+      for product_option in product.options_with_values
+        if product_option.values.first.swatch
+          if product_option.values.size > 1 or settings.prod_block_swatches_single
+            assign product_has_swatches = true
+            if first_swatch_media == blank and product_option.values.first.variant.featured_media
+              assign first_swatch_media = product_option.values.first.variant.featured_media
+            endif
+            break
+          endif
+        endif
+      endfor
+    endif
+  endif
+
+  assign primary_media = first_swatch_media | default: product.featured_media
+  assign primary_image = primary_media.preview_image
+  assign product_images = product.media | where: 'media_type', 'image'
+
+  if settings.prod_hover == "second_image"
+    assign secondary_image = product.media[1].preview_image
+
+    for media in product_images offset: 1
+      if media.id == primary_media.id
+        assign active_media_found = true
+      else
+        if active_media_found
+          assign secondary_image = media.preview_image
+          break
+        endif
+      endif
+    endfor
+  endif
+
+  if settings.prod_hover == "all_images" or product_has_swatches
+    assign active_media_found = false
+    assign images_before_featured = ""
+    assign images_after_featured = ""
+
+    for media in product_images
+      if media.id == primary_media.id
+        assign active_media_found = true
+      endif
+
+      assign image_placeholder = media | img_url: '1x1' | replace: '_1x1.', '_{width}x.'
+      if active_media_found
+        assign images_after_featured = images_after_featured | append: "," | append: image_placeholder
+      else
+        assign images_before_featured = images_before_featured | append: "," | append: image_placeholder
+      endif
+    endfor
+
+    assign card_images = images_after_featured | append: images_before_featured | replace: ",,", "," | remove_first: ","
+  endif
+
+  if settings.prod_show_videos
+    assign videos = product.media | where: "media_type", "video"
+    unless videos == blank
+      for source in videos[0].sources
+        if source != blank and source.format == "mp4"
+          assign video_source = source
+          break
+        endif
+      endfor
+
+      assign mp4_url = video_source.url
+    endunless
+  endif
+
+  assign param_symbol = "?"
+  if product.url contains "?"
+    assign param_symbol = "&"
+  endif
+-%}
+
+<div class="product-block
+  cc-product-block
+  {% unless product.available %} sold-out{% endunless %}
+  {% if on_sale %} on-sale{% endif %}
+  {% if settings.prod_hover == "second_image" %}hover-image{% endif %}
+  {% if settings.prod_hover == "all_images" and product.images.size > 1 %}all-images{% endif %}
+  {% if product.tags contains 'meta-layout-right' %}layout-right{% endif %}
+  {% if settings.prod_label_layout == 'marquee_on_hover' %} product-block--marquee-on-hover {% endif%}
+  {% if settings.quickbuy_enabled %}product-block--quickbuy{% endif %}
+  {% if mp4_url != blank %}product-block--video{% endif %}
+  {% if product_has_swatches %}product-block--has-swatches{% endif %}
+  {{ product_class }}"
+     data-loop-index="{{ i }}"
+  {% if animate %} data-cc-animate="{{ animation_type }}" data-cc-animate-delay="{{ animate | times: 0.15 }}s" {% endif %}
+  {% if card_images %}
+    data-product-images="{{ card_images }}"
+  {% endif %}
+>
+
+  <div class="product-block__inner">
+    <div class="image {% if settings.prod_hover == "second_image" and product.media.size > 1 %}image--hover-second image--same-aspect-ratio{% endif %}">
+      {% if settings.prod_label_layout contains 'marquee' %}
+        <div class="product-marquee">
+          {% render 'product-label', product: product, cheapest_variant: cheapest_variant %}
+        </div>
+      {% endif %}
+
+      <a data-cc-animate-click class="image-inner" href="{{ product_url }}" aria-label="{{ product.title | escape }}" tabindex="-1">
+        <div class="image__first">
+          {% if mp4_url != blank %}
+            {% render 'inline-video', video: mp4_url, image: primary_image %}
+          {% else %}
+            {% render 'responsive-image', image: primary_image, aspect_ratio: 0.8 %}
+          {% endif %}
+
+          {% unless settings.prod_label_layout contains 'marquee' %}
+            {% render 'product-label', product: product, cheapest_variant: cheapest_variant %}
+          {% endunless %}
+        </div>
+
+        {% if settings.prod_hover == "second_image" and product.media.size > 1 %}
+        <div class="image__second">
+          {% render 'responsive-image', image: secondary_image, aspect_ratio: 0.8 %}
+        </div>
+        {% endif %}
+      </a>
+    </div>
+
+    {%- if product_has_swatches -%}
+      {%- assign option_limit = 3 -%}
+      {%- for product_option in product.options_with_values -%}
+        {%- if settings.swatch_source == 'theme' and settings.swatch_option_name contains product_option.name -%}
+          {%- if product_option.values.size > 1 or settings.prod_block_swatches_single -%}
+            <ul class="cc-swatches{% if settings.swatch_method == 'variant-images' %} cc-swatches-prod-img cc-swatches-prod-img-{{ settings.swatch_prod_images_shape }}{% endif %}" data-option-name="{{ product_option.name | escape }}">
+              {%- for value in product_option.values -%}
+                {%- if forloop.index <= option_limit -%}
+                  <li>
+                    <a rel="nofollow"
+                        href="{{ product.url }}{{ param_symbol }}variant={{ value.variant.id }}"
+                        title="{{ value.name | escape }}"
+                        {%- if value.variant.featured_media.preview_image %}
+                          {%- assign variant_image = value.variant.featured_media.preview_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+                          data-variant-image="{{ variant_image }}"
+                        {%- endif %}
+                        class="product-block__swatch{% unless value.available %} unavailable{% endunless %}{% if settings.swatch_method == 'variant-images' %} lazyload{% endif %}"
+                        data-option-item="{{ value.name | downcase | escape }}"
+                        {%- if value.variant.featured_media %}
+                          data-media="{{ value.variant.featured_media.id }}"
+                        {%- endif %}
+                        {%- if settings.swatch_method == 'variant-images' %}
+                          {%- liquid
+                            if value.product_url != blank and value.variant.featured_media == blank
+                              assign value_image = value.variant.product.featured_media.preview_image
+                            else
+                              assign value_image = value.variant.featured_media.preview_image
+                            endif
+                          -%}
+                          data-bgset="{{ value_image | image_url: width: 72 }}"
+                          style="{% if settings.swatch_prod_images_shape == 'natural' %}aspect-ratio: {{ value_image.aspect_ratio }}{% endif %}"
+                        {%- elsif settings.swatch_method == 'swatches' -%}
+                          data-swatch="{{ value.name | replace: '"', '' | downcase }}"
+                        {%- endif %}>
+                      {{- variant.title -}}
+                    </a>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if product_option.values.size > option_limit -%}
+                <li class="product-block__more-label"><span>&plus;{{ product_option.values.size | minus: option_limit }}</span></li>
+              {%- endif -%}
+            </ul>
+          {%- endif -%}
+        {%- elsif settings.swatch_source == 'native' and product_option.values.first.swatch -%}
+          {%- if product_option.values.size > 1 or settings.prod_block_swatches_single -%}
+            <ul class="cc-swatches" data-option-name="{{ product_option.name | escape }}">
+              {%- for value in product_option.values -%}
+                {% if forloop.index <= option_limit %}
+                  <li>
+                    <a rel="nofollow"
+                        href="{{ product.url }}{{ param_symbol }}option_values={{ value.id }}"
+                        title="{{ value.name | escape }}"
+                        {%- if value.variant and value.variant.featured_media.preview_image %}
+                          {%- assign variant_image = value.variant.featured_media.preview_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+                          data-variant-image="{{ variant_image }}"
+                        {%- endif %}
+                        class="product-block__swatch{% unless value.available %} unavailable{% endunless %} lazyload"
+                        data-option-item="{{ value.name | downcase | escape }}"
+                        {%- if value.variant.featured_media %}
+                          data-media="{{ variant.featured_media.id }}"
+                        {% endif %}
+                        {%- if value.swatch.image %}
+                          data-bgset="{{ value.swatch.image | image_url: width: 48, height: 48 }}"
+                        {%- elsif value.swatch.color %}
+                          style="background-color: rgb({{ value.swatch.color.rgb }})"
+                        {%- endif %}>
+                      {{- variant.title -}}
+                    </a>
+                  </li>
+                {% endif %}
+              {%- endfor -%}
+              {%- if product_option.values.size > option_limit -%}
+                <li class="product-block__more-label"><span>&plus;{{ product_option.values.size | minus: option_limit }}</span></li>
+              {%- endif -%}
+            </ul>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- if settings.quickbuy_enabled -%}
+      <div class="cc-quick-buy-btn-container">
+        <a href="{{ product_url }}" data-cc-quick-buy class="button alt cc-quick-buy-btn">
+          {{ 'products.listing.quick_view' | t }}
+        </a>
+      </div>
+    {%- endif -%}
+
+    <a data-cc-animate-click href="{{ product_url }}" class="caption upper">
+      <span class="title">{{ product.title }}</span>
+
+      {% if show_vendor %}
+        <span class="vendor">{{ product.vendor }}</span>
+      {% endif %}
+
+      <div class="price">
+        {% if product.price_varies %}{{ 'products.listing.from' | t }}{% endif %}
+        <span class="theme-money">{%- render "price", price: cheapest_variant.price -%}</span>
+        {% if on_sale %}<span class="was-price theme-money">{%- render "price", price: cheapest_variant.compare_at_price -%}</span>{% endif %}
+
+        {% render 'unit-price', variant: cheapest_variant %}
+      </div>
+    </a>
+
+    {% if settings.show_product_block_reviews and product.metafields.reviews != blank %}
+      <a data-cc-animate-click href="{{ product_url }}" class="themed-product-reviews" tabindex="-1">
+        {% render 'rating', rating_value: product.metafields.reviews.rating.value %}
+        {%- assign rating_count = product.metafields.reviews.rating_count | plus: 0 -%}
+        {% if rating_count != blank and rating_count > 0 %}
+          <span class="cc-rating-custom-caption">
+            {{ rating_count }} {{ 'products.product.reviews_link' | t: count: rating_count }}
+          </span>
+        {% endif %}
+      </a>
+    {% endif %}
+  </div>
+</div>

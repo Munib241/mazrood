@@ -1,0 +1,317 @@
+{% comment %}
+  Parameters:
+  - product {Object} - Product object.
+  - current_variant {Object} - Current variant object. May be false if no variant selected.
+  - product_form_id {String} - Product form ID.
+  - media_ratio {Number} - Media aspect ratio.
+  - update_url {Boolean} - Whether or not to update the URL when the variant changes.
+  - size_chart_link {String} - Size chart link HTML.
+  - media_ratio {Number} - Aspect ratio to use for swatches.
+  - selector_style {String} - Listed or dropdown.
+  - dropdown_label_inside {Boolean} - Show label inside dropdown. Default is false.
+  - swatch_source {String}
+  - swatch_option_name {String}
+  - swatch_method {String}
+  - swatch_picker_image_size {Number}
+  - swatch_style {String}
+  - swatch_crop_align {String}
+  - block {Object} - Block object.
+  - show_single - Supply when block is not provided (optional).
+  - dynamic_availability - Supply when block is not provided (optional).
+  - enable_size_chart - Supply when block is not provided (optional).
+  - size_chart_variant - Supply when block is not provided (optional).
+  - color_swatch_method_string - When swatch_method matches this value, shows a color swatch (optional).
+  - image_swatch_method_string - When swatch_method matches this value, shows an image swatch (optional).
+
+  Dependencies:
+  - Custom select component
+
+  Usage:
+  {% render 'variant-picker', product: product, product_form_id: product_form_id, block: block %}
+{% endcomment %}
+
+{%- liquid
+  if block
+    assign show_single = block.settings.show_single
+    assign dynamic_availability = block.settings.dynamic_availability
+    assign enable_size_chart = block.settings.enable_size_chart
+    assign size_chart_variant = block.settings.size_chart_variant
+  endif
+  assign image_swatch_method_string = image_swatch_method_string | default: 'variant-images'
+  assign color_swatch_method_string = color_swatch_method_string | default: 'swatches'
+  assign dropdown_label_inside = dropdown_label_inside | default: false
+
+  assign show_variant_picker = show_single
+  if product.variants_count > 1
+    assign show_variant_picker = true
+  else
+    for option in product.options_with_values
+      if option.selected_value.product_url
+        assign show_variant_picker = true
+        break
+      endif
+    endfor
+  endif
+-%}
+
+{%- if show_variant_picker -%}
+  <variant-picker
+      class="{% if product.available %}variant-picker--product-available{% else %}variant-picker--product-unavailable{% endif %}"
+      data-option-count="{{ product.options_with_values | size }}"
+      data-section-id="{{ section.id }}"
+      data-url="{{ product.url }}"
+      data-update-url="{{ update_url | default: false }}"
+      data-availability="{{ dynamic_availability }}">
+    {%- for option in product.options_with_values -%}
+      {%- capture option_id %}{{ product_form_id }}-{{ forloop.index }}{% endcapture -%}
+      {%- liquid
+        assign is_color_selector = false
+        assign is_variant_image_style = false
+        assign show_size_chart = false
+        assign is_dropdown = false
+
+        if swatch_source == 'theme' and swatch_option_name contains option.name and swatch_method == image_swatch_method_string
+          assign is_color_selector = true
+          assign is_variant_image_style = true
+          assign option_index0 = forloop.index0
+        elsif swatch_source == 'theme' and swatch_option_name contains option.name and swatch_method == color_swatch_method_string
+          assign is_color_selector = true
+        else
+          assign native_swatch_options = option.values | where: 'swatch'
+          if swatch_source == 'native' and native_swatch_options.size > 0
+            assign is_color_selector = true
+            assign is_native_swatch_style = true
+          endif
+        endif
+
+        if is_variant_image_style or is_native_swatch_style
+          assign swatch_picker_image_size_x2 = swatch_picker_image_size | times: 2
+          assign img_sizes = swatch_picker_image_size | append: 'px'
+          assign img_widths = swatch_picker_image_size | append: ', ' | append: swatch_picker_image_size_x2 | append: 'px'
+          if swatch_style == 'icon_square'
+            assign img_aspect_ratio = null
+            assign img_crop_align = null
+          else
+            assign img_aspect_ratio = 1
+            assign img_crop_align = swatch_crop_align
+          endif
+        endif
+
+        if is_color_selector
+          if swatch_style == 'dropdown'
+            assign is_dropdown = true
+          endif
+        elsif selector_style == 'dropdown'
+          assign is_dropdown = true
+        endif
+
+        assign size_chart_variant_dcase = size_chart_variant | downcase
+        assign option_name_dcase = option.name | downcase
+        if enable_size_chart and size_chart_variant_dcase == option_name_dcase and size_chart_link != blank
+          assign show_size_chart = true
+        endif
+      -%}
+
+      {%- if is_dropdown -%}
+        {%- if is_variant_image_style -%}
+          <style>
+            {%- for value in option.values -%}
+              {% liquid
+                assign value_image = false
+                if value.product_url != blank and value.variant != blank
+                  # Combined listing
+                  assign value_image = value.variant.product.featured_media
+                elsif value.variant
+                  # Variant image
+                  assign value_image = value.variant.featured_media
+                else
+                  # Fallback for incomplete variant matrix
+                  for variant in product.variants
+                    if variant.options[option_index0] == value and variant.featured_media
+                      assign value_image = variant.featured_media
+                      break
+                    endif
+                  endfor
+                endif
+                if value_image == blank and value.swatch.image
+                  assign value_image = value.swatch.image
+                endif
+              %}
+              {%- if value_image -%}
+                .option-selector-{{ option_id }} [data-swatch="{{ value | replace: '"', '' | downcase }}"] {
+                  --swatch-background-color: transparent;
+                  --swatch-background-image: url({{ value_image | image_url: width: 40, height: 40, crop: swatch_crop_align }});
+                }
+              {%- elsif value.swatch.color -%}
+                .option-selector-{{ option_id }} [data-swatch="{{ value | replace: '"', '' | downcase }}"] {
+                  --swatch-background-color: rgb({{ value.swatch.color.rgb }});
+                }
+              {%- endif -%}
+            {%- endfor -%}
+          </style>
+        {%- endif -%}
+        {%- capture label_id -%}{{ option_id }}-label{%- endcapture -%}
+        {%- capture selector_label -%}
+          <span class="label" id="{{ label_id }}">{{- option.name -}}</span>
+        {%- endcapture -%}
+        <div class="option-selector{% if is_color_selector %} option-selector--swatch{% endif %} option-selector-{{ option_id }}" data-selector-type="dropdown" data-index="{{ option.position }}" data-option="{{ option.name | escape }}">
+          {%- if show_size_chart -%}
+            <div class="option-selector__label-with-sc">
+              {% if dropdown_label_inside == false %}{{ selector_label }}{% endif %}
+              {{ size_chart_link }}
+            </div>
+          {%- elsif dropdown_label_inside == false -%}
+            {{ selector_label }}
+          {%- endif -%}
+          {%- liquid
+            if current_variant
+              assign selected_value = option.selected_value
+            else
+              assign product_url_values = option.values | where: 'product_url' | where: 'selected'
+              if product_url_values != empty
+                assign selected_value = option.selected_value
+              else
+                assign selected_value = ''
+              endif
+            endif
+
+            assign custom_select_label = nil
+            if dropdown_label_inside
+              assign custom_select_label = option.name
+            endif
+          -%}
+          {% render 'custom-select',
+            id: option_id,
+            option_values: option.values,
+            selected_value: selected_value,
+            swatches: is_color_selector,
+            native_swatches: is_native_swatch_style,
+            label_inside: dropdown_label_inside,
+            label: custom_select_label,
+            label_outside_id: label_id
+          %}
+        </div>
+      {%- else -%}
+        <fieldset class="option-selector{% if is_color_selector %} option-selector--swatch{% endif %}" data-selector-type="listed" data-index="{{ option.position }}" data-option="{{ option.name | escape }}">
+          {%- if show_size_chart -%}
+            <div class="option-selector__label-with-sc">
+              <legend class="label">{{- option.name -}}</legend>
+              {{ size_chart_link }}
+            </div>
+          {%- else -%}
+            <legend class="label">{{- option.name -}}
+              {% if is_color_selector -%}
+                : <span class="option-selector__label-value js-color-text">
+                {%- if current_variant -%}
+                  {{- option.selected_value -}}
+                {%- endif -%}
+                </span>
+              {% endif %}
+            </legend>
+          {%- endif -%}
+          <div class="option-selector__btns flex flex-wrap">
+            {%- for value in option.values -%}
+              {%- liquid
+                assign value_index0 = forloop.index0
+
+                assign use_swatch_style = false
+                if swatch_source == 'native'
+                  assign use_swatch_style = true
+                endif
+
+                assign value_image = false
+                if is_variant_image_style
+                  if value.product_url != blank and value.variant != blank
+                    # Combined listing
+                    assign value_image = value.variant.product.featured_media
+                  elsif value.variant and value.variant.featured_media
+                    # Variant image
+                    assign value_image = value.variant.featured_media
+                  else
+                    # Fallback for incomplete variant matrix
+                    for variant in product.variants
+                      if variant.options[option_index0] == value and variant.featured_media
+                        assign value_image = variant.featured_media
+                        break
+                      endif
+                    endfor
+                  endif
+
+                  if value_image == blank
+                    assign use_swatch_style = true
+                  endif
+                endif
+              -%}
+              {%- if is_variant_image_style and value_image -%}
+                {%- capture label_attrs -%}class="opt-label {% if value_image != blank %}opt-label--image{% else %}opt-label--btn{% endif %}"{%- endcapture -%}
+                {%- capture label_content -%}
+                  {%- if value_image != blank -%}
+                    <div class="opt-label__media media">
+                      {{- value_image | image_url: width: swatch_picker_image_size_x2 | image_tag: sizes: img_sizes, widths: img_widths, class: 'theme-img', loading: 'lazy' -}}
+                    </div>
+                  {%- endif -%}
+                  <span class="{% if swatch_style != 'listed' and value_image != blank %}visually-hidden {% endif %}js-value">{{ value.name | escape }}</span>
+                {%- endcapture -%}
+
+              {%- elsif use_swatch_style and value.swatch.image -%}
+                {%- capture label_attrs -%}class="opt-label opt-label--image"{%- endcapture -%}
+                {%- capture label_content -%}
+                  <div class="opt-label__media media">
+                    {{- value.swatch.image | image_url: width: swatch_picker_image_size_x2 | image_tag: sizes: img_sizes, widths: img_widths, class: 'theme-img', loading: 'lazy' -}}
+                  </div>
+                  <span class="{% if swatch_style != 'listed' %}visually-hidden {% endif %}js-value">{{ value.name | escape }}</span>
+                {%- endcapture -%}
+
+              {%- elsif use_swatch_style and value.swatch.color -%}
+                {%- capture label_attrs -%}
+                  class="opt-label opt-label--swatch relative"
+                  data-swatch="{{ value | replace: '"', '' | downcase }}"
+                  style="--swatch-background-color: rgb({{ value.swatch.color.rgb }})"
+                {%- endcapture -%}
+                {%- capture label_content -%}
+                  <span class="{% if swatch_style != 'listed' %}visually-hidden {% endif %}js-value">{{ value.name | escape }}</span>
+                {%- endcapture -%}
+
+              {%- else -%}
+                {%- liquid
+                  assign is_swatch = false
+                  if is_color_selector and swatch_method == color_swatch_method_string
+                    assign is_swatch = true
+                  endif
+                -%}
+                {%- capture label_attrs -%}
+                  class="opt-label {% if is_swatch %}opt-label--swatch{% else %}opt-label--btn{% endif %} relative text-center"{% if is_swatch %}
+                  data-swatch="{{ value | replace: '"', '' | downcase }}"{% endif %}
+                {%- endcapture -%}
+                {%- capture label_content -%}
+                  <span class="{% if is_swatch and swatch_style != 'listed' %}visually-hidden {% endif %}js-value">{{ value.name | escape }}</span>
+                {%- endcapture -%}
+              {%- endif -%}
+
+              <input type="radio"
+                      class="opt-btn visually-hidden focus-label js-option{% if value.available == false %} is-unavailable{% endif %}"
+                      name="{{ option_id }}-option" id="{{ option_id }}-opt-{{ value_index0 }}"
+                      value="{{ value | escape }}"
+                      data-value-id="{{ value.id }}"
+                      {%- if value.variant != blank %} data-variant-id="{{ value.variant.id }}"{% endif %}
+                      {%- if value.product_url != blank %} data-product-url="{{ value.product_url }}"{% endif %}
+                      required
+                      {%- if current_variant %}
+                        {%- if value.selected %} checked{% endif %}
+                      {%- endif %}>
+              <label for="{{ option_id }}-opt-{{ value_index0 }}" {{ label_attrs }}>
+                {{- label_content -}}
+              </label>
+            {%- endfor -%}
+          </div>
+        </fieldset>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if current_variant %}
+      <script type="application/json" data-variant-data>
+        {{- current_variant | json -}}
+      </script>
+    {%- endif -%}
+  </variant-picker>
+{%- endif -%}

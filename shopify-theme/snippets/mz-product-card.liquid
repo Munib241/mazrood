@@ -13,16 +13,6 @@
     assign on_sale = true
   endif
 
-  assign reduced_tag = 'Final Piece'
-  if on_sale
-    for variant in product.variants
-      unless variant.available
-        assign reduced_tag = 'Last Sizes'
-        break
-      endunless
-    endfor
-  endif
-
   assign color_option = blank
   if settings.swatch_source == 'native'
     for opt in product.options_with_values
@@ -72,7 +62,7 @@
       </div>
     {%- endif -%}
     {%- if on_sale -%}
-      <span class="mzp-badge">{{ reduced_tag }}</span>
+      <span class="mzp-badge">{{ 'products.labels.sale' | t | default: 'Sale' }}</span>
     {%- endif -%}
   </a>
   <div class="mzp-info">

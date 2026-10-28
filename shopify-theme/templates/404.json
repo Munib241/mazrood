@@ -1,8 +1,1 @@
-{
-  "sections": {
-    "main": {
-      "type": "main-404"
-    }
-  },
-  "order": ["main"]
-}
+{"sections":{"main":{"type":"main-404","disabled":true,"settings":{}},"newsletter_rdqPgJ":{"type":"newsletter","settings":{"subheading":"","title":"Subscribe to our newsletter","text":"<p>Sign up to our newsletter and we'll keep you up to date with the latest arrivals<\/p>","height_desktop":500,"height_mobile":400,"color_scheme":"standard","color_bg":"","color_text":""}}},"order":["main","newsletter_rdqPgJ"]}

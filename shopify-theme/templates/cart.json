@@ -1,8 +1,1 @@
-{
-  "sections": {
-    "main": {
-      "type": "main-cart"
-    }
-  },
-  "order": ["main"]
-}
+{"sections":{"main":{"type":"main-cart","settings":{"cart_show_title":true,"cart_terms_show":false,"cart_terms_page":"","continue_shopping_page":"","cart_note_show":true,"show_tax_and_shipping":true,"show_additional_checkout_buttons":true,"show_backorder_text":true}},"featured_collection_jFhL4M":{"type":"featured-collection","settings":{"title":"Often viewed with each other","collection":"accessories","layout":"carousel","show_vendor":false,"grid":3,"rows":2,"grid_mobile":"2","hide_swatches":false,"alternate_bg_color":true,"show_view_all":true}}},"order":["main","featured_collection_jFhL4M"]}

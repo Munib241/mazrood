@@ -1,0 +1,740 @@
+{% doc %}
+  @prompt
+    A magazine-style editorial layout, fit media to screen size
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-editorial-{{ ai_gen_id }} {
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.section_padding }}px 0;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .ai-editorial-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+  }
+
+  .ai-editorial-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: {{ block.settings.grid_gap }}px;
+    align-items: start;
+    width: 100%;
+  }
+
+  .ai-editorial-hero-{{ ai_gen_id }} {
+    grid-column: span 7;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .ai-editorial-hero-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    display: block;
+    aspect-ratio: {{ block.settings.hero_aspect_ratio }};
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .ai-editorial-hero-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    aspect-ratio: {{ block.settings.hero_aspect_ratio }};
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .ai-editorial-hero-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-editorial-sidebar-{{ ai_gen_id }} {
+    grid-column: span 5;
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.grid_gap }}px;
+    width: 100%;
+  }
+
+  .ai-editorial-category-{{ ai_gen_id }} {
+    font-size: {{ block.settings.category_size }}px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: {{ block.settings.category_color }};
+    margin-bottom: 12px;
+  }
+
+  .ai-editorial-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 16px;
+    font-family: {{ block.settings.title_font.family }}, {{ block.settings.title_font.fallback_families }};
+    font-weight: {{ block.settings.title_font.weight }};
+  }
+
+  .ai-editorial-excerpt-{{ ai_gen_id }} {
+    font-size: {{ block.settings.excerpt_size }}px;
+    line-height: 1.6;
+    color: {{ block.settings.text_color }};
+    margin-bottom: 24px;
+  }
+
+  .ai-editorial-meta-{{ ai_gen_id }} {
+    font-size: {{ block.settings.meta_size }}px;
+    color: {{ block.settings.meta_color }};
+    margin-bottom: 20px;
+  }
+
+  .ai-editorial-cta-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: {{ block.settings.button_padding_v }}px {{ block.settings.button_padding_h }}px;
+    background-color: {{ block.settings.button_bg }};
+    color: {{ block.settings.button_text }};
+    text-decoration: none;
+    font-size: {{ block.settings.button_size }}px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: {{ block.settings.button_radius }}px;
+    transition: all 0.3s ease;
+  }
+
+  .ai-editorial-cta-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_bg_hover }};
+    color: {{ block.settings.button_text_hover }};
+  }
+
+  .ai-editorial-secondary-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .ai-editorial-secondary-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    display: block;
+    aspect-ratio: {{ block.settings.secondary_aspect_ratio }};
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .ai-editorial-secondary-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    aspect-ratio: {{ block.settings.secondary_aspect_ratio }};
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-editorial-secondary-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-editorial-secondary-content-{{ ai_gen_id }} {
+    padding: 20px 0;
+  }
+
+  .ai-editorial-secondary-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.secondary_title_size }}px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 8px;
+    font-family: {{ block.settings.title_font.family }}, {{ block.settings.title_font.fallback_families }};
+    font-weight: {{ block.settings.title_font.weight }};
+  }
+
+  .ai-editorial-secondary-excerpt-{{ ai_gen_id }} {
+    font-size: {{ block.settings.secondary_excerpt_size }}px;
+    line-height: 1.5;
+    color: {{ block.settings.text_color }};
+    margin-bottom: 12px;
+  }
+
+  .ai-editorial-read-more-{{ ai_gen_id }} {
+    font-size: {{ block.settings.meta_size }}px;
+    color: {{ block.settings.category_color }};
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap 0.3s ease;
+  }
+
+  .ai-editorial-read-more-{{ ai_gen_id }}:hover {
+    gap: 10px;
+  }
+
+  .ai-editorial-read-more-{{ ai_gen_id }} svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-editorial-container-{{ ai_gen_id }} {
+      padding: 0 16px;
+    }
+
+    .ai-editorial-grid-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: {{ block.settings.grid_gap | times: 1.5 }}px;
+    }
+
+    .ai-editorial-hero-{{ ai_gen_id }},
+    .ai-editorial-sidebar-{{ ai_gen_id }} {
+      grid-column: span 1;
+    }
+
+    .ai-editorial-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.75 }}px;
+    }
+
+    .ai-editorial-secondary-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.secondary_title_size | times: 0.85 }}px;
+    }
+
+    .ai-editorial-excerpt-{{ ai_gen_id }} {
+      font-size: {{ block.settings.excerpt_size | times: 0.95 }}px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-editorial-{{ ai_gen_id }} {
+      padding: {{ block.settings.section_padding | times: 0.5 }}px 0;
+    }
+
+    .ai-editorial-container-{{ ai_gen_id }} {
+      padding: 0 12px;
+    }
+
+    .ai-editorial-grid-{{ ai_gen_id }} {
+      gap: {{ block.settings.grid_gap }}px;
+    }
+
+    .ai-editorial-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.6 }}px;
+      margin-bottom: 12px;
+    }
+
+    .ai-editorial-excerpt-{{ ai_gen_id }} {
+      font-size: {{ block.settings.excerpt_size | times: 0.9 }}px;
+      margin-bottom: 20px;
+    }
+
+    .ai-editorial-secondary-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.secondary_title_size | times: 0.75 }}px;
+    }
+
+    .ai-editorial-secondary-excerpt-{{ ai_gen_id }} {
+      font-size: {{ block.settings.secondary_excerpt_size | times: 0.95 }}px;
+    }
+
+    .ai-editorial-category-{{ ai_gen_id }} {
+      font-size: {{ block.settings.category_size | times: 0.9 }}px;
+    }
+
+    .ai-editorial-cta-{{ ai_gen_id }} {
+      width: 100%;
+      justify-content: center;
+      padding: {{ block.settings.button_padding_v | times: 0.9 }}px {{ block.settings.button_padding_h | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-editorial-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-editorial-container-{{ ai_gen_id }}">
+    <div class="ai-editorial-grid-{{ ai_gen_id }}">
+      <div class="ai-editorial-hero-{{ ai_gen_id }}">
+        {% if block.settings.hero_image %}
+          <img
+            src="{{ block.settings.hero_image | image_url: width: 1400 }}"
+            srcset="{{ block.settings.hero_image | image_url: width: 400 }} 400w,
+                    {{ block.settings.hero_image | image_url: width: 800 }} 800w,
+                    {{ block.settings.hero_image | image_url: width: 1200 }} 1200w,
+                    {{ block.settings.hero_image | image_url: width: 1400 }} 1400w"
+            sizes="(max-width: 749px) 100vw, (max-width: 989px) 100vw, 58vw"
+            alt="{{ block.settings.hero_image.alt | escape }}"
+            loading="lazy"
+            width="{{ block.settings.hero_image.width }}"
+            height="{{ block.settings.hero_image.height }}"
+            class="ai-editorial-hero-image-{{ ai_gen_id }}"
+          >
+        {% else %}
+          <div class="ai-editorial-hero-placeholder-{{ ai_gen_id }}">
+            {{ 'hero-apparel-1' | placeholder_svg_tag }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="ai-editorial-sidebar-{{ ai_gen_id }}">
+        <div>
+          {% if block.settings.category != blank %}
+            <div class="ai-editorial-category-{{ ai_gen_id }}">
+              {{ block.settings.category }}
+            </div>
+          {% endif %}
+
+          {% if block.settings.title != blank %}
+            <h2 class="ai-editorial-title-{{ ai_gen_id }}">
+              {{ block.settings.title }}
+            </h2>
+          {% endif %}
+
+          {% if block.settings.meta != blank %}
+            <div class="ai-editorial-meta-{{ ai_gen_id }}">
+              {{ block.settings.meta }}
+            </div>
+          {% endif %}
+
+          {% if block.settings.excerpt != blank %}
+            <div class="ai-editorial-excerpt-{{ ai_gen_id }}">
+              {{ block.settings.excerpt }}
+            </div>
+          {% endif %}
+
+          {% if block.settings.cta_text != blank and block.settings.cta_link != blank %}
+            <a href="{{ block.settings.cta_link }}" class="ai-editorial-cta-{{ ai_gen_id }}">
+              {{ block.settings.cta_text }}
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          {% endif %}
+        </div>
+
+        {% if block.settings.show_secondary %}
+          <div class="ai-editorial-secondary-{{ ai_gen_id }}">
+            {% if block.settings.secondary_image %}
+              <img
+                src="{{ block.settings.secondary_image | image_url: width: 800 }}"
+                srcset="{{ block.settings.secondary_image | image_url: width: 300 }} 300w,
+                        {{ block.settings.secondary_image | image_url: width: 600 }} 600w,
+                        {{ block.settings.secondary_image | image_url: width: 800 }} 800w"
+                sizes="(max-width: 749px) 100vw, (max-width: 989px) 100vw, 42vw"
+                alt="{{ block.settings.secondary_image.alt | escape }}"
+                loading="lazy"
+                width="{{ block.settings.secondary_image.width }}"
+                height="{{ block.settings.secondary_image.height }}"
+                class="ai-editorial-secondary-image-{{ ai_gen_id }}"
+              >
+            {% else %}
+              <div class="ai-editorial-secondary-placeholder-{{ ai_gen_id }}">
+                {{ 'collection-apparel-1' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+
+            <div class="ai-editorial-secondary-content-{{ ai_gen_id }}">
+              {% if block.settings.secondary_category != blank %}
+                <div class="ai-editorial-category-{{ ai_gen_id }}">
+                  {{ block.settings.secondary_category }}
+                </div>
+              {% endif %}
+
+              {% if block.settings.secondary_title != blank %}
+                <h3 class="ai-editorial-secondary-title-{{ ai_gen_id }}">
+                  {{ block.settings.secondary_title }}
+                </h3>
+              {% endif %}
+
+              {% if block.settings.secondary_excerpt != blank %}
+                <div class="ai-editorial-secondary-excerpt-{{ ai_gen_id }}">
+                  {{ block.settings.secondary_excerpt }}
+                </div>
+              {% endif %}
+
+              {% if block.settings.secondary_link != blank %}
+                <a href="{{ block.settings.secondary_link }}" class="ai-editorial-read-more-{{ ai_gen_id }}">
+                  Read more
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Magazine editorial",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero story"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "hero_aspect_ratio",
+      "label": "Image aspect ratio",
+      "options": [
+        {
+          "value": "3/4",
+          "label": "Portrait (3:4)"
+        },
+        {
+          "value": "4/5",
+          "label": "Portrait (4:5)"
+        },
+        {
+          "value": "1/1",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "4/3",
+          "label": "Landscape (4:3)"
+        },
+        {
+          "value": "16/9",
+          "label": "Landscape (16:9)"
+        }
+      ],
+      "default": "4/5"
+    },
+    {
+      "type": "text",
+      "id": "category",
+      "label": "Category",
+      "default": "Featured"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "The New Era of Streetwear"
+    },
+    {
+      "type": "text",
+      "id": "meta",
+      "label": "Meta info"
+    },
+    {
+      "type": "textarea",
+      "id": "excerpt",
+      "label": "Excerpt",
+      "default": "Discover the latest trends shaping modern street culture and premium lifestyle aesthetics."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button text",
+      "default": "Explore collection"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Secondary story"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary",
+      "label": "Show secondary story",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "secondary_image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "secondary_aspect_ratio",
+      "label": "Image aspect ratio",
+      "options": [
+        {
+          "value": "3/4",
+          "label": "Portrait (3:4)"
+        },
+        {
+          "value": "4/5",
+          "label": "Portrait (4:5)"
+        },
+        {
+          "value": "1/1",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "4/3",
+          "label": "Landscape (4:3)"
+        },
+        {
+          "value": "16/9",
+          "label": "Landscape (16:9)"
+        }
+      ],
+      "default": "4/3"
+    },
+    {
+      "type": "text",
+      "id": "secondary_category",
+      "label": "Category",
+      "default": "Latest"
+    },
+    {
+      "type": "text",
+      "id": "secondary_title",
+      "label": "Title",
+      "default": "Behind the Design"
+    },
+    {
+      "type": "textarea",
+      "id": "secondary_excerpt",
+      "label": "Excerpt",
+      "default": "An inside look at the creative process."
+    },
+    {
+      "type": "url",
+      "id": "secondary_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 100,
+      "unit": "px",
+      "label": "Maximum width",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 20,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Grid gap",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "font_picker",
+      "id": "title_font",
+      "label": "Title font",
+      "default": "jost_n4"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Hero title size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "secondary_title_size",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Secondary title size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "category_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Category size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "excerpt_size",
+      "min": 14,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Hero excerpt size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "secondary_excerpt_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Secondary excerpt size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "meta_size",
+      "min": 11,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Meta size",
+      "default": 13
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title",
+      "default": "#000f9f"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#000f9f"
+    },
+    {
+      "type": "color",
+      "id": "category_color",
+      "label": "Category",
+      "default": "#000f9f"
+    },
+    {
+      "type": "color",
+      "id": "meta_color",
+      "label": "Meta",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "range",
+      "id": "button_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_padding_v",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_padding_h",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "Horizontal padding",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 4
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Background",
+      "default": "#000f9f"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_hover",
+      "label": "Hover background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_hover",
+      "label": "Hover text",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Magazine editorial"
+    }
+  ]
+}
+{% endschema %}

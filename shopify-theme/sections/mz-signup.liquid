@@ -1,3 +1,5 @@
+{{ 'mz-ss26-sections.css' | asset_url | stylesheet_tag }}
+
 <section class="mz mz-sec mz-sec--rule" id="early-access" aria-labelledby="h-{{ section.id }}">
   <div class="mz-wrap">
     {%- if section.settings.eyebrow != blank -%}<p class="mz-eye">{{ section.settings.eyebrow }}</p>{%- endif -%}
@@ -11,9 +13,9 @@
         <input id="mzs-email" class="mzs-input" type="email" name="contact[email]" placeholder="{{ section.settings.placeholder | escape }}" required autocomplete="email">
         <button type="submit" class="mz-btn mz-btn--solid">
           {%- if form.posted_successfully? -%}
-            {%- render 'mz-icon', name: 'check', size: 14 -%} You're on the list
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> You're on the list
           {%- else -%}
-            {{ section.settings.button }}{% render 'mz-icon', name: 'arrow-right', size: 14 %}
+            {{ section.settings.button }} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
           {%- endif -%}
         </button>
       </div>
@@ -30,7 +32,7 @@
 {
   "name": "Early access signup",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "03 — Early access" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "05 — Early access" },
     { "type": "text", "id": "title", "label": "Title", "default": "Be first to the" },
     { "type": "text", "id": "title_bold", "label": "Title (bold italic)", "default": "new season." },
     { "type": "textarea", "id": "body", "label": "Body", "default": "Leave your email and be notified when the new season opens — before it reaches the store." },

@@ -1,0 +1,376 @@
+{% doc %}
+  @prompt
+    Create floating product cards with 3D tilt effect that respond to mouse hover. The cards should have a subtle shadow, smooth animations, and tilt in 3D space when users hover over them. Include product image, title, and price with modern styling.
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-floating-cards-container-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 40px 20px;
+    perspective: 1000px;
+  }
+
+  .ai-floating-card-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    background: {{ block.settings.card_background }};
+    border-radius: {{ block.settings.border_radius }}px;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;box-shadow: 
+      0 4px 15px rgba(0, 0, 0, 0.1),
+      0 1px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+
+  .ai-floating-card-{{ ai_gen_id }}:hover {
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.15),
+      0 6px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-floating-card-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: {{ block.settings.image_height }}px;
+    overflow: hidden;
+    background-color: #f8f8f8;
+  }
+
+  .ai-floating-card-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-floating-card-{{ ai_gen_id }}:hover .ai-floating-card-image-{{ ai_gen_id }} {
+    transform: scale(1.05);
+  }
+
+  .ai-floating-card-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4;}
+
+  .ai-floating-card-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .ai-floating-card-content-{{ ai_gen_id }} {
+    padding: {{ block.settings.content_padding }}px;
+    text-align: {{ block.settings.text_alignment }};
+  }
+
+  .ai-floating-card-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 8px 0;
+    line-height: 1.3;
+    transition: color 0.3s ease;
+  }
+
+  .ai-floating-card-{{ ai_gen_id }}:hover .ai-floating-card-title-{{ ai_gen_id }} {
+    color: {{ block.settings.title_hover_color }};
+  }
+
+  .ai-floating-card-price-{{ ai_gen_id }} {
+    font-size: {{ block.settings.price_size }}px;
+    font-weight: 700;
+    color: {{ block.settings.price_color }};
+    margin: 0;}
+
+  .ai-floating-card-link-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    text-decoration: none;}
+
+  @media screen and (max-width: 749px) {
+    .ai-floating-cards-container-{{ ai_gen_id }} {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));gap: 20px;
+      padding: 20px 10px;
+    }
+
+    .ai-floating-card-content-{{ ai_gen_id }} {
+      padding: {{ block.settings.content_padding | times: 0.8 }}px;
+    }
+
+    .ai-floating-card-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.9 }}px;
+    }
+
+    .ai-floating-card-price-{{ ai_gen_id }} {
+      font-size: {{ block.settings.price_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<floating-product-cards-{{ ai_gen_id }}
+  class="ai-floating-cards-container-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  {% for i in (1..6) %}
+    {% liquid
+      assign product_key = 'product_' | append: i
+      assign product = block.settings[product_key]%}
+
+    {% if product != blank %}
+      <div
+        class="ai-floating-card-{{ ai_gen_id }}"
+        data-card-index="{{ i }}">
+        <a href="{{ product.url }}" class="ai-floating-card-link-{{ ai_gen_id }}"></a>
+        
+        <div class="ai-floating-card-image-wrapper-{{ ai_gen_id }}">
+          {% if product.featured_image %}
+            <img
+              src="{{ product.featured_image | image_url: width: 400}}"
+              alt="{{ product.featured_image.alt | escape }}"
+              class="ai-floating-card-image-{{ ai_gen_id }}"
+              loading="lazy"width="400"
+              height="{{ block.settings.image_height }}"
+            >
+          {% else %}
+            <div class="ai-floating-card-placeholder-{{ ai_gen_id }}">
+              {{ 'product-1' | placeholder_svg_tag }}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="ai-floating-card-content-{{ ai_gen_id }}">
+          <h3 class="ai-floating-card-title-{{ ai_gen_id }}">
+            {{ product.title }}
+          </h3>
+          <p class="ai-floating-card-price-{{ ai_gen_id }}">
+            {{ product.price | money }}
+          </p>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+</floating-product-cards-{{ ai_gen_id }}><script>
+  (function() {
+    class FloatingProductCards{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.cards = [];
+        this.tiltIntensity = {{ block.settings.tilt_intensity }};
+      }
+
+      connectedCallback() {
+        this.cards = this.querySelectorAll('.ai-floating-card-{{ ai_gen_id }}');
+        this.setupTiltEffect();
+      }
+
+      setupTiltEffect() {
+        this.cards.forEach(card => {
+          card.addEventListener('mousemove', (e) => this.handleMouseMove(e, card));
+          card.addEventListener('mouseleave', () => this.handleMouseLeave(card));
+          card.addEventListener('mouseenter', () => this.handleMouseEnter(card));
+        });
+      }
+
+      handleMouseMove(e, card) {
+        const rect = card.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const mouseX = e.clientX - centerX;
+        const mouseY = e.clientY - centerY;
+        
+        const rotateX = (mouseY / (rect.height / 2)) * this.tiltIntensity;
+        const rotateY = (mouseX / (rect.width / 2)) * this.tiltIntensity;
+        
+        card.style.transform = `perspective(1000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+      }
+
+      handleMouseEnter(card) {
+        card.style.transition = 'transform 0.1s ease, box-shadow 0.3s ease';
+      }
+
+      handleMouseLeave(card) {
+        card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+      }
+    }
+
+    customElements.define('floating-product-cards-{{ ai_gen_id }}', FloatingProductCards{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Floating Product Cards",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Product 1"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Product 2"
+    },
+    {
+      "type": "product",
+      "id": "product_3",
+      "label": "Product 3"
+    },
+    {
+      "type": "product",
+      "id": "product_4",
+      "label": "Product 4"
+    },
+    {
+      "type": "product",
+      "id": "product_5",
+      "label": "Product 5"
+    },
+    {
+      "type": "product",
+      "id": "product_6",
+      "label": "Product 6"
+    },
+    {
+      "type": "header",
+      "content": "Card Style"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "min": 200,
+      "max": 400,
+      "step": 20,
+      "unit": "px",
+      "label": "Image height",
+      "default": 280
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Content padding",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Title size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#000f9f"
+    },
+    {
+      "type": "color",
+      "id": "title_hover_color",
+      "label": "Title hover color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "price_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Price size",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Price color",
+      "default": "#000f9f"
+    },
+    {
+      "type": "header",
+      "content": "3D Effect"
+    },
+    {
+      "type": "range",
+      "id": "tilt_intensity",
+      "min": 5,
+      "max": 25,
+      "step": 5,
+      "label": "Tilt intensity",
+      "default": 15
+    }
+  ],
+  "presets": [
+    {
+      "name": "Floating Product Cards"
+    }
+  ]
+}
+{% endschema %}

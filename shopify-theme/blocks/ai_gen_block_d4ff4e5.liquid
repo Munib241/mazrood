@@ -1,0 +1,488 @@
+{% doc %}
+  @prompt
+    Create a featured products section highlighting top-selling items with a promotional banner
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .featured-products-{{ ai_gen_id }} {
+    margin: {{ block.settings.margin_top }}px 0 {{ block.settings.margin_bottom }}px 0;
+  }
+
+  .featured-products-container-{{ ai_gen_id }} {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .featured-products-header-{{ ai_gen_id }} {
+    text-align: {{ block.settings.text_alignment }};
+    margin-bottom: 20px;
+  }
+
+  .featured-products-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 10px 0;
+  }
+
+  .featured-products-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 20px 0;
+  }
+
+  .featured-products-banner-{{ ai_gen_id }} {
+    background-color: {{ block.settings.banner_background_color }};
+    color: {{ block.settings.banner_text_color }};
+    padding: 15px 20px;
+    border-radius: {{ block.settings.banner_border_radius }}px;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: {{ block.settings.banner_text_size }}px;
+    font-weight: 600;
+    position: relative;
+  }
+
+  .featured-products-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.columns_desktop }}, 1fr);
+    gap: 20px;
+  }
+
+  .featured-product-card-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    border-radius: {{ block.settings.card_border_radius }}px;
+    overflow: hidden;
+    background-color: {{ block.settings.card_background_color }};
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  {% if block.settings.enable_card_hover %}
+    .featured-product-card-{{ ai_gen_id }}:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+  {% endif %}
+
+  .featured-product-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    padding-bottom: 100%;
+    overflow: hidden;
+  }
+
+  .featured-product-image-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .featured-product-image-placeholder-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4;
+  }
+
+  .featured-product-image-placeholder-{{ ai_gen_id }} svg {
+    width: 80%;
+    height: 80%;
+  }
+
+  .featured-product-info-{{ ai_gen_id }} {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .featured-product-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.product_title_size }}px;
+    color: {{ block.settings.product_title_color }};
+    margin: 0 0 5px 0;
+    font-weight: 600;
+  }
+
+  .featured-product-price-{{ ai_gen_id }} {
+    font-size: {{ block.settings.product_price_size }}px;
+    color: {{ block.settings.product_price_color }};
+    margin: 0 0 15px 0;
+  }
+
+  .featured-product-button-{{ ai_gen_id }} {
+    display: inline-block;
+    background-color: {{ block.settings.button_background_color }};
+    color: {{ block.settings.button_text_color }};
+    padding: 10px 15px;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    margin-top: auto;
+  }
+
+  .featured-product-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_color }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .featured-products-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat({{ block.settings.columns_mobile }}, 1fr);
+    }
+    
+    .featured-products-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.8 }}px;
+    }
+    
+    .featured-products-subtitle-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subtitle_size | times: 0.9 }}px;
+    }
+    
+    .featured-products-banner-{{ ai_gen_id }} {
+      font-size: {{ block.settings.banner_text_size | times: 0.9 }}px;
+      padding: 12px 15px;
+    }
+  }
+{% endstyle %}
+
+<div class="featured-products-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="featured-products-container-{{ ai_gen_id }}">
+    <div class="featured-products-header-{{ ai_gen_id }}">
+      {% if block.settings.heading != blank %}
+        <h2 class="featured-products-title-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+      {% endif %}
+      
+      {% if block.settings.subtitle != blank %}
+        <div class="featured-products-subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</div>
+      {% endif %}
+    </div>
+    
+    {% if block.settings.show_banner and block.settings.banner_text != blank %}
+      <div class="featured-products-banner-{{ ai_gen_id }}">
+        {{ block.settings.banner_text }}
+      </div>
+    {% endif %}
+    
+    <div class="featured-products-grid-{{ ai_gen_id }}">
+      {% for product in block.settings.featured_products %}
+        <div class="featured-product-card-{{ ai_gen_id }}">
+          <div class="featured-product-image-wrapper-{{ ai_gen_id }}">
+            {% if product.featured_image %}
+              <img 
+                src="{{ product.featured_image | image_url: width: 500 }}" 
+                alt="{{ product.featured_image.alt | escape }}"
+                loading="lazy"
+                width="{{ product.featured_image.width }}"
+                height="{{ product.featured_image.height }}"
+                class="featured-product-image-{{ ai_gen_id }}"
+              >
+            {% else %}
+              <div class="featured-product-image-placeholder-{{ ai_gen_id }}">
+                {{ 'product-apparel-1' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+          </div>
+          
+          <div class="featured-product-info-{{ ai_gen_id }}">
+            <h3 class="featured-product-title-{{ ai_gen_id }}">{{ product.title }}</h3>
+            <div class="featured-product-price-{{ ai_gen_id }}">{{ product.price | money }}</div>
+            <a href="{{ product.url }}" class="featured-product-button-{{ ai_gen_id }}">
+              {{ block.settings.button_text }}
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Featured Products"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Shop our best-selling products"
+    },
+    {
+      "type": "product_list",
+      "id": "featured_products",
+      "label": "Products",
+      "limit": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_banner",
+      "label": "Show promotional banner",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "banner_text",
+      "label": "Banner text",
+      "default": "Limited time offer: Use code SAVE20 for 20% off!"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "View Product"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Products per row",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top margin",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom margin",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000f9f"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "banner_background_color",
+      "label": "Banner background color",
+      "default": "#000f9f"
+    },
+    {
+      "type": "color",
+      "id": "banner_text_color",
+      "label": "Banner text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_background_color",
+      "label": "Product card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Product title color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "product_price_color",
+      "label": "Product price color",
+      "default": "#000f9f"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button background",
+      "default": "#000f9f"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button hover background",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "banner_text_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Banner text size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "product_title_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Product title size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "product_price_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Product price size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "banner_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Banner border radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Card border radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Button border radius",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_card_hover",
+      "label": "Enable card hover effect",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products"
+    }
+  ]
+}
+{% endschema %}

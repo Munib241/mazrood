@@ -1,0 +1,61 @@
+{%- liquid
+  assign look_products = product.metafields.custom.shop_the_look.value
+  assign look_product_count = 0
+  if look_products != blank
+    assign look_product_count = look_products.size
+  endif
+-%}
+{% if look_product_count > 0 %}
+  <div class="shop-the-look-section section-spacing" data-section-type="shop-the-look">
+    <div class="wide-container">
+      <div class="shop-the-look__layout">
+        {%- if section.settings.image != blank -%}
+          <div class="shop-the-look__image" data-cc-animate>
+            {% render 'responsive-image', image: section.settings.image %}
+          </div>
+        {%- endif -%}
+
+        <div class="shop-the-look__products">
+          {%- if section.settings.title != blank -%}
+            <h2 class="h2 section-heading" data-cc-animate>{{ section.settings.title }}</h2>
+          {%- endif -%}
+
+          {%- if section.settings.subtext != blank -%}
+            <div class="shop-the-look__subtext rte">{{ section.settings.subtext }}</div>
+          {%- endif -%}
+
+          <div class="product-list swiper-container shop-the-look__slider" data-products-in-view="{{ section.settings.grid }}">
+            <div class="swiper-wrapper" data-normheights=".image" data-normheights-inner="img">
+              {%- for look_product in look_products -%}
+                <div class="swiper-slide">
+                  {% render 'product-block', product: look_product, i: forloop.index, animate: forloop.index, show_vendor: section.settings.show_vendor, hide_swatches: section.settings.hide_swatches %}
+                </div>
+              {%- endfor -%}
+            </div>
+            <div class="swiper-scrollbar"></div>
+            <a href="#" class="swiper-button-prev js-swiper-button-prev" aria-label="{{ 'general.accessibility_labels.previous' | t | escape }}">{% render 'svg-chevron-left' %}</a>
+            <a href="#" class="swiper-button-next js-swiper-button-next" aria-label="{{ 'general.accessibility_labels.next' | t | escape }}">{% render 'svg-chevron-right' %}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Shop the Look",
+  "class": "section-shop-the-look",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Heading", "default": "Shop the Look" },
+    { "type": "image_picker", "id": "image", "label": "Look image (optional)" },
+    { "type": "richtext", "id": "subtext", "label": "Subtext (optional)" },
+    { "type": "checkbox", "id": "show_vendor", "label": "Show product vendor", "default": false },
+    { "type": "checkbox", "id": "hide_swatches", "label": "Hide color swatches", "default": false },
+    { "type": "range", "id": "grid", "label": "Products per row", "min": 2, "max": 4, "step": 1, "default": 3 }
+  ],
+  "presets": [
+    { "name": "Shop the Look" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,15 @@
+{%- liquid
+  unless stroke_width
+    assign stroke_width = 1.5
+  endunless
+-%}
+
+<svg class="svg--trans" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <title>Account</title>
+  <g stroke="none" stroke-width="{{ stroke_width }}" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+    <g stroke="currentColor">
+      <circle cx="15" cy="7.5" r="6"/>
+      <path d="M27 28.5v-3a6 6 0 0 0-6-6H9a6 6 0 0 0-6 6v3"/>
+    </g>
+  </g>
+</svg>

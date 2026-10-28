@@ -1,0 +1,34 @@
+<div class="{% unless section.settings.no_margins %}section-spacing container{% endunless %}" data-cc-animate>
+  {{ section.settings.custom_liquid }}
+</div>
+
+{% schema %}
+  {
+    "name": "Custom Liquid/HTML",
+    "class": "section--custom-html",
+    "disabled_on": {
+      "groups": [
+        "aside"
+      ]
+    },
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "no_margins",
+        "label": "No section spacing",
+        "default": false
+      },
+      {
+        "type": "liquid",
+        "id": "custom_liquid",
+        "label": "Custom Liquid/HTML"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Custom Liquid/HTML",
+        "category": "Snippets",
+      }
+    ]
+  }
+{% endschema %}

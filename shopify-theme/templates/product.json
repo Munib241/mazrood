@@ -1,12 +1,148 @@
 {
   "sections": {
     "main": {
-      "type": "main-product"
+      "type": "main-product",
+      "blocks": {
+        "vendor_and_type": {
+          "type": "vendor_and_type",
+          "disabled": true,
+          "settings": {
+            "show_vendor": true,
+            "show_type": false
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "heading_h1": true
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "show_tax_and_shipping": true
+          }
+        },
+        "inventory_level_tgGri9": {
+          "type": "inventory_level",
+          "settings": {
+            "inventory_threshold": 5,
+            "show_inventory_notice": "low",
+            "show_inventory_count": "low",
+            "show_inventory_indicator_bar": true,
+            "col_indicator_below": "#dd9a1a",
+            "col_indicator_above": "#108043"
+          }
+        },
+        "rating": {
+          "type": "rating",
+          "disabled": true,
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "variant_style": "underlined",
+            "show_size_chart": false,
+            "size_chart_variant": "Size",
+            "size_chart_page": ""
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_quantity_selector": true,
+            "enable_payment_button": true,
+            "show_pickup_availability": true,
+            "enable_mobile_sticky_cart": false,
+            "show_gift_card_recipient": true
+          }
+        },
+        "tabs": {
+          "type": "tabs",
+          "settings": {
+            "show_product_description": true,
+            "show_product_reviews": false,
+            "custom_reviews": "",
+            "tab_2_page": "",
+            "tab_2_title": "Shipping & Returns",
+            "tab_2_content": "<p>See our full <a href=\"/pages/shipping-policy\">Shipping Policy</a> and <a href=\"/pages/store-policies\">Return/Exchange Policy</a> for delivery times, costs, and how to start a return.</p>",
+            "tab_3_page": "",
+            "tab_3_title": "",
+            "tab_3_content": "",
+            "tab_4_page": "",
+            "tab_4_title": "",
+            "tab_4_content": ""
+          }
+        }
+      },
+      "block_order": [
+        "vendor_and_type",
+        "title",
+        "price",
+        "inventory_level_tgGri9",
+        "rating",
+        "variant_picker",
+        "buy_buttons",
+        "tabs"
+      ],
+      "settings": {
+        "media_style": "one-column",
+        "sticky_behaviour": "bottom",
+        "full_width": false,
+        "show_backorder_text": false,
+        "slide_nav_style": "arrows",
+        "media_crop": "bottom",
+        "enable_zoom": true,
+        "zoom_cursor": "plus-dark",
+        "show_thumbnails": true,
+        "enable_video_looping": false,
+        "scroll_to_variant_media": true,
+        "highlight_selected_media": true,
+        "variant_media_grouping": true,
+        "variant_media_grouping_option": "Color,Colour,Couleur,Farbe"
+      }
     },
-    "related": {
-      "type": "related-products",
-      "settings": {}
+    "shop-the-look-block": {
+      "type": "shop-the-look",
+      "settings": {
+        "title": "Shop the Look",
+        "grid": 3
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "show_product_recommendations": true,
+        "title": "You may also like",
+        "hide_swatches": false,
+        "show_vendor": false,
+        "grid": 4
+      }
+    },
+    "172313274572bbcdc8": {
+      "type": "apps",
+      "blocks": {
+        "kiwi_size_chart_recommender_kiwi_sizing_FiFKyU": {
+          "type": "shopify://apps/kiwi-size-chart-recommender/blocks/kiwiSizing/b7369922-bf15-44ce-a121-a22a8fcbc4b0",
+          "settings": {
+            "waitForElementSelector": "",
+            "waitForElementDelay": 5
+          }
+        }
+      },
+      "block_order": [
+        "kiwi_size_chart_recommender_kiwi_sizing_FiFKyU"
+      ],
+      "settings": {
+        "skip_container": false
+      }
     }
   },
-  "order": ["main", "related"]
+  "order": [
+    "main",
+    "shop-the-look-block",
+    "product-recommendations",
+    "172313274572bbcdc8"
+  ]
 }
