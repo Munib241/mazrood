@@ -4,23 +4,65 @@
       "type": "mz-hero",
       "settings": {
         "image_src": "https://mazrood.com/cdn/shop/files/hf_20260910_025717_834f1492-07a4-423a-8a08-0767d3051c43_2000x.png?v=1789013116",
-        "tag": "",
-        "eyebrow": "FW26 — Fall / Winter 2026",
-        "title": "Winter is",
-        "title_bold": "coming",
+        "tag": "Mazrood Studio — SS26",
+        "eyebrow": "Spring / Summer 2026",
+        "title": "End of",
+        "title_bold": "Season.",
         "desc": "",
-        "cta1": "Shop the Archive",
-        "cta1_url": "/collections/fw25-26",
-        "cta2": "Join the List",
-        "cta2_url": "#early-access"
+        "cta1": "Shop SS26",
+        "cta1_url": "/collections/new-2026",
+        "cta2": "Shop Sale",
+        "cta2_url": "/collections/fw25-26"
       }
     },
-    "intro": {
-      "type": "mz-intro",
+    "rope": {
+      "type": "mz-rope",
       "settings": {
-        "intro_en": "Mazrood is a Saudi casual formal brand, founded in Riyadh in 2016. Shop shirts, knitwear, jackets and everyday essentials. Shown at Riyadh Fashion Week.",
-        "intro_ar": "مزرود علامة سعودية للأزياء الكاجوال الفورمال، تأسست في الرياض عام 2016. تسوق القمصان والتريكو والجاكيتات والأساسيات اليومية."
-      }
+        "eyebrow": "01 — Fresh off the line"
+      },
+      "blocks": {
+        "r1": {
+          "type": "item",
+          "settings": {
+            "product": "mzrd-bubble-cap",
+            "label": "mzrd Bubble Cap",
+            "image_src": "https://mazrood.com/cdn/shop/files/DSC06373Large_700x.jpg?v=1787983760",
+            "position": 17,
+            "drop": 0
+          }
+        },
+        "r2": {
+          "type": "item",
+          "settings": {
+            "product": "mazrood-diner-hoodie",
+            "label": "Diner Hoodie",
+            "image_src": "https://mazrood.com/cdn/shop/files/MZ-27_1_900x.jpg?v=1780383212",
+            "position": 40,
+            "drop": 40
+          }
+        },
+        "r3": {
+          "type": "item",
+          "settings": {
+            "product": "peacemaker-cap",
+            "label": "Peacemaker Cap",
+            "image_src": "https://mazrood.com/cdn/shop/files/DSC06361Large_700x.jpg?v=1787983290",
+            "position": 62,
+            "drop": 18
+          }
+        },
+        "r4": {
+          "type": "item",
+          "settings": {
+            "product": "warning-closet-envy-cap",
+            "label": "Warning: Closet Envy Cap",
+            "image_src": "https://mazrood.com/cdn/shop/files/DSC06338Large_700x.jpg?v=1787982586",
+            "position": 85,
+            "drop": 0
+          }
+        }
+      },
+      "block_order": ["r1", "r2", "r3", "r4"]
     },
     "archive": {
       "type": "mz-products",
@@ -28,7 +70,7 @@
         "style": "archive",
         "anchor": "archive",
         "rule": false,
-        "eyebrow": "01 — The Archive",
+        "eyebrow": "02 — The Archive",
         "title": "Final pieces,",
         "title_bold": "quietly reduced.",
         "link_label": "View the Archive",
@@ -49,7 +91,7 @@
     "manifesto": {
       "type": "mz-manifesto",
       "settings": {
-        "eyebrow": "02 — Studio Manifesto",
+        "eyebrow": "03 — Studio Manifesto",
         "line_1": "We don't chase",
         "line_bold": "trends.",
         "line_2": "We build",
@@ -66,7 +108,7 @@
     "signup": {
       "type": "mz-signup",
       "settings": {
-        "eyebrow": "03 — Early access",
+        "eyebrow": "05 — Early access",
         "title": "Be first to the",
         "title_bold": "new season.",
         "body": "Leave your email and be notified when the new season opens — before it reaches the store.",
@@ -76,5 +118,5 @@
       }
     }
   },
-  "order": ["hero", "intro", "archive", "manifesto", "signup"]
+  "order": ["hero", "rope", "archive", "manifesto", "signup"]
 }
