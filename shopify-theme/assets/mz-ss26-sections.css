@@ -1,18 +1,18 @@
-/* ── Mazrood SS26 — new homepage sections (rope line, manifesto, early access) ──
+/* ── Mazrood SS26 — End of Season dark editorial (rope line, manifesto, early access) ──
    Loaded by the mz-rope / mz-manifesto / mz-signup sections. */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Inter:wght@300;400;500;600&family=Spectral:ital,wght@1,400;1,500&display=swap');
 
 :root {
-  --mz-bg: #f6f3ef;
-  --mz-fg: #16161d;
-  --mz-card: #fdfcfa;
-  --mz-primary: #96782c;
-  --mz-primary-fg: #f7f5f1;
-  --mz-primary-hover: #ae8b33;
-  --mz-muted: #5b5b67;
-  --mz-border: #dcd8d0;
-  --mz-destructive: #b02626;
+  --mz-bg: #0a0a0b;
+  --mz-fg: #e8e2d6;
+  --mz-card: #101012;
+  --mz-primary: #9d7b38;
+  --mz-primary-fg: #ffffff;
+  --mz-primary-hover: #b08343;
+  --mz-muted: #8a857d;
+  --mz-border: #26262b;
+  --mz-destructive: #c0504d;
   --mz-rope: #D9A83C;
   --mz-rope-dark: #8A641B;
   --mz-pin: #B08748;
@@ -38,7 +38,7 @@
   line-height: 1.5;
   letter-spacing: .4em;
   text-transform: uppercase;
-  color: var(--mz-primary);
+  color: #b5944b;
 }
 
 .mz-h2 {
@@ -51,8 +51,8 @@
   color: var(--mz-fg);
 }
 @media (min-width: 768px) { .mz-h2 { font-size: 60px; line-height: 1.05; } }
-.mz-h2 b { font-weight: 700; }
-.mz-h2 em { font-style: italic; font-weight: 700; }
+.mz-h2 b { font-weight: 700; color: #fff; }
+.mz-h2 em { font-family: 'Spectral', Georgia, serif; font-style: italic; font-weight: 400; color: #fff; }
 
 .mz-btn {
   display: inline-flex;
@@ -72,8 +72,8 @@
 }
 .mz-btn--solid { background: var(--mz-primary); color: var(--mz-primary-fg); border: 0; }
 .mz-btn--solid:hover { transform: translateY(-1px); background: var(--mz-primary-hover); color: var(--mz-primary-fg); }
-.mz-btn--ghost { background: transparent; border: 1px solid var(--mz-border); color: var(--mz-fg); }
-.mz-btn--ghost:hover { border-color: var(--mz-primary); color: var(--mz-primary); }
+.mz-btn--ghost { background: transparent; border: 1px solid rgba(255,255,255,.55); color: #fff; }
+.mz-btn--ghost:hover { border-color: #fff; color: #fff; }
 
 .mz-badge {
   position: absolute;
@@ -92,16 +92,16 @@
 @media (min-width: 768px) { .mzm-grid { grid-template-columns: 1fr 1.4fr; gap: 80px; } }
 .mzm-grid .mz-h2 { line-height: 1.05; }
 @media (min-width: 768px) { .mzm-grid .mz-h2 { line-height: 1; } }
-.mzm-lead { margin: 32px 0 0; max-width: 28rem; font-family: var(--mz-body); font-size: 16px; line-height: 1.625; color: var(--mz-fg); opacity: .75; }
+.mzm-lead { margin: 32px 0 0; max-width: 28rem; font-family: var(--mz-body); font-size: 16px; line-height: 1.625; color: var(--mz-fg); opacity: .7; }
 @media (min-width: 768px) { .mzm-lead { font-size: 18px; } }
 .mzm-list { display: flex; flex-direction: column; border-top: 1px solid var(--mz-border); border-bottom: 1px solid var(--mz-border); }
 .mzm-row { display: grid; gap: 8px; padding: 32px 0; }
 .mzm-row + .mzm-row { border-top: 1px solid var(--mz-border); }
 @media (min-width: 768px) { .mzm-row { grid-template-columns: 64px 220px 1fr; align-items: baseline; gap: 40px; padding: 40px 0; } }
-.mzm-n { font-family: var(--mz-head); font-size: 11.2px; letter-spacing: .3em; color: var(--mz-primary); }
-.mzm-h { margin: 0; font-family: var(--mz-head); font-size: 20px; line-height: 28px; font-weight: 500; letter-spacing: -.01em; color: var(--mz-fg); }
+.mzm-n { font-family: var(--mz-head); font-size: 11.2px; letter-spacing: .3em; color: #b5944b; }
+.mzm-h { margin: 0; font-family: var(--mz-head); font-size: 20px; line-height: 28px; font-weight: 500; letter-spacing: -.01em; color: #fff; }
 @media (min-width: 768px) { .mzm-h { font-size: 24px; line-height: 32px; } }
-.mzm-copy { margin: 0; max-width: 28rem; font-family: var(--mz-body); font-size: 14px; line-height: 1.625; color: var(--mz-fg); opacity: .75; }
+.mzm-copy { margin: 0; max-width: 28rem; font-family: var(--mz-body); font-size: 14px; line-height: 1.625; color: var(--mz-fg); opacity: .65; }
 @media (min-width: 768px) { .mzm-copy { font-size: 16px; } }
 
 /* ── Rope line ── */
@@ -123,12 +123,12 @@
 .mzr .mz-badge--sold { right: 8px; }
 
 /* ── Early access signup ── */
-.mzs-body { margin: 24px 0 0; max-width: 28rem; font-family: var(--mz-body); font-size: 16px; line-height: 1.625; color: var(--mz-fg); opacity: .75; }
+.mzs-body { margin: 24px 0 0; max-width: 28rem; font-family: var(--mz-body); font-size: 16px; line-height: 1.625; color: var(--mz-fg); opacity: .7; }
 @media (min-width: 768px) { .mzs-body { font-size: 18px; } }
 .mzs-form { margin-top: 48px; width: 100%; max-width: 42rem; }
 .mzs-in { display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--mz-border); transition: border-color .3s; }
 .mzs-in:focus-within { border-color: var(--mz-primary); }
-.mzs-in .mzs-input { width: 100%; margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; font-family: var(--mz-head); font-size: 24px; font-weight: 300; line-height: 32px; color: var(--mz-fg); -webkit-appearance: none; }
+.mzs-in .mzs-input { width: 100%; margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; font-family: var(--mz-head); font-size: 24px; font-weight: 300; line-height: 32px; color: #fff; -webkit-appearance: none; }
 @media (min-width: 768px) { .mzs-in .mzs-input { font-size: 32px; line-height: 40px; } }
 .mzs-in .mzs-input:focus { outline: none; }
 .mzs-in .mzs-input::placeholder { color: var(--mz-muted); opacity: 1; }
